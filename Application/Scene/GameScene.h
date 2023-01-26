@@ -8,6 +8,16 @@
 #include "ImGuiManager.h"
 #include "CollisionPrimitive.h"
 
+#include"Player.h"
+#include"Plug.h"
+#include "Socket.h"
+#include "SkyBox.h"
+#include "Stage.h"
+#include "Enemy.h"
+#include "LightGroup.h"
+#include "Door.h"
+#include "Lamp.h"
+
 class GameScene
 {
 public:// メンバ関数
@@ -64,60 +74,33 @@ private:// メンバ変数
 
 	Vector3 fighterPos = { 1,0.0f,0 };
 
-	// テクスチャハンドル
-	int textureHandle;
-	int textureHandle2;
-
-	// スプライト
-	Sprite* sprite = nullptr;
-	Sprite* sprite2 = nullptr;
-
 	// モデル
-	Model* model = nullptr;
-	Model* model_2 = nullptr;
-	Model* modelFighter = nullptr;
-	Model* groundModel = nullptr;
 
 	// オブジェクト
-	Object3d* object3d = nullptr;
-	Object3d* obj_2[500];
 
-	Object3d* point1 = nullptr;
-	Object3d* point2 = nullptr;
-	Object3d* point3 = nullptr;
+	ViewProjection* viewProjection_ = nullptr;
+	//プレイヤー
+	Player* player_ = nullptr;
+	//敵
+	Enemy* enemy_ = nullptr;
 
-	Object3d* rayobj = nullptr;
+	//プラグ
+	Plug* plug_ = nullptr;
+	//ソケット
+	Socket* socket1_ = nullptr;
+	//天球
+	SkyBox* skyBox_ = nullptr;
+	//ステージ
+	Stage* stage_ = nullptr;
+	//ライト
+	LightGroup* light_ = nullptr;
 
-	Object3d* objFighter = nullptr;
-	Object3d* groundObj = nullptr;
+	//ドア
+	Door* door_ = nullptr;
+
+	// ランプ
+	Lamp* lamp_ = nullptr;
 
 
-	// ビュープロジェクション
-	ViewProjection* view = nullptr;
-
-	// Quaternion確認
-	Quaternion keisan;
-	Quaternion rotation0;
-	Quaternion rotation1;
-	Quaternion interpolate0;
-	Quaternion interpolate1;
-	Quaternion interpolate2;
-	Quaternion interpolate3;
-	Quaternion interpolate4;
-
-	// 当たり判定
-	Sphere sphere;
-	Plane plane;
-	Triangle triangle;
-	Ray ray;
-	float distance;
-	Vector3 inter;
-
-	bool hit;
-	bool hitRay;
-
-	Vector2 spritePos;
-	char buf[256] = "";
-	float f = 0.0f;
 };
 

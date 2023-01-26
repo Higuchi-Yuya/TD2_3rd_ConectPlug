@@ -94,6 +94,12 @@
     <Filter Include="ヘッダー ファイル\Application\Scene">
       <UniqueIdentifier>{7bf60efa-b700-4947-a3f4-4dff651b3433}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Application\GameApp">
+      <UniqueIdentifier>{c7a9d49a-59fe-4d52-ad38-278cafef58a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Application\GameApp">
+      <UniqueIdentifier>{65223e1d-ae67-444b-b8c4-1f3d6adcc2d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\main.cpp">
@@ -177,6 +183,36 @@
     <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp">
       <Filter>ソース ファイル\Engine\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Application\GameApp\Collider.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GameApp\Door.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GameApp\Enemy.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GameApp\Player.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GameApp\Plug.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GameApp\SkyBox.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GameApp\Socket.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GameApp\Stage.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GameApp\Lamp.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GameApp\MathFunc.cpp">
+      <Filter>ソース ファイル\Application\GameApp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera\ViewProjection.h">
@@ -256,6 +292,36 @@
     </ClInclude>
     <ClInclude Include="Engine\Collision\CollisionPrimitive.h">
       <Filter>ヘッダー ファイル\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\Collider.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\Door.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\Enemy.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\Player.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\Plug.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\SkyBox.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\Socket.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\Stage.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\Lamp.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\GameApp\MathFunc.h">
+      <Filter>ヘッダー ファイル\Application\GameApp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
