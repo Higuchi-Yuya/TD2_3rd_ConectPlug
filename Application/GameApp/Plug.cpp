@@ -35,7 +35,12 @@ Plug::~Plug() {
 
 	for (int i = 0; i < cordLength_; i++) {
 		delete cord_[i].gameObject;
+		delete cord_[i].collider[0];
+		delete cord_[i].collider[1];
+		delete cord_[i].collider[2];
 	}
+	delete plugCollider_;
+	delete blockCollider_;
 	delete plug_;
 	delete block_;
 	delete cordModel;
@@ -164,6 +169,108 @@ void Plug::Draw(ViewProjection* viewProjection) {
 	for (int i = 0; i < cordLength_; i++) {
 		cord_[i].gameObject->Draw(viewProjection);
 	}
+
+}
+
+void Plug::Reset(Vector3 pos, int face)
+{
+	face_ = face;
+
+
+	block_->SetModel(blockModel);
+	block_->worldTransform_.position_ = pos;
+
+	block_->worldTransform_.rotation_ = {
+		0 ,
+		MathFunc::Utility::Deg2Rad(90) * face_ ,
+		0
+	};
+
+	plug_->worldTransform_.position_ = {
+		block_->worldTransform_.position_.x + 2.0f * sin(MathFunc::Utility::Deg2Rad(90) * face_) ,
+		block_->worldTransform_.position_.y ,
+		block_->worldTransform_.position_.z + 2.0f * cos(MathFunc::Utility::Deg2Rad(90) * face_)
+	};
+	plug_->Update();
+
+
+	plugCollider_->Initialize(&plug_->worldTransform_);
+	plugCollider_->SetRadius(1.001f);
+
+
+	blockCollider_->Initialize(&block_->worldTransform_);
+	blockCollider_->SetRadius(1.0f);
+
+	for (int i = 0; i < cordLength_; i++) {
+
+		cord_[i].gameObject->worldTransform_.position_ = pos;
+
+		cord_[i].gameObject->worldTransform_.scale_ = { 0.3f , 0.3f , 0.5f };
+
+		cord_[i].angle = { 0 , 0 , 1.0f };
+
+		//根元の位置を指定
+		cord_[i].start.position_ = {
+			cord_[i].gameObject->worldTransform_.position_.x -
+			(cord_[i].gameObject->worldTransform_.scale_.x * cord_[i].angle.x * 0.8f) ,
+			cord_[i].gameObject->worldTransform_.position_.y -
+			(cord_[i].gameObject->worldTransform_.scale_.y * cord_[i].angle.y * 0.8f) ,
+			cord_[i].gameObject->worldTransform_.position_.z -
+			(cord_[i].gameObject->worldTransform_.scale_.z * cord_[i].angle.z * 0.8f) ,
+		};
+
+		//先端の位置を指定
+		cord_[i].end.position_ = {
+			cord_[i].gameObject->worldTransform_.position_.x +
+			(cord_[i].gameObject->worldTransform_.scale_.x * cord_[i].angle.z * 0.8f) ,
+			cord_[i].gameObject->worldTransform_.position_.y +
+			(cord_[i].gameObject->worldTransform_.scale_.y * cord_[i].angle.z * 0.8f) ,
+			cord_[i].gameObject->worldTransform_.position_.z +
+			(cord_[i].gameObject->worldTransform_.scale_.z * cord_[i].angle.z * 0.8f) ,
+		};
+
+
+		//3Dオブジェクトの更新
+		cord_[i].start.Initialize();
+		cord_[i].end.Initialize();
+		cord_[i].oldPos.Initialize();
+		cord_[i].oldStart.Initialize();
+		cord_[i].oldEnd.Initialize();
+
+		//前後のコードを登録
+		if (i == 0) {
+			cord_[i].next = &cord_[i + 1];
+		}
+		else if (i == cordLength_ - 1) {
+			cord_[i].prev = &cord_[i - 1];
+		}
+		else {
+			cord_[i].next = &cord_[i + 1];
+			cord_[i].prev = &cord_[i - 1];
+		}
+
+
+		cord_[i].collider[0]->Initialize(&cord_[i].gameObject->worldTransform_);
+		cord_[i].collider[0]->SetRadius(0.2f);
+
+
+		cord_[i].collider[1]->Initialize(&cord_[i].start);
+		cord_[i].collider[1]->SetRadius(0.2f);
+
+
+		cord_[i].collider[2]->Initialize(&cord_[i].end);
+		cord_[i].collider[2]->SetRadius(0.2f);
+
+		//1フレーム前の根元と先端の座標に現在の根元と先端の座標を代入
+		cord_[i].oldStart.position_ = cord_[i].start.position_;
+		cord_[i].oldEnd.position_ = cord_[i].end.position_;
+
+	}
+
+	isConnect_ = false;
+	isGrabbed_ = false;
+	isReel_ = false;
+	isLimit_ = false;
 
 }
 

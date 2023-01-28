@@ -34,7 +34,7 @@ public:
 	//‰ñ“]
 	void Turn();
 	// ƒŠƒZƒbƒg
-	void Reset();
+	void Reset(int face, int plusFace);
 
 private:
 	Model* enemyModel = nullptr;

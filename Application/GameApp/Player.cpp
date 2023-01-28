@@ -7,12 +7,12 @@ Player::Player() {
 	// プレイヤーの本体の初期化
 	gameObject_ = Object3d::Create();
 	playerModel = new Model();
-	playerModel = Model::LoadFromOBJ("playerHead");
+	playerModel = Model::LoadFromOBJ("playerHead",true);
 
 	// プレイヤーのおてての初期化
 	playerHandObj1 = Object3d::Create();
 	playerHand1Model = new Model();
-	playerHand1Model = Model::LoadFromOBJ("playerHand");
+	playerHand1Model = Model::LoadFromOBJ("playerHand",true);
 	
 
 	playerHandObj2 = Object3d::Create();
@@ -32,6 +32,7 @@ Player::~Player() {
 	delete playerHandObj2;
 	delete gameObject_;
 	delete collider_;
+	delete input;
 }
 
 void Player::Initialize() {
@@ -504,6 +505,7 @@ void Player::SetDoor(Door* door)
 void Player::Reset()
 {
 	gameObject_->worldTransform_.position_ = { 7,0,-5 };
+	gameObject_->worldTransform_.rotation_.y = MathFunc::Utility::Deg2Rad(0.0f);
 	playerHandObj1->worldTransform_.position_ = { 1.0f,0,0 };
 	playerHandObj1->worldTransform_.scale_ = { 0.2f,0.2f, 0.2f };
 	playerHandObj1->worldTransform_.parent_ = &gameObject_->worldTransform_;

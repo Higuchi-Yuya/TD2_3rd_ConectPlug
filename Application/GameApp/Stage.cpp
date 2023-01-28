@@ -28,7 +28,7 @@ Stage::~Stage()
 void Stage::Initialize()
 {
 	
-	TutorialReset();
+	TutorialPosCreate();
 	//// 必要なブロック分をVector型のサイズに合わせる
 	//stageBlock.resize((size_t)500 + 1);
 	//collider_.resize((size_t)500 + 1);
@@ -58,6 +58,54 @@ void Stage::Draw(ViewProjection* viewProjection)
 }
 
 void Stage::TutorialReset()
+{
+	int num = 0;
+	// 必要なブロック分だけ初期化
+	for (int z = 0; z < 10; z++) {
+		for (int x = 0; x < 10; x++)
+		{
+			if (zeroStage[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage0W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (firstStage[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage1W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (secondStage[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage2W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (thirdStage[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage3W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+		}
+	}
+
+}
+
+void Stage::TutorialPosCreate()
 {
 	// ブロックの初期化&オブジェクトの必要な数をカウント
 	for (int z = 0; z < 10; z++) {
@@ -94,7 +142,6 @@ void Stage::TutorialReset()
 			}
 		}
 	}
-
 }
 
 void Stage::TutorialPosSet()

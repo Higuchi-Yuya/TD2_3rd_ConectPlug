@@ -15,6 +15,8 @@ public:
 	void Update();
 	void Draw(ViewProjection* viewProjection);
 
+	void Reset(Vector3 pos, int face);
+
 private:
 
 	void CordUpdate();

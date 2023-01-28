@@ -17,6 +17,9 @@ public:
 
 	void Draw(ViewProjection* viewProjection);
 
+	// リセット
+	void Reset(Vector3 pos, int face);
+
 	//アクセッサ
 	int GetFace();
 

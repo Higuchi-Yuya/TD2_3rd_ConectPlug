@@ -24,6 +24,9 @@ public:
 	// 位置
 	void SetPosition(Vector3& position) { lampObj->worldTransform_.position_ = position; }
 
+	// リセット
+	void Reset();
+
 private:
 	Model* lampModel = nullptr;
 	// オブジェクト

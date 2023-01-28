@@ -21,7 +21,15 @@
 class GameScene
 {
 public:// メンバ関数
-	
+
+	// シーンチェンジ
+	enum Scene
+	{
+		Title,
+		StageSelect,
+		Game,
+	};
+
 	// デストラクタ
 	~GameScene();
 
@@ -40,6 +48,8 @@ public:// メンバ関数
 	void Draw3D();
 
 	void Draw2DFront();
+
+	void Reset();
 
 private:// メンバ変数
 
@@ -92,8 +102,6 @@ private:// メンバ変数
 	SkyBox* skyBox_ = nullptr;
 	//ステージ
 	Stage* stage_ = nullptr;
-	//ライト
-	LightGroup* light_ = nullptr;
 
 	//ドア
 	Door* door_ = nullptr;
@@ -101,6 +109,7 @@ private:// メンバ変数
 	// ランプ
 	Lamp* lamp_ = nullptr;
 
-
+	// シーン
+	Scene scene = Scene::Title;
 };
 

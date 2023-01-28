@@ -13,7 +13,6 @@ GameScene::~GameScene()
 	delete socket1_;
 	delete stage_;
 	delete skyBox_;
-	delete light_;
 	delete door_;
 	delete lamp_;
 
@@ -102,45 +101,69 @@ void GameScene::Update()
 	}
 
 
-	light->SetPointLightPos(0, Vector3(pointLightPos[0], pointLightPos[1], pointLightPos[2]));
-	light->SetPointLightColor(0, Vector3(pointLightColor[0], pointLightColor[1], pointLightColor[2]));
-	light->SetPointLightAtten(0, Vector3(pointLightAtten[0], pointLightAtten[1], pointLightAtten[2]));
+	switch (scene)
+	{
+	case GameScene::Title:
+		if (input->TriggerKey(DIK_SPACE)) {
+			// 次のシーンをセット
+			scene = Scene::Game;
+			// 次のシーンのリセットをする
+			Reset();
+		}
+		break;
+	case GameScene::StageSelect:
+		break;
+	case GameScene::Game:
+		light->SetPointLightPos(0, Vector3(pointLightPos[0], pointLightPos[1], pointLightPos[2]));
+		light->SetPointLightColor(0, Vector3(pointLightColor[0], pointLightColor[1], pointLightColor[2]));
+		light->SetPointLightAtten(0, Vector3(pointLightAtten[0], pointLightAtten[1], pointLightAtten[2]));
 
-	light->SetSpotLightDir(0, spotLightDir);
-	light->SetSpotLightPos(0, spotLightPos);
-	light->SetSpotLightColor(0, spotLightColor);
-	light->SetSpotLightAtten(0, spotLightAtten);
-	light->SetSpotLightFactorAngle(0, spotLightFactorAngle);
+		light->SetSpotLightDir(0, spotLightDir);
+		light->SetSpotLightPos(0, spotLightPos);
+		light->SetSpotLightColor(0, spotLightColor);
+		light->SetSpotLightAtten(0, spotLightAtten);
+		light->SetSpotLightFactorAngle(0, spotLightFactorAngle);
 
-	light->SetCircleShadowDir(0, circleShadowDir);
-	light->SetCircleShadowCasterPos(0, player_->GetWorldPosition());
-	light->SetCircleShadowAtten(0, circleShadowAtten);
-	light->SetCircleShadowFactorAngle(0, circleShadowFactorAngle);
-
-	
-
-	light->Update();
+		light->SetCircleShadowDir(0, circleShadowDir);
+		light->SetCircleShadowCasterPos(0, player_->GetWorldPosition());
+		light->SetCircleShadowAtten(0, circleShadowAtten);
+		light->SetCircleShadowFactorAngle(0, circleShadowFactorAngle);
 
 
-	viewProjection_->UpdateMatrix();
-	//player更新
-	player_->Update();
-	//敵更新
-	enemy_->Update();
-	//プラグ更新
-	plug_->Update();
-	//ステージ更新
-	stage_->Update();
-	//天球更新
-	skyBox_->Update();
-	//ソケット更新
-	socket1_->Update();
-	//ドア更新
-	door_->Update();
 
-	// ランプ
-	lamp_->SetisShining(plug_->GetIsConnect());
-	lamp_->Update();
+		light->Update();
+
+
+		viewProjection_->UpdateMatrix();
+		//player更新
+		player_->Update();
+		//敵更新
+		enemy_->Update();
+		//プラグ更新
+		plug_->Update();
+		//ステージ更新
+		stage_->Update();
+		//天球更新
+		skyBox_->Update();
+		//ソケット更新
+		socket1_->Update();
+		//ドア更新
+		door_->Update();
+
+		// ランプ
+		lamp_->SetisShining(plug_->GetIsConnect());
+		lamp_->Update();
+
+		// とりあえずループの確認用のZキーでタイトルに戻る
+		if (input->TriggerKey(DIK_Z)) {
+			scene = Scene::Title;
+		}
+
+		break;
+	default:
+		break;
+	}
+
 	// 球移動
 
 }
@@ -251,26 +274,62 @@ void GameScene::Draw2DBack()
 
 void GameScene::Draw3D()
 {
-	//3D描画
-	//プラグ
-	plug_->Draw(viewProjection_);
-	//天球
-	skyBox_->Draw(viewProjection_);
-	//ステージ
-	stage_->Draw(viewProjection_);
-	//ソケット
-	socket1_->Draw(viewProjection_);
-	//エネミー
-	enemy_->Draw(viewProjection_);
-	//プレイヤー
-	player_->Draw(viewProjection_);
-	//ドア
-	door_->Draw(viewProjection_);
-	// ランプ
-	lamp_->Draw(viewProjection_);
+	switch (scene)
+	{
+	case GameScene::Title:
+		break;
+	case GameScene::StageSelect:
+		break;
+	case GameScene::Game:
+		//3D描画
+		//プラグ
+		plug_->Draw(viewProjection_);
+		//天球
+		skyBox_->Draw(viewProjection_);
+		//ステージ
+		stage_->Draw(viewProjection_);
+		//ソケット
+		socket1_->Draw(viewProjection_);
+		//エネミー
+		enemy_->Draw(viewProjection_);
+		//プレイヤー
+		player_->Draw(viewProjection_);
+		//ドア
+		door_->Draw(viewProjection_);
+		// ランプ
+		lamp_->Draw(viewProjection_);
+		break;
+	default:
+		break;
+	}
+
 }
 
 void GameScene::Draw2DFront()
 {
 
+}
+
+void GameScene::Reset()
+{
+	switch (scene)
+	{
+	case GameScene::Title:
+		break;
+	case GameScene::StageSelect:
+		break;
+	case GameScene::Game:
+		player_->Reset();
+		enemy_->Reset(enemy_->EAST, 2);
+		plug_->Reset(Vector3(11.0, 0, -9.0), plug_->WEST);
+		socket1_->Reset(Vector3(0, 0, -9), socket1_->EAST);
+		door_->Reset();
+		lamp_->Reset();
+		stage_->TutorialReset();
+		break;
+	default:
+		break;
+	}
+
+	
 }

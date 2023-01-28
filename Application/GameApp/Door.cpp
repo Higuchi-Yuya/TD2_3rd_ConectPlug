@@ -14,6 +14,7 @@ Door::~Door()
 {
 	delete doorModel;
 	delete gameObject_;
+	delete collider_;
 }
 
 void Door::Initialize()

@@ -21,6 +21,9 @@ public:// メンバ関数
 	// チュートリアルステージのセット
 	void TutorialReset();
 
+	// チュートリアルステージのポジションを作る
+	void TutorialPosCreate();
+
 	// チュートリアルステージのポジションのセット
 	void TutorialPosSet();
 

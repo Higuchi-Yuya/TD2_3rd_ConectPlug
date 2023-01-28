@@ -13,8 +13,10 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
+	delete input;
 	delete enemyModel;
 	delete gameObject_;
+	delete collider_;
 }
 
 //初期化
@@ -150,13 +152,19 @@ void Enemy::Turn()
 	}
 }
 
-void Enemy::Reset()
+void Enemy::Reset(int face, int plusFace)
 {
-	face_ = 1;
+	face_ = face;
+	plusFace_ = plusFace;
 	gameObject_->worldTransform_.position_ = { 0,0,0 };
 
 	collider_->Initialize(&gameObject_->worldTransform_);
 	collider_->SetRadius(radius_);
+
+	isAlive_ = true;
+	isTurn_ = false;
+	isMove_ = true;
+
 }
 
 //死亡
