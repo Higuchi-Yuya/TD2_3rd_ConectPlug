@@ -126,7 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/Engine/Collision;$(ProjectDir)/Engine/Camera;$(ProjectDir)/Engine/DirectXBase;$(ProjectDir)/Engine/2D;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/Math;$(ProjectDir)/Engine/Sound;$(ProjectDir)/Engine/3D;$(ProjectDir)/Engine/3D/Light;$(ProjectDir)/Engine/3D/Object;$(ProjectDir)/Application/Scene</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/Engine/Collision;$(ProjectDir)/Engine/Camera;$(ProjectDir)/Engine/DirectXBase;$(ProjectDir)/Engine/2D;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/Math;$(ProjectDir)/Engine/Sound;$(ProjectDir)/Engine/3D;$(ProjectDir)/Engine/3D/Light;$(ProjectDir)/Engine/3D/Object;$(ProjectDir)/Application/Scene;$(ProjectDir)/Application/GameApp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,7 +141,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/Engine/Collision;$(ProjectDir)/Engine/Camera;$(ProjectDir)/Engine/DirectXBase;$(ProjectDir)/Engine/2D;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/Math;$(ProjectDir)/Engine/Sound;$(ProjectDir)/Engine/3D;$(ProjectDir)/Engine/3D/Light;$(ProjectDir)/Engine/3D/Object;$(ProjectDir)/Application/Scene</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/Engine/Collision;$(ProjectDir)/Engine/Camera;$(ProjectDir)/Engine/DirectXBase;$(ProjectDir)/Engine/2D;$(ProjectDir)/Engine/Input;$(ProjectDir)/Engine/Math;$(ProjectDir)/Engine/Sound;$(ProjectDir)/Engine/3D;$(ProjectDir)/Engine/3D/Light;$(ProjectDir)/Engine/3D/Object;$(ProjectDir)/Application/Scene;$(ProjectDir)/Application/GameApp</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -153,6 +153,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application\GameApp\Collider.cpp" />
+    <ClCompile Include="Application\GameApp\Door.cpp" />
+    <ClCompile Include="Application\GameApp\Enemy.cpp" />
+    <ClCompile Include="Application\GameApp\Lamp.cpp" />
+    <ClCompile Include="Application\GameApp\MathFunc.cpp" />
+    <ClCompile Include="Application\GameApp\Player.cpp" />
+    <ClCompile Include="Application\GameApp\Plug.cpp" />
+    <ClCompile Include="Application\GameApp\SkyBox.cpp" />
+    <ClCompile Include="Application\GameApp\Socket.cpp" />
+    <ClCompile Include="Application\GameApp\Stage.cpp" />
     <ClCompile Include="Engine\2D\Sprite.cpp" />
     <ClCompile Include="Engine\2D\SpriteManager.cpp" />
     <ClCompile Include="Engine\3D\Light\CircleShadow.cpp" />
@@ -182,6 +192,16 @@
     <ClCompile Include="Application\Scene\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application\GameApp\Collider.h" />
+    <ClInclude Include="Application\GameApp\Door.h" />
+    <ClInclude Include="Application\GameApp\Enemy.h" />
+    <ClInclude Include="Application\GameApp\Lamp.h" />
+    <ClInclude Include="Application\GameApp\MathFunc.h" />
+    <ClInclude Include="Application\GameApp\Player.h" />
+    <ClInclude Include="Application\GameApp\Plug.h" />
+    <ClInclude Include="Application\GameApp\SkyBox.h" />
+    <ClInclude Include="Application\GameApp\Socket.h" />
+    <ClInclude Include="Application\GameApp\Stage.h" />
     <ClInclude Include="Engine\2D\Sprite.h" />
     <ClInclude Include="Engine\2D\SpriteManager.h" />
     <ClInclude Include="Engine\3D\Light\CircleShadow.h" />

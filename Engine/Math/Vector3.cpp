@@ -101,6 +101,26 @@ Vector3& Vector3::operator/=(float s)
 	return *this;
 }
 
+bool Vector3::operator==(const Vector3& v)
+{
+	if (x == v.x &&
+		y == v.y &&
+		z == v.z) {
+		return true;
+	}
+
+	return false;
+}
+
+bool Vector3::operator!=(const Vector3& v)
+{
+	if (*this == v) {
+		return false;
+	}
+
+	return true;
+}
+
 const Vector3 operator+(const Vector3& v1, const Vector3& v2)
 {
 	Vector3 temp(v1);

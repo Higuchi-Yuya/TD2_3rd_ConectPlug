@@ -4,7 +4,8 @@ Texture2D<float4> tex : register(t0);  // 0番スロットに設定されたテクスチャ
 SamplerState smp : register(s0);      // 0番スロットに設定されたサンプラー
 
 float4 main(VSOutput input) : SV_TARGET
-{	
+{
+
 	// テクスチャマッピング
 	float4 texcolor = tex.Sample(smp,input.uv);
 	
@@ -25,6 +26,7 @@ float4 main(VSOutput input) : SV_TARGET
 		if (dirLights[i].active) {
 			// ライトに向かうベクトルと法線の内積
 			float3 dotlightnormal = dot(dirLights[i].lightv, input.normal);
+
 			// 反射光ベクトル
 			float3 reflect = normalize(-dirLights[i].lightv + 2 * dotlightnormal * input.normal);
 			// 拡散反射光
