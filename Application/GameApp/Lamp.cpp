@@ -4,7 +4,7 @@ Lamp::Lamp()
 {
 	lampObj = Object3d::Create();
 	lampModel = new Model();
-	lampModel = Model::LoadFromOBJ("sphere",true);
+	lampModel = Model::LoadFromOBJ("Lamp",true);
 }
 
 Lamp::~Lamp()
@@ -35,10 +35,10 @@ void Lamp::Update()
 		// ‘ã“ü
 		lampObj->worldTransform_.color_ = { r,g,b,0.8f };
 		// Œ³‚ÌFî•ñ‚ð’´‚¦‚È‚¢‚æ‚¤‚É
-		if (r >= 1.0f) {
-			r = 1.0f;
-			g = 1.0f;
-			b = 1.0f;
+		if (r >= 0.8f) {
+			r = 0.8f;
+			g = 0.8f;
+			b = 0.8f;
 		}
 	}
 	// ‚»‚¤‚¶‚á‚È‚¯‚ê‚ÎˆÃ‚­‚·‚é

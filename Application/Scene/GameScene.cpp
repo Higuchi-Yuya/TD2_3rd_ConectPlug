@@ -61,7 +61,7 @@ void GameScene::Initialize()
 	stage_->Initialize();
 
 	socket1_ = new Socket;
-	socket1_->Initialize(Vector3(0, 0, -9), socket1_->EAST);
+	socket1_->Initialize(Vector3(0, 0, -9), socket1_->SOUTH);
 
 	plug_ = new Plug();
 	plug_->Initialize(Vector3(11.0, 0, -9.0), plug_->WEST);
@@ -135,12 +135,13 @@ void GameScene::Update()
 
 
 		viewProjection_->UpdateMatrix();
-		//player更新
-		player_->Update();
+
 		//敵更新
 		enemy_->Update();
 		//プラグ更新
 		plug_->Update();
+		//player更新
+		player_->Update();
 		//ステージ更新
 		stage_->Update();
 		//天球更新
@@ -177,8 +178,8 @@ void GameScene::ImguiUpdate()
 	//ImGui::SetWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImVec2(500, 100));
 
-
-
+	ImGui::InputFloat3("plugRotation", &plug_->plug_->worldTransform_.rotation_.x);
+	ImGui::InputFloat3("cord0Rotation", &plug_->cord_[0].gameObject->worldTransform_.rotation_.x);
 	if (ImGui::Button("Reset")) {
 
 	}
@@ -321,8 +322,8 @@ void GameScene::Reset()
 	case GameScene::Game:
 		player_->Reset();
 		enemy_->Reset(enemy_->EAST, 2);
-		plug_->Reset(Vector3(11.0, 0, -9.0), plug_->WEST);
-		socket1_->Reset(Vector3(0, 0, -9), socket1_->EAST);
+		plug_->Reset(Vector3(11.0, 0, -9.0), plug_->NORTH);
+		socket1_->Reset(Vector3(0, 0, -9), socket1_->SOUTH);
 		door_->Reset();
 		lamp_->Reset();
 		stage_->TutorialReset();

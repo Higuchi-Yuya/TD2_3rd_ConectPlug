@@ -21,7 +21,7 @@ Vector3& Vector3::normalize()
 	float len = length();
 	if (len != 0)
 	{
-		return *this /= length();
+		return *this = *this / len;
 	}
 
 	return *this;

@@ -6,15 +6,15 @@
 Plug::Plug() {
 	block_ = Object3d::Create();
 	blockModel = new Model;
-	blockModel = Model::LoadFromOBJ("cube");
+	blockModel = Model::LoadFromOBJ("block");
 
 	plug_ = Object3d::Create();
 	plugModel = new Model;
-	plugModel = Model::LoadFromOBJ("cube");
+	plugModel = Model::LoadFromOBJ("plug");
 
 
 	cordModel = new Model;
-	cordModel = Model::LoadFromOBJ("cube");
+	cordModel = Model::LoadFromOBJ("cord");
 
 	plugCollider_ = new Collider;
 
@@ -70,6 +70,11 @@ void Plug::Initialize(Vector3 pos, int face) {
 		block_->worldTransform_.position_.x + 2.0f * sin(MathFunc::Utility::Deg2Rad(90) * face_) ,
 		block_->worldTransform_.position_.y ,
 		block_->worldTransform_.position_.z + 2.0f * cos(MathFunc::Utility::Deg2Rad(90) * face_)
+	};
+	plug_->worldTransform_.rotation_ = {
+		0,
+		MathFunc::Utility::Deg2Rad(90),
+		0,
 	};
 	plug_->Update();
 
@@ -284,7 +289,7 @@ void Plug::CordUpdate() {
 
 
 	if (isGrabbed_ == true) {
-		int direction = 0;
+		direction = 0;
 
 		int isCollision = false;
 
@@ -561,7 +566,15 @@ void Plug::PlugUpdate() {
 		plug_->worldTransform_.position_ = cord_[0].start.position_;
 		isLimit_ = true;
 	}
-	plug_->worldTransform_.rotation_ = cord_[0].gameObject->worldTransform_.rotation_;
+	if (direction != 0) {
+		float angleY = cord_[0].gameObject->worldTransform_.rotation_.y + MathFunc::Utility::Deg2Rad(180);
+
+		plug_->worldTransform_.rotation_.y = angleY;
+	}
+	else {
+		plug_->worldTransform_.rotation_.y = cord_[0].gameObject->worldTransform_.rotation_.y;
+	}
+
 
 	plugCollider_->Update();
 
@@ -575,9 +588,26 @@ void Plug::PlugUpdate() {
 					socket_[i]->GetWorldTransform().position_.z + 2.0f * cos(MathFunc::Utility::Deg2Rad(90) * socket_[i]->GetFace())
 				};
 
+				float angleY = 0;
+				// –k
+				if (socket_[i]->GetFace() == 0) {
+					angleY = MathFunc::Utility::Deg2Rad(90) * 2;
+				}
+				// “Œ
+				if (socket_[i]->GetFace() == 1) {
+					angleY = MathFunc::Utility::Deg2Rad(90) * 3;
+				}
+				// “ì
+				if (socket_[i]->GetFace() == 2) {
+					angleY = MathFunc::Utility::Deg2Rad(90) * 0;
+				}
+				// ¼
+				if (socket_[i]->GetFace() == 3) {
+					angleY = MathFunc::Utility::Deg2Rad(90) * 1;
+				}
 				plug_->worldTransform_.rotation_ = {
 					0 ,
-					MathFunc::Utility::Deg2Rad(90) * socket_[i]->GetFace() ,
+					angleY,
 					0
 				};
 
