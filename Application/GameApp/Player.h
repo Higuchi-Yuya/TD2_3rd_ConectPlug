@@ -125,7 +125,7 @@ private:
 	Vector3 orignalHandPos2 = { -0.5f,0,0 };
 	float upHandPosX = 0.5f, upHandPosZ = 0.8f;
 	float upHandPosY = 0.3f;
-	float handSpeed = 0.04f;
+	float handSpeed = 0.08f;
 
 	bool isUpHand = false;
 	bool upFlag = false;

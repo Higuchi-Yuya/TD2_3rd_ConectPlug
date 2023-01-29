@@ -18,7 +18,23 @@ public:
 	void Reset(Vector3 pos, int face);
 
 private:
+	//コードのリスト用構造体
+	typedef struct Cord {
 
+		Object3d* gameObject = nullptr;
+		WorldTransform start;
+		WorldTransform end;
+		WorldTransform oldPos;
+		WorldTransform oldStart;
+		WorldTransform oldEnd;
+		Vector3 angle;
+		Cord* prev = nullptr;
+		Cord* next = nullptr;
+		Collider* collider[3];
+
+	};
+	//コードの長さ(配列の要素数)
+	static const int cordLength_ = 20;
 	void CordUpdate();
 	void PlugUpdate();
 
@@ -26,6 +42,7 @@ private:
 
 	//アクセッサ
 public:
+
 	WorldTransform GetPlugWorldTransform();
 	void SetPlugWorldTransform(WorldTransform worldTransform);
 	void SetWorldPos(Vector3 pos);
@@ -46,24 +63,12 @@ public:
 	Collider* GetPlugCollider();
 	Collider* GetCordCollider(int cordNum , int position);
 
-
+	Object3d* plug_ = nullptr;
+	//コード
+	Cord cord_[cordLength_];
 	//構造体
 private:
-	//コードのリスト用構造体
-	typedef struct Cord {
 
-		Object3d* gameObject = nullptr;
-		WorldTransform start;
-		WorldTransform end;
-		WorldTransform oldPos;
-		WorldTransform oldStart;
-		WorldTransform oldEnd;
-		Vector3 angle;
-		Cord* prev = nullptr;
-		Cord* next = nullptr;
-		Collider* collider[3];
-
-	};
 
 	//enum
 public:
@@ -76,11 +81,9 @@ public:
 
 	//メンバ変数
 private:
-	//コードの長さ(配列の要素数)
-	static const int cordLength_ = 20;
+	int direction = 0;
 
-	//コード
-	Cord cord_[cordLength_];
+
 
 	// モデル
 	Model* cordModel = nullptr;
@@ -88,7 +91,7 @@ private:
 	Model* blockModel = nullptr;
 
 	//プラグ
-	Object3d* plug_ = nullptr;
+
 	Object3d* block_ = nullptr;
 	Collider* plugCollider_ = nullptr;
 	Collider* blockCollider_ = nullptr;

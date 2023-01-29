@@ -4,7 +4,7 @@ Socket::Socket() {
 	gameObject_ = Object3d::Create();
 
 	soketModel = new Model();
-	soketModel = Model::LoadFromOBJ("sphere");
+	soketModel = Model::LoadFromOBJ("socket");
 	collider_ = new Collider;
 }
 
