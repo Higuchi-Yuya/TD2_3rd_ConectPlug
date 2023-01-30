@@ -246,7 +246,6 @@ void DirectXCommon::InitalizeDevice()
 		infoQuene->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);    // やばいエラー一時に止まる
 		infoQuene->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);        // エラー時に止まる
 		infoQuene->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);    // ワーニング時に止まる
-
 		D3D12_MESSAGE_ID denyIds[] = {
 			D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE
 		};
@@ -259,6 +258,8 @@ void DirectXCommon::InitalizeDevice()
 		filter.DenyList.pSeverityList = severities;
 		//指定したえらーの表示を抑制する
 		infoQuene->PushStorageFilter(&filter);
+
+		infoQuene->Release();
 	}
 #pragma endregion
 
