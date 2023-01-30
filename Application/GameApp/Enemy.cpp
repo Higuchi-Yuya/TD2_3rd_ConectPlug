@@ -1,4 +1,4 @@
-#include "Enemy.h"
+﻿#include "Enemy.h"
 #include "Stage.h"
 
 Enemy::Enemy()
@@ -38,7 +38,7 @@ void Enemy::Update()
 {
 	input->Update();
 	//移動
-	if (isAlive_ == true && isMove_ == true)
+	if (isEnemyAlive_ == true && isMove_ == true)
 	{
 		Move();
 	}
@@ -53,9 +53,17 @@ void Enemy::Update()
 	//生存フラグをfalseにする
 	if (input->TriggerKey(DIK_B))
 	{
-		isAlive_ = false;
+		isEnemyAlive_ = false;
 	}
 
+	//死亡
+	Dead();
+
+	//リセット
+	if (input->PushKey(DIK_2))
+	{
+		Reset(EAST, 2);
+	}
 }
 
 //描画
@@ -129,7 +137,7 @@ void Enemy::Turn()
 		}
 
 	}
-	if (isAlive_ == true && isMove_ == false && isTurn_ == true)
+	if (isEnemyAlive_ == true && isMove_ == false && isTurn_ == true)
 	{
 		////回転させる
 		//amountRotation_ = 0.05f;
@@ -161,18 +169,18 @@ void Enemy::Reset(int face, int plusFace)
 	collider_->Initialize(&gameObject_->worldTransform_);
 	collider_->SetRadius(radius_);
 
-	isAlive_ = true;
+	isEnemyAlive_ = true;
 	isTurn_ = false;
 	isMove_ = true;
-
 }
 
 //死亡
 void Enemy::Dead()
 {
-	if (isAlive_ == false)
+	if (isEnemyAlive_ == false)
 	{
-
+		gameObject_->worldTransform_.position_.y++;
+		gameObject_->worldTransform_.rotation_.y++;
 	}
 }
 

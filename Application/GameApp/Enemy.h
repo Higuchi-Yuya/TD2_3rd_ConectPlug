@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Object3d.h"
 #include "Collider.h"
 #include "Input.h"
@@ -8,79 +8,81 @@ class Stage;
 class Enemy
 {
 public:
-	//“G‚ÌŒü‚«
+	//æ•µã®å‘ã
 	enum face
 	{
-		NORTH, //ã
-		EAST,  //‰E
-		SOUTH,  //‰º
-		WEST  //¶
+		NORTH, //ä¸Š
+		EAST,  //å³
+		SOUTH,  //ä¸‹
+		WEST  //å·¦
 	};
 public:
 	Enemy();
 	~Enemy();
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(int face,int plusFace);
-	//XV
+	//æ›´æ–°
 	void Update();
-	//•`‰æ
+	//æç”»
 	void Draw(ViewProjection* viewProjection);
-	//ˆÚ“®
+	//ç§»å‹•
 	void Move();
-	//€–S
+	//æ­»äº¡
 	void Dead();
-	//stage‚Ìsetter
+	//colliderã®getter
+	Collider* GetCollider() { return collider_; };
+	//stageã®setter
 	void SetStage(Stage* stage);
-	//‰ñ“]
+	//å›è»¢
 	void Turn();
-	// ƒŠƒZƒbƒg
+	// ãƒªã‚»ãƒƒãƒˆ
 	void Reset(int face, int plusFace);
 
 private:
 	Model* enemyModel = nullptr;
 
-	//ƒIƒuƒWƒFƒNƒg
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	Object3d* gameObject_ = nullptr;
 
-	//“–‚½‚è”»’è
+	//å½“ãŸã‚Šåˆ¤å®š
 	Collider* collider_ = nullptr;
 
-	//ƒXƒe[ƒW
+	//ã‚¹ãƒ†ãƒ¼ã‚¸
 	Stage* stage_ = nullptr;
 
-	//ƒL[“ü—Í
+	//ã‚­ãƒ¼å…¥åŠ›
 	Input* input = nullptr;
 
-	//ˆÚ“®
+	//ç§»å‹•
 	Vector3 move_ = { 0,0,0 };
 
-	//Œü‚«
+	//å‘ã
 	int face_ = NORTH;
 
-	//‰ñ“]—Ê
+	//å›è»¢é‡
 	float amountRotation_ = 0;
 
-	//”¼Œa
+	//åŠå¾„
 	float radius_ = 1.0f;
 	float radiusVec = 1.0f;
 
-	//”¼ŒaVector3
+	//åŠå¾„Vector3
 	Vector3 vecPlusRadius_ = { radiusVec,radiusVec,radiusVec };
 	Vector3 vecMinusRadius_ = { radiusVec,radiusVec,radiusVec };
 
-	//¶‘¶ƒtƒ‰ƒO
-	bool isAlive_ = true;
+	//ç”Ÿå­˜ãƒ•ãƒ©ã‚°
+	bool isEnemyAlive_ = true;
 
-	//‰ñ“]ƒtƒ‰ƒO
+	//å›è»¢ãƒ•ãƒ©ã‚°
 	bool isTurn_ = false;
 
-	//ˆÚ“®ƒtƒ‰ƒO
+	//ç§»å‹•ãƒ•ãƒ©ã‚°
 	bool isMove_ = true;
 
-	//•Ç‚ÉG‚ê‚½‚Éface‚ğ•ÏX‚·‚é•Ï”
+	//å£ã«è§¦ã‚ŒãŸæ™‚ã«faceã‚’å¤‰æ›´ã™ã‚‹å¤‰æ•°
 	int plusFace_ = 0;
 
-	//‘¬“x
+	//é€Ÿåº¦
 	float kCharacterSpeed_ = 0.05f;
 };
 

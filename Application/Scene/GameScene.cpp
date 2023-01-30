@@ -1,11 +1,11 @@
-#include "GameScene.h"
+ï»¿#include "GameScene.h"
 #include "Collision.h"
 GameScene::~GameScene()
 {
-	// “ü—Í‰ð•ú
+	// å…¥åŠ›è§£æ”¾
 	delete input;
 
-	// ƒ‚ƒfƒ‹‚Ì‰ð•ú
+	// ãƒ¢ãƒ‡ãƒ«ã®è§£æ”¾
 
 	delete player_;
 	delete enemy_;
@@ -16,21 +16,21 @@ GameScene::~GameScene()
 	delete door_;
 	delete lamp_;
 
-	// ƒrƒ…[‚Ì‰ð•ú
+	// ãƒ“ãƒ¥ãƒ¼ã®è§£æ”¾
 	delete viewProjection_;
-	// ƒ‰ƒCƒg‚Ì‰ð•ú
+	// ãƒ©ã‚¤ãƒˆã®è§£æ”¾
 	delete light;
 }
 
 void GameScene::Initialize()
 {
-	// “ü—Í‚Ì‰Šú‰»
+	// å…¥åŠ›ã®åˆæœŸåŒ–
 	input = new Input();
 	input->Initialize();
 
-	// ƒ‰ƒCƒg‚Ì¶¬
+	// ãƒ©ã‚¤ãƒˆã®ç”Ÿæˆ
 	light = LightGroup::Create();
-	// ƒ‰ƒCƒgÝ’è
+	// ãƒ©ã‚¤ãƒˆè¨­å®š
 	light->SetDirLightActive(0, true);
 	light->SetDirLightActive(1, false);
 	light->SetDirLightActive(2, false);
@@ -44,16 +44,16 @@ void GameScene::Initialize()
 
 	light->SetCircleShadowActive(0, true);
 
-	// 3DƒIƒuƒWƒFƒNƒg‚Éƒ‰ƒCƒg‚ðƒZƒbƒg
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ©ã‚¤ãƒˆã‚’ã‚»ãƒƒãƒˆ
 	Object3d::SetLight(light);
 
-	// ƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
+	// ãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
 	viewProjection_ = new ViewProjection;
 	viewProjection_->Initialize();
 	viewProjection_->eye = { 5,30,-25 };
 	viewProjection_->target = { 5,0,0 };
 
-	// ƒIƒuƒWƒFƒNƒg‚Ì‰Šú‰»
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸåŒ–
 	skyBox_ = new SkyBox;
 	skyBox_->Initialize();
 
@@ -72,17 +72,16 @@ void GameScene::Initialize()
 	door_->Initialize();
 	door_->SetPlug(plug_);
 
+	enemy_ = new Enemy;
+	enemy_->Initialize( enemy_->EAST, 2);//å¼•æ•°ã§æ•µã®å‘ãã¨å›žè»¢é‡ã‚’æ±ºã‚ã‚‹
+	enemy_->SetStage(stage_);
+
 	player_ = new Player();
 	player_->Initialize();
 	player_->SetStage(stage_);
 	player_->SetPlug(plug_);
 	player_->SetDoor(door_);
-
-	enemy_ = new Enemy;
-	enemy_->Initialize( enemy_->EAST, 2);//ˆø”‚Å“G‚ÌŒü‚«‚Æ‰ñ“]—Ê‚ðŒˆ‚ß‚é
-	enemy_->SetStage(stage_);
-
-
+	player_->SetEnemy(enemy_);
 
 	lamp_ = new Lamp;
 	lamp_->Initialize();
@@ -91,13 +90,13 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	// “ü—Í‚ÌXV
+	// å…¥åŠ›ã®æ›´æ–°
 	input->Update();
 
-	// ”Žš‚Ì0ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
+	// æ•°å­—ã®0ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰
 	if (input->PushKey(DIK_0))
 	{
-		OutputDebugStringA("Hit 0\n");  // o—ÍƒEƒBƒ“ƒhƒE‚ÉuHit 0v‚Æ•\Ž¦
+		OutputDebugStringA("Hit 0\n");  // å‡ºåŠ›ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ã€ŒHit 0ã€ã¨è¡¨ç¤º
 	}
 
 
@@ -105,9 +104,9 @@ void GameScene::Update()
 	{
 	case GameScene::Title:
 		if (input->TriggerKey(DIK_SPACE)) {
-			// ŽŸ‚ÌƒV[ƒ“‚ðƒZƒbƒg
+			// æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚’ã‚»ãƒƒãƒˆ
 			scene = Scene::Game;
-			// ŽŸ‚ÌƒV[ƒ“‚ÌƒŠƒZƒbƒg‚ð‚·‚é
+			// æ¬¡ã®ã‚·ãƒ¼ãƒ³ã®ãƒªã‚»ãƒƒãƒˆã‚’ã™ã‚‹
 			Reset();
 		}
 		break;
@@ -136,26 +135,26 @@ void GameScene::Update()
 
 		viewProjection_->UpdateMatrix();
 
-		//“GXV
+		//æ•µæ›´æ–°
 		enemy_->Update();
-		//ƒvƒ‰ƒOXV
+		//ãƒ—ãƒ©ã‚°æ›´æ–°
 		plug_->Update();
-		//playerXV
+		//playeræ›´æ–°
 		player_->Update();
-		//ƒXƒe[ƒWXV
+		//ã‚¹ãƒ†ãƒ¼ã‚¸æ›´æ–°
 		stage_->Update();
-		//“V‹…XV
+		//å¤©çƒæ›´æ–°
 		skyBox_->Update();
-		//ƒ\ƒPƒbƒgXV
+		//ã‚½ã‚±ãƒƒãƒˆæ›´æ–°
 		socket1_->Update();
-		//ƒhƒAXV
+		//ãƒ‰ã‚¢æ›´æ–°
 		door_->Update();
 
-		// ƒ‰ƒ“ƒv
+		// ãƒ©ãƒ³ãƒ—
 		lamp_->SetisShining(plug_->GetIsConnect());
 		lamp_->Update();
 
-		// ‚Æ‚è‚ ‚¦‚¸ƒ‹[ƒv‚ÌŠm”F—p‚ÌZƒL[‚Åƒ^ƒCƒgƒ‹‚É–ß‚é
+		// ã¨ã‚Šã‚ãˆãšãƒ«ãƒ¼ãƒ—ã®ç¢ºèªç”¨ã®Zã‚­ãƒ¼ã§ã‚¿ã‚¤ãƒˆãƒ«ã«æˆ»ã‚‹
 		if (input->TriggerKey(DIK_Z)) {
 			scene = Scene::Title;
 		}
@@ -165,14 +164,14 @@ void GameScene::Update()
 		break;
 	}
 
-	// ‹…ˆÚ“®
+	// çƒç§»å‹•
 
 }
 
 void GameScene::ImguiUpdate()
 {
 
-	// •\Ž¦€–Ú‚Ì’Ç‰Á--------//
+	// è¡¨ç¤ºé …ç›®ã®è¿½åŠ --------//
 	ImGui::Begin("Sprite 1");
 
 	//ImGui::SetWindowPos(ImVec2(0, 0));
@@ -189,7 +188,7 @@ void GameScene::ImguiUpdate()
 	ImGui::Begin("Light");
 	ImGui::SetNextWindowSize(ImVec2(500, 200));
 
-	// •½sŒõŒ¹
+	// å¹³è¡Œå…‰æº
 	if (ImGui::TreeNode("DirectionalLight")) {
 		ImGui::Checkbox("Is Active", &isActiveDirectional);
 		if (isActiveDirectional == true) {
@@ -201,7 +200,7 @@ void GameScene::ImguiUpdate()
 
 		ImGui::TreePop();
 	}
-	// ƒ|ƒCƒ“ƒgƒ‰ƒCƒg
+	// ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆ
 	if (ImGui::TreeNode("PointLight")) {
 		ImGui::Checkbox("Is Active", &isActivePoint);
 
@@ -218,7 +217,7 @@ void GameScene::ImguiUpdate()
 
 		ImGui::TreePop();
 	}
-	// ƒXƒ|ƒbƒgƒ‰ƒCƒg
+	// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆ
 	if (ImGui::TreeNode("spotLight")) {
 		ImGui::Checkbox("Is Active", &isActiveSpot);
 
@@ -237,7 +236,7 @@ void GameScene::ImguiUpdate()
 
 		ImGui::TreePop();
 	}
-	// ŠÛ‰e
+	// ä¸¸å½±
 	if (ImGui::TreeNode("circleShadow")) {
 		ImGui::Checkbox("Is Active", &isActiveCircleShadow);
 
@@ -258,7 +257,7 @@ void GameScene::ImguiUpdate()
 
 	ImGui::End();
 
-	// “–‚½‚è”»’è-----------------------//
+	// å½“ãŸã‚Šåˆ¤å®š-----------------------//
 	ImGui::Begin("Collision");
 	ImGui::SetNextWindowSize(ImVec2(500, 100));
 
@@ -282,22 +281,22 @@ void GameScene::Draw3D()
 	case GameScene::StageSelect:
 		break;
 	case GameScene::Game:
-		//3D•`‰æ
-		//ƒvƒ‰ƒO
+		//3Dæç”»
+		//ãƒ—ãƒ©ã‚°
 		plug_->Draw(viewProjection_);
-		//“V‹…
+		//å¤©çƒ
 		skyBox_->Draw(viewProjection_);
-		//ƒXƒe[ƒW
+		//ã‚¹ãƒ†ãƒ¼ã‚¸
 		stage_->Draw(viewProjection_);
-		//ƒ\ƒPƒbƒg
+		//ã‚½ã‚±ãƒƒãƒˆ
 		socket1_->Draw(viewProjection_);
-		//ƒGƒlƒ~[
+		//ã‚¨ãƒãƒŸãƒ¼
 		enemy_->Draw(viewProjection_);
-		//ƒvƒŒƒCƒ„[
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 		player_->Draw(viewProjection_);
-		//ƒhƒA
+		//ãƒ‰ã‚¢
 		door_->Draw(viewProjection_);
-		// ƒ‰ƒ“ƒv
+		// ãƒ©ãƒ³ãƒ—
 		lamp_->Draw(viewProjection_);
 		break;
 	default:
