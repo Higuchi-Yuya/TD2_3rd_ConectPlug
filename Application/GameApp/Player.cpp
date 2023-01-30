@@ -2,6 +2,7 @@
 #include "Stage.h"
 #include "Plug.h"
 #include "Door.h"
+#include "Enemy.h"
 
 Player::Player() {
 	// プレイヤーの本体の初期化
@@ -92,12 +93,13 @@ void Player::Update() {
 	//プラグ
 	ActionPlug();
 
+	//死亡
+	Dead();
+
 	//リセット
-	if (input->PushKey(DIK_R)) {
-		isHitH_ = false;
-		isHitV_ = false;
-		operate_ = true;
-		gameObject_->worldTransform_.position_ = { 8,0,-8 };
+	if (input->PushKey(DIK_1)) 
+	{
+		Reset();
 	}
 };
 
@@ -213,6 +215,13 @@ void Player::Move() {
 	if (collider_->CheckCollision(*door_->GetCollider()))
 	{
 		gameObject_->worldTransform_.position_ -= move_;
+	}
+
+	//敵との当たり判定
+	if (collider_->CheckCollision(*enemy_->GetCollider()))
+	{
+		gameObject_->worldTransform_.position_ -= move_;
+		isPlayerAlive_ = false;
 	}
 }
 
@@ -503,6 +512,20 @@ void Player::SetDoor(Door* door)
 	door_ = door;
 }
 
+void Player::SetEnemy(Enemy* enemy)
+{
+	enemy_ = enemy;
+}
+
+void Player::Dead()
+{
+	if (isPlayerAlive_ == false)
+	{
+		gameObject_->worldTransform_.position_.y++;
+		gameObject_->worldTransform_.rotation_.y++;
+	}
+}
+
 void Player::Reset()
 {
 	gameObject_->worldTransform_.position_ = { 7,0,-5 };
@@ -524,6 +547,7 @@ void Player::Reset()
 	onGround_ = true;
 	isUpHand = false;
 	upFlag = false;
+	isPlayerAlive_ = true;
 
 	// 使っているメンバ変数の初期化
 	radius_ = 1.0f;

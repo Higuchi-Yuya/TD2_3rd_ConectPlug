@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Object3d.h"
 #include "Input.h"
 #include "MathFunc.h"
@@ -8,6 +8,7 @@
 class Stage;
 class Plug;
 class Door;
+class Enemy;
 
 class Player
 {
@@ -46,12 +47,12 @@ public:
 	//座標setter
 	void SetPlayer(Vector3 pos);
 	void SetStage(Stage* stage);
-
-	//プラグセッター
 	void SetPlug(Plug* plug);
-
-	//ドアセッター
 	void SetDoor(Door* door);
+	void SetEnemy(Enemy* enemy);
+
+	//死亡
+	void Dead();
 
 	// リセット
 	void Reset();
@@ -84,6 +85,9 @@ private:
 	//ドア
 	Door* door_ = nullptr;
 
+	//敵
+	Enemy* enemy_ = nullptr;
+
 	//キー入力
 	Input* input = nullptr;
 
@@ -102,6 +106,9 @@ private:
 
 	//浮いているか
 	bool onGround_ = true;
+
+	//生存フラグ
+	bool isPlayerAlive_ = true;
 
 	//半径
 	float radius_ = 1.0f;
