@@ -438,6 +438,7 @@ void Player::ActionPlug() {
 
 					if (plug_[i]->GetIsGrabbed() == false) {
 
+
 						plug_[i]->SetIsGrabbed(true);
 						plug_[i]->SetIsConnect(false);
 
