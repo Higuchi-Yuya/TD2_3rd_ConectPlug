@@ -212,7 +212,11 @@ void Player::Move() {
 		}
 	}
 	//ドアとの当たり判定
-	if (collider_->CheckCollision(*door_->GetCollider()))
+	if (door_->GetOpen() == true && 
+		collider_->boxCollision(gameObject_->worldTransform_.position_,door_->GetPos(),Pradius,door_->GetRadius())) {
+		isClear_ = true;
+	}
+	else if (collider_->CheckCollision(*door_->GetCollider()))
 	{
 		gameObject_->worldTransform_.position_ -= move_;
 	}
@@ -548,6 +552,7 @@ void Player::Reset()
 	isUpHand = false;
 	upFlag = false;
 	isPlayerAlive_ = true;
+	isClear_ = false;
 
 	// 使っているメンバ変数の初期化
 	radius_ = 1.0f;

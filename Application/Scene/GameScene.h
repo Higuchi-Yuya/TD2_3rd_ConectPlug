@@ -28,6 +28,8 @@ public:// メンバ関数
 		Title,
 		StageSelect,
 		Game,
+		StageClear,
+		GameOver,
 	};
 
 	// デストラクタ
@@ -35,6 +37,15 @@ public:// メンバ関数
 
 	// 初期化処理
 	void Initialize();
+
+	// スプライトの初期化処理
+	void SpriteInitialize();
+
+	// スプライトの解放
+	void DeleteSprite();
+
+	// スプライトの描画
+	void SpriteDraw();
 
 	// 更新処理
 	void Update();
@@ -48,6 +59,8 @@ public:// メンバ関数
 	void Draw3D();
 
 	void Draw2DFront();
+
+	void BlackOut();
 
 	void Reset();
 
@@ -110,6 +123,61 @@ private:// メンバ変数
 	Lamp* lamp_ = nullptr;
 
 	// シーン
-	Scene scene = Scene::Title;
+	Scene scene = Scene::GameOver;
+
+#pragma region スプライト
+	// テクスチャハンドル
+	int otamesiTexHandle = 0;
+
+	// タイトルシーンのスプライト
+	Sprite* titleRogo  = nullptr;
+	Sprite* Spacekey   = nullptr;
+	Sprite* titleStart = nullptr;
+
+	// ステージ選択画面のスプライト
+	Sprite* tutorialFont = nullptr;
+	Sprite* stage1Font   = nullptr;
+	Sprite* stage2Font   = nullptr;
+	Sprite* stage3Font   = nullptr;
+	Sprite* slectButton  = nullptr;
+
+	float plusSelectPos = 60.0f;
+
+	// ゲームシーンのUIスプライト
+	Sprite* gameUpkey    = nullptr;
+	Sprite* gameDownkey  = nullptr;
+	Sprite* gameLeftkey  = nullptr;
+	Sprite* gameRightkey = nullptr;
+	Sprite* gameMoveFont = nullptr;
+	Sprite* gameHaveFont = nullptr;
+
+	// ステージクリア時のスプライト
+	Sprite* clearFont     = nullptr;
+	Sprite* replayFont    = nullptr;
+	Sprite* backTitleFont = nullptr;
+
+	// ゲームオーバーのスプライト
+	Sprite* gameOverFont = nullptr;
+
+	
+
+	// 画面の真ん中のポジション
+	Vector2 displayCenter = { WinApp::window_width/2,WinApp::window_height/2 };
+
+#pragma endregion
+
+#pragma region ブラックアウトの変数
+	int blackOutTex = 0;
+	// シーン推移の黒いスプライト
+	Sprite* blackOut = nullptr;
+
+	float blackAlpha = 0.0f;
+	bool isClear = false;
+	bool sceneChangeFlag = false;
+	Scene oldScene = Scene::Title;
+	bool resultChange = true;
+#pragma endregion
+
+	
 };
 

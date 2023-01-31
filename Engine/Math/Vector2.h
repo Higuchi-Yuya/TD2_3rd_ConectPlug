@@ -21,7 +21,9 @@ public:
 	Vector2& operator-=(const Vector2& v);
 	Vector2& operator*=(float s);
 	Vector2& operator/=(float s);
-
+	//比較演算子
+	bool operator == (const Vector2& v);
+	bool operator != (const Vector2& v);
 };
 
 //2項目演算子オーバーロード

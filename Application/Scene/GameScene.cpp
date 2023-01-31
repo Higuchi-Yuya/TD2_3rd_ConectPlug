@@ -16,6 +16,9 @@ GameScene::~GameScene()
 	delete door_;
 	delete lamp_;
 
+	// スプライトの解放
+	DeleteSprite();
+
 	// ビューの解放
 	delete viewProjection_;
 	// ライトの解放
@@ -61,7 +64,7 @@ void GameScene::Initialize()
 	stage_->Initialize();
 
 	socket1_ = new Socket;
-	socket1_->Initialize(Vector3(0, 0, -9), socket1_->SOUTH);
+	socket1_->Initialize(Vector3(0, 0, 0), socket1_->SOUTH);
 
 	plug_ = new Plug();
 	plug_->Initialize(Vector3(11.0, 0, -9.0), plug_->WEST);
@@ -73,7 +76,7 @@ void GameScene::Initialize()
 	door_->SetPlug(plug_);
 
 	enemy_ = new Enemy;
-	enemy_->Initialize( enemy_->EAST, 2);//引数で敵の向きと回転量を決める
+	enemy_->Initialize(enemy_->EAST, 2);//引数で敵の向きと回転量を決める
 	enemy_->SetStage(stage_);
 
 	player_ = new Player();
@@ -86,6 +89,136 @@ void GameScene::Initialize()
 	lamp_ = new Lamp;
 	lamp_->Initialize();
 	lamp_->SetisShining(false);
+
+	SpriteInitialize();
+}
+
+void GameScene::SpriteInitialize()
+{
+	// 仮の白い板ポリ
+	otamesiTexHandle = Texture::LoadTexture("kariWhite.png");
+
+	// シーンチェンジで使うハンドル
+	blackOutTex = Texture::LoadTexture("kakusi.png");
+
+	// タイトルシーンのスプライトの初期化
+	titleRogo = new Sprite;
+	Spacekey = new Sprite;
+	titleStart = new Sprite;
+
+	titleRogo->Initialize(otamesiTexHandle, { displayCenter.x, displayCenter.y - 120 }, { 600,300 });
+	Spacekey->Initialize(otamesiTexHandle, { displayCenter.x, displayCenter.y + 150 },{200,50});
+	titleStart->Initialize(otamesiTexHandle, { displayCenter.x, displayCenter.y + 220 } ,{200, 50});
+
+	// ステージ選択画面のスプライトの初期化
+	tutorialFont = new Sprite;
+	stage1Font = new Sprite;
+	stage2Font = new Sprite;
+	stage3Font = new Sprite;
+	slectButton = new Sprite;
+
+	tutorialFont->Initialize(otamesiTexHandle, { displayCenter.x, displayCenter.y - 150 }, { 200,100 });
+	stage1Font->Initialize(otamesiTexHandle, { displayCenter.x - 300, displayCenter.y + 80 }, { 200,100 });
+	stage2Font->Initialize(otamesiTexHandle, { displayCenter.x, displayCenter.y + 80 }, { 200,100 });
+	stage3Font->Initialize(otamesiTexHandle, { displayCenter.x + 300, displayCenter.y + 80 }, { 200,100 });
+	slectButton->Initialize(otamesiTexHandle, { displayCenter.x, displayCenter.y - 90 }, { 50,50 });
+
+	// ゲームシーンのスプライトの初期化
+	gameUpkey = new Sprite;
+	gameDownkey = new Sprite;
+	gameLeftkey = new Sprite;
+	gameRightkey = new Sprite;
+	gameMoveFont = new Sprite;
+	gameHaveFont = new Sprite;
+
+	// ステージクリアのスプライトの初期化
+	clearFont = new Sprite;
+	replayFont = new Sprite;
+	backTitleFont = new Sprite;
+
+	clearFont->Initialize(otamesiTexHandle, { displayCenter.x, displayCenter.y - 120 }, { 400,100 });
+	replayFont->Initialize(otamesiTexHandle, { displayCenter.x - 200,displayCenter.y + 150 }, { 200, 50 });
+	backTitleFont->Initialize(otamesiTexHandle, { displayCenter.x + 200,displayCenter.y + 150 }, { 200, 50 });
+	// ゲームオーバーのスプライトの初期化
+	gameOverFont = new Sprite;
+	gameOverFont->Initialize(otamesiTexHandle, { displayCenter.x, displayCenter.y - 120 }, { 400,100 });
+
+
+	blackOut = new Sprite;
+	blackOut->Initialize(blackOutTex, displayCenter, { 1280 * 2,720 * 2 });
+	blackOut->SetColor({ 1,1,1,blackAlpha });
+}
+
+void GameScene::DeleteSprite()
+{
+	// タイトルシーンのスプライト
+	delete titleRogo;
+	delete Spacekey;
+	delete titleStart;
+
+	// ステージ選択画面のスプライト
+	delete tutorialFont;
+	delete stage1Font;
+	delete stage2Font;
+	delete stage3Font;
+	delete slectButton;
+
+	// ゲームシーンのUIスプライト
+	delete gameUpkey;
+	delete gameDownkey;
+	delete gameLeftkey;
+	delete gameRightkey;
+	delete gameMoveFont;
+	delete gameHaveFont;
+
+	// ステージクリア時のスプライト
+	delete clearFont;
+	delete replayFont;
+	delete backTitleFont;
+
+	// ゲームオーバーのスプライト
+	delete gameOverFont;
+
+	delete blackOut;
+}
+
+void GameScene::SpriteDraw()
+{
+	switch (scene)
+	{
+	case GameScene::Title:
+		titleRogo->Draw();
+		titleStart->Draw();
+		Spacekey->Draw();
+
+		break;
+	case GameScene::StageSelect:
+		tutorialFont->Draw();
+		stage1Font->Draw();
+		stage2Font->Draw();
+		stage3Font->Draw();
+		slectButton->Draw();
+
+		break;
+	case GameScene::Game:
+		break;
+	case GameScene::StageClear:
+		clearFont->Draw();
+		replayFont->Draw();
+		backTitleFont->Draw();
+		slectButton->Draw();
+		break;
+	case GameScene::GameOver:
+		gameOverFont->Draw();
+		replayFont->Draw();
+		backTitleFont->Draw();
+		slectButton->Draw();
+		break;
+	default:
+		break;
+	}
+	blackOut->Draw();
+
 }
 
 void GameScene::Update()
@@ -105,12 +238,59 @@ void GameScene::Update()
 	case GameScene::Title:
 		if (input->TriggerKey(DIK_SPACE)) {
 			// 次のシーンをセット
-			scene = Scene::Game;
-			// 次のシーンのリセットをする
-			Reset();
+			oldScene = Scene::Title;
+			sceneChangeFlag = true;
+			
 		}
 		break;
 	case GameScene::StageSelect:
+		if (input->TriggerKey(DIK_UP)) {
+			slectButton->SetPosition({ tutorialFont->GetPosition().x, tutorialFont->GetPosition().y + plusSelectPos });
+		}
+		if (input->TriggerKey(DIK_DOWN)) {
+			slectButton->SetPosition({ stage2Font->GetPosition().x,stage2Font->GetPosition().y + plusSelectPos });
+		}
+		if (input->TriggerKey(DIK_RIGHT) && slectButton->GetPosition().y != tutorialFont->GetPosition().y + plusSelectPos) {
+			slectButton->SetPosition({ slectButton->GetPosition().x + 300,slectButton->GetPosition().y });
+			if (slectButton->GetPosition().x >= stage3Font->GetPosition().x)
+			{
+				slectButton->SetPosition({ stage3Font->GetPosition().x ,stage3Font->GetPosition().y + plusSelectPos });
+			}
+			
+		}
+		if (input->TriggerKey(DIK_LEFT) && slectButton->GetPosition().y != tutorialFont->GetPosition().y + plusSelectPos) {
+			slectButton->SetPosition({ slectButton->GetPosition().x - 300,slectButton->GetPosition().y });
+			if (slectButton->GetPosition().x <= stage1Font->GetPosition().x) {
+				slectButton->SetPosition({ stage1Font->GetPosition().x ,stage1Font->GetPosition().y + plusSelectPos });
+			}
+		}
+
+		// ステージ決定
+		if (input->TriggerKey(DIK_SPACE)) {
+			// チュートリアルステージ
+			Vector2 tutorialPos = { tutorialFont->GetPosition().x, tutorialFont->GetPosition().y + plusSelectPos };
+			if (slectButton->GetPosition().x == tutorialPos.x&&
+				slectButton->GetPosition().y == tutorialPos.y) {
+				oldScene = Scene::StageSelect;
+				sceneChangeFlag = true;
+			}
+			// ステージ１
+			else if (slectButton->GetPosition().x == stage1Font->GetPosition().x){
+				oldScene = Scene::StageSelect;
+				sceneChangeFlag = true;
+			}
+			// ステージ２
+			else if (slectButton->GetPosition().x == stage2Font->GetPosition().x &&
+					 slectButton->GetPosition().y == stage2Font->GetPosition().y + plusSelectPos) {
+				oldScene = Scene::StageSelect;
+				sceneChangeFlag = true;
+			}
+			// ステージ３
+			else if (slectButton->GetPosition().x == stage3Font->GetPosition().x) {
+				oldScene = Scene::StageSelect;
+				sceneChangeFlag = true;
+			}
+		}
 		break;
 	case GameScene::Game:
 		light->SetPointLightPos(0, Vector3(pointLightPos[0], pointLightPos[1], pointLightPos[2]));
@@ -127,9 +307,6 @@ void GameScene::Update()
 		light->SetCircleShadowCasterPos(0, player_->GetWorldPosition());
 		light->SetCircleShadowAtten(0, circleShadowAtten);
 		light->SetCircleShadowFactorAngle(0, circleShadowFactorAngle);
-
-
-
 		light->Update();
 
 
@@ -154,17 +331,75 @@ void GameScene::Update()
 		lamp_->SetisShining(plug_->GetIsConnect());
 		lamp_->Update();
 
-		// とりあえずループの確認用のZキーでタイトルに戻る
-		if (input->TriggerKey(DIK_Z)) {
-			scene = Scene::Title;
+		// プレイヤーがドアを通ったら
+		if (player_->GetIsClear() == true) {
+			isClear = true;
+			oldScene = Scene::Game;
+			sceneChangeFlag = true;
 		}
 
+		// プレイヤーが死亡したらゲームオーバーに移動
+		if (player_->GetIsAlive() == false && isClear == false) {
+			oldScene = Scene::Game;
+			sceneChangeFlag = true;
+		}
+
+		// とりあえずループの確認用のZキーでタイトルに戻る
+		if (input->TriggerKey(DIK_Z)) {
+			scene = Scene::StageSelect;
+		}
+
+		break;
+	case GameScene::StageClear:
+		if (input->TriggerKey(DIK_RIGHT)) {
+			slectButton->SetPosition({ backTitleFont->GetPosition().x,backTitleFont->GetPosition().y + plusSelectPos });
+			oldScene = Scene::StageClear;
+			resultChange = true;
+		}
+		if (input->TriggerKey(DIK_LEFT)) {
+			slectButton->SetPosition({ replayFont->GetPosition().x,replayFont->GetPosition().y + plusSelectPos });
+			oldScene = Scene::StageClear;
+			resultChange = false;
+		}
+		if (input->TriggerKey(DIK_SPACE)) {
+			if (resultChange == false) {
+				
+				sceneChangeFlag = true;
+			}
+			else if (resultChange == true) {
+				
+				sceneChangeFlag = true;
+			}
+		}
+		break;
+	case GameScene::GameOver:
+		if (input->TriggerKey(DIK_RIGHT)) {
+			slectButton->SetPosition({ backTitleFont->GetPosition().x,backTitleFont->GetPosition().y + plusSelectPos });
+			oldScene = Scene::GameOver;
+			resultChange = true;
+		}
+		if (input->TriggerKey(DIK_LEFT)) {
+			slectButton->SetPosition({ replayFont->GetPosition().x,replayFont->GetPosition().y + plusSelectPos });
+			oldScene = Scene::GameOver;
+			resultChange = false;
+		}
+		if (input->TriggerKey(DIK_SPACE)) {
+			if (resultChange == false) {
+
+				sceneChangeFlag = true;
+			}
+			else if (resultChange == true) {
+
+				sceneChangeFlag = true;
+			}
+		}
 		break;
 	default:
 		break;
 	}
 
-	// 球移動
+	// シーン推移
+	BlackOut();
 
 }
 
@@ -194,7 +429,7 @@ void GameScene::ImguiUpdate()
 		if (isActiveDirectional == true) {
 			light->SetDirLightActive(0, true);
 		}
-		else if(isActiveDirectional == false) {
+		else if (isActiveDirectional == false) {
 			light->SetDirLightActive(0, false);
 		}
 
@@ -279,6 +514,7 @@ void GameScene::Draw3D()
 	case GameScene::Title:
 		break;
 	case GameScene::StageSelect:
+		
 		break;
 	case GameScene::Game:
 		//3D描画
@@ -299,6 +535,10 @@ void GameScene::Draw3D()
 		// ランプ
 		lamp_->Draw(viewProjection_);
 		break;
+	case GameScene::StageClear:
+		break;
+	case GameScene::GameOver:
+		break;
 	default:
 		break;
 	}
@@ -307,7 +547,137 @@ void GameScene::Draw3D()
 
 void GameScene::Draw2DFront()
 {
+	SpriteDraw();
+}
 
+void GameScene::BlackOut()
+{
+	if (sceneChangeFlag == true) {
+		switch (scene)
+		{
+		case GameScene::Scene::Title:
+			if (oldScene == Scene::StageClear|| oldScene == Scene::GameOver) {
+				blackAlpha -= 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha <= 0) {
+					blackAlpha = 0;
+					sceneChangeFlag = false;
+				}
+			}
+			else {
+				blackAlpha += 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha >= 1) {
+					blackAlpha = 1;
+					scene = Scene::StageSelect;
+					Reset();
+				}
+			}
+
+			break;
+		case GameScene::Scene::StageSelect:
+			if (oldScene == Scene::Title|| oldScene == Scene::Game) {
+				blackAlpha -= 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha <= 0) {
+					blackAlpha = 0;
+					sceneChangeFlag = false;
+				}
+			}
+			else {
+				blackAlpha += 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha >= 1) {
+					blackAlpha = 1;
+					scene = Scene::Game;
+					Reset();
+				}
+			}
+			break;
+		case GameScene::Scene::Game:
+			if (oldScene == Scene::StageSelect || oldScene == Scene::GameOver|| oldScene == Scene::StageClear) {
+				blackAlpha -= 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha <= 0) {
+					blackAlpha = 0;
+					sceneChangeFlag = false;
+				}
+			}
+			// ゲームシーンからリザルトシーン
+			else {
+				blackAlpha += 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha >= 1) {
+					blackAlpha = 1;
+					if (isClear == false) {
+						scene = Scene::GameOver;
+						Reset();
+					}
+					else if (isClear == true) {
+						scene = Scene::StageClear;
+						Reset();
+					}
+					
+				}
+			}
+			break;
+		case GameScene::Scene::StageClear:
+			if (oldScene == Scene::Game) {
+				blackAlpha -= 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha <= 0) {
+					blackAlpha = 0;
+					sceneChangeFlag = false;
+				}
+			}
+			else {
+				blackAlpha += 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha >= 1) {
+					blackAlpha = 1;
+
+					if (resultChange == false) {
+						scene = Scene::Game;
+						Reset();
+					}
+					else if (resultChange == true) {
+						scene = Scene::Title;
+						Reset();
+					}
+				}
+			}
+			break;
+
+		case GameScene::Scene::GameOver:
+			if (oldScene == Scene::Game) {
+				blackAlpha -= 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha <= 0) {
+					blackAlpha = 0;
+					sceneChangeFlag = false;
+				}
+			}
+			else {
+				blackAlpha += 0.025f;
+				blackOut->SetColor({ 1,1,1,blackAlpha });
+				if (blackAlpha >= 1) {
+					blackAlpha = 1;
+
+					if (resultChange == false) {
+						scene = Scene::Game;
+						Reset();
+					}
+					else if (resultChange == true) {
+						scene = Scene::Title;
+						Reset();
+					}
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void GameScene::Reset()
@@ -317,19 +687,29 @@ void GameScene::Reset()
 	case GameScene::Title:
 		break;
 	case GameScene::StageSelect:
+		slectButton->SetPosition({ tutorialFont->GetPosition().x, tutorialFont->GetPosition().y + plusSelectPos });
 		break;
 	case GameScene::Game:
+		isClear = false;
 		player_->Reset();
 		enemy_->Reset(enemy_->EAST, 2);
 		plug_->Reset(Vector3(11.0, 0, -9.0), plug_->NORTH);
-		socket1_->Reset(Vector3(0, 0, -9), socket1_->SOUTH);
+		socket1_->Reset(Vector3(0, 0, 0), socket1_->SOUTH);
 		door_->Reset();
 		lamp_->Reset();
 		stage_->TutorialReset();
+		break;
+	case GameScene::StageClear:
+		resultChange = true;
+		slectButton->SetPosition({ backTitleFont->GetPosition().x,backTitleFont->GetPosition().y + plusSelectPos });
+		break;
+	case GameScene::GameOver:
+		resultChange = true;
+		slectButton->SetPosition({ backTitleFont->GetPosition().x,backTitleFont->GetPosition().y + plusSelectPos });
 		break;
 	default:
 		break;
 	}
 
-	
+
 }
