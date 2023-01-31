@@ -30,7 +30,7 @@ void Enemy::Initialize(int face,int plusFace)
 
 
 	collider_->Initialize(&gameObject_->worldTransform_);
-	collider_->SetRadius(radius_);
+	collider_->SetRadius(0.5f);
 }
 
 //更新
@@ -167,7 +167,7 @@ void Enemy::Reset(int face, int plusFace)
 	gameObject_->worldTransform_.position_ = { 0,0,0 };
 	gameObject_->worldTransform_.rotation_ = { 0,0,0 };
 	collider_->Initialize(&gameObject_->worldTransform_);
-	collider_->SetRadius(radius_);
+	collider_->SetRadius(0.5f);
 
 	isEnemyAlive_ = true;
 	isTurn_ = false;

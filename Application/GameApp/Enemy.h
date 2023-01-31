@@ -64,7 +64,7 @@ private:
 
 	//半径
 	float radius_ = 1.0f;
-	float radiusVec = 1.0f;
+	float radiusVec = 0.5f;
 
 	//半径Vector3
 	Vector3 vecPlusRadius_ = { radiusVec,radiusVec,radiusVec };

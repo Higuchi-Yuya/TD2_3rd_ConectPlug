@@ -51,6 +51,11 @@ public:
 	void SetDoor(Door* door);
 	void SetEnemy(Enemy* enemy);
 
+	// 生存フラグの取得
+	bool GetIsAlive() { return isPlayerAlive_; }
+
+	bool GetIsClear() { return isClear_; }
+
 	//死亡
 	void Dead();
 
@@ -110,9 +115,12 @@ private:
 	//生存フラグ
 	bool isPlayerAlive_ = true;
 
+	// クリアしてるかどうか
+	bool isClear_ = false;
+
 	//半径
 	float radius_ = 1.0f;
-
+	Vector3 Pradius = { 1,1,1 };
 	//上昇量
 	float amountRise_ = 0.0f;
 

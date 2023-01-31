@@ -85,6 +85,41 @@ bool Collider::boxCollision(Vector3 a, Vector3 b, Vector3 aRadius, Vector3 bPlus
 	return false;
 }
 
+bool Collider::boxCollision(Vector3 a, Vector3 b, Vector3 aRadius, Vector3 bRadius)
+{
+	//a(“–‚Ä‚ç‚ê‚é‘¤)
+	float pXMin = a.x - aRadius.x;
+
+	float pXMax = a.x + aRadius.x;
+
+	float pYMin = a.y - aRadius.y;
+
+	float pYMax = a.y + aRadius.y;
+
+	float pZMin = a.z - aRadius.z;
+
+	float pZMax = a.z + aRadius.z;
+
+	//b(“–‚½‚é‘¤)
+	float eXMin = b.x - bRadius.x;
+
+	float eXMax = b.x + bRadius.x;
+
+	float eYMin = b.y - bRadius.y;
+
+	float eYMax = b.y + bRadius.y;
+
+	float eZMin = b.z - bRadius.z;
+
+	float eZMax = b.z + bRadius.z;
+
+	if ((pXMin < eXMax && pXMax > eXMin) && (pYMin < eYMax && pYMax > eYMin) && (pZMin < eZMax && pZMax > eZMin)) {
+		return true;
+	}
+	return false;
+	return false;
+}
+
 void Collider::SetRadius(float radius)
 {
 	radius_ = radius;
