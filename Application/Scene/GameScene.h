@@ -123,7 +123,7 @@ private:// メンバ変数
 	Lamp* lamp_ = nullptr;
 
 	// シーン
-	Scene scene = Scene::GameOver;
+	Scene scene = Scene::Title;
 
 #pragma region スプライト
 	// テクスチャハンドル
