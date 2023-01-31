@@ -165,7 +165,7 @@ void Enemy::Reset(int face, int plusFace)
 	face_ = face;
 	plusFace_ = plusFace;
 	gameObject_->worldTransform_.position_ = { 0,0,0 };
-
+	gameObject_->worldTransform_.rotation_ = { 0,0,0 };
 	collider_->Initialize(&gameObject_->worldTransform_);
 	collider_->SetRadius(radius_);
 
@@ -179,8 +179,9 @@ void Enemy::Dead()
 {
 	if (isEnemyAlive_ == false)
 	{
-		gameObject_->worldTransform_.position_.y++;
+		gameObject_->worldTransform_.position_.y += 0.5f;
 		gameObject_->worldTransform_.rotation_.y++;
+		gameObject_->worldTransform_.rotation_.x++;
 	}
 }
 
