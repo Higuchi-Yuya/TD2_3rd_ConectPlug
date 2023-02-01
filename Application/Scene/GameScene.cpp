@@ -449,11 +449,11 @@ void GameScene::Update()
 			}
 			if (input->TriggerKey(DIK_SPACE)) {
 				if (resultChange == false) {
-
+					oldScene = Scene::StageClear;
 					sceneChangeFlag = true;
 				}
 				else if (resultChange == true) {
-
+					oldScene = Scene::StageClear;
 					sceneChangeFlag = true;
 				}
 			}
@@ -473,12 +473,12 @@ void GameScene::Update()
 			}
 			if (input->TriggerKey(DIK_SPACE)) {
 				if (resultChange == false) {
-
+					oldScene = Scene::GameOver;
 					sceneChangeFlag = true;
 				}
 				else if (resultChange == true) {
-
-					sceneChangeFlag = true;
+					oldScene = Scene::GameOver;
+ 					sceneChangeFlag = true;
 				}
 			}
 		}
