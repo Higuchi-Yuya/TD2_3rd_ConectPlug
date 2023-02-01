@@ -84,6 +84,7 @@ void Enemy::Move()
 		vecMinusRadius_.x = radius_;
 		vecPlusRadius_.z = radius_;
 		vecPlusRadius_.x = radius_;
+
 	}
 	else if (face_ == EAST)
 	{
