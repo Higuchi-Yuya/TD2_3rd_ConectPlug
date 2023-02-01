@@ -130,7 +130,25 @@ private:// メンバ変数
 
 #pragma region スプライト
 	// テクスチャハンドル
-	int otamesiTexHandle = 0;
+	//ダミー
+	int otamesiTexHandle_ = 0;
+	//タイトル画面
+	int backTexture_ = 0;
+	int start_ = 0;
+	int title_ = 0;
+	int space_ = 0;
+	//ステージ選択
+	int tutorial_ = 0;
+	int stage1_ = 0;
+	int stage2_ =	 0;
+	int stage3_ = 0;
+	int select_ = 0;
+	//ゲームクリア
+	int gameClear_ = 0;
+	int backTitle_ = 0;
+	int replay_ = 0;
+	//ゲームオーバー
+	int gameOver_ = 0;
 
 	// タイトルシーンのスプライト
 	Sprite* titleRogo  = nullptr;
@@ -162,7 +180,8 @@ private:// メンバ変数
 	// ゲームオーバーのスプライト
 	Sprite* gameOverFont = nullptr;
 
-	
+	//背景のスプライト
+	Sprite* backGround = nullptr;
 
 	// 画面の真ん中のポジション
 	Vector2 displayCenter = { WinApp::window_width/2,WinApp::window_height/2 };
