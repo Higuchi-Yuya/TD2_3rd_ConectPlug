@@ -75,6 +75,8 @@ void Player::Initialize() {
 
 void Player::Update() {
 	input->Update();
+	//プラグ
+	ActionPlug();
 	//移動
 	Move();
 	//WaitMotion();
@@ -90,8 +92,7 @@ void Player::Update() {
 	playerHandObj2->Update();
 	gameObject_->Update();
 
-	//プラグ
-	ActionPlug();
+
 
 	//死亡
 	Dead();
@@ -467,6 +468,7 @@ void Player::ActionPlug() {
 
 				if (plug_[i]->GetIsLimit() == true) {
 					gameObject_->worldTransform_.position_ = plug_[i]->GetPlugWorldTransform().position_;
+					
 				}
 				else {
 					plug_[i]->SetWorldPos(gameObject_->worldTransform_.position_);
@@ -474,10 +476,11 @@ void Player::ActionPlug() {
 			}
 
 			for (int j = 0; j < 20; j++) {
-				if (j != 0) {
+				if (j != 0&&j!=1) {
 					if (plug_[i]->GetIsConnect() == true) {
 						if (collider_->CheckCollision(*plug_[i]->GetCordCollider(j, 0)) == true) {
 							gameObject_->worldTransform_.position_ -= move_;
+							
 							break;
 						}
 					}

@@ -47,6 +47,9 @@ public:// メンバ関数
 	// スプライトの描画
 	void SpriteDraw();
 
+	// ポイントライトの処理
+	void PointLightUpdate();
+
 	// 更新処理
 	void Update();
 
@@ -76,9 +79,9 @@ private:// メンバ変数
 	bool isActiveDirectional = true;
 
 	// 点光源のステータス
-	float pointLightPos[3] = { 0,1,0 };
-	float pointLightColor[3] = { 1,1,1 };
-	float pointLightAtten[3] = { 0.3f,0.1f,0.1f };
+	Vector3 pointLightPos = { 0,1,0 };
+	Vector3 pointLightColor = { 1,1,1 };
+	Vector3 pointLightAtten = { 0.3f,0.1f,0.1f };
 	bool isActivePoint = false;
 
 	// スポットライトのステータス
@@ -195,6 +198,9 @@ private:// メンバ変数
 	bool sceneChangeFlag = false;
 	Scene oldScene = Scene::Title;
 	bool resultChange = true;
+
+	int notSousaTimer = 0;
+	int notTimerMax = 0.8 * 60;
 #pragma endregion
 
 	
