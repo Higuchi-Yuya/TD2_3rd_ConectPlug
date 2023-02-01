@@ -150,7 +150,7 @@ void GameScene::SpriteInitialize()
 
 	//背景のスプライトの初期化
 	backGround = new Sprite;
-	backGround->Initialize(backTexture_, { displayCenter.x, displayCenter.y }, {1280,720});
+	backGround->Initialize(backTexture_, { displayCenter.x, displayCenter.y }, { 1280,720 });
 
 	// タイトルシーンのスプライトの初期化
 	titleRogo = new Sprite;
@@ -160,8 +160,8 @@ void GameScene::SpriteInitialize()
 
 
 	titleRogo->Initialize(title_, { displayCenter.x, displayCenter.y - 50 }, { 900,450 });
-	titleStart->Initialize(start_, { displayCenter.x, displayCenter.y + 150 } ,{200, 50});
-	Spacekey->Initialize(space_, { displayCenter.x, displayCenter.y + 220 },{200,50});
+	titleStart->Initialize(start_, { displayCenter.x, displayCenter.y + 150 }, { 200, 50 });
+	Spacekey->Initialize(space_, { displayCenter.x, displayCenter.y + 220 }, { 200,50 });
 
 
 	// ステージ選択画面のスプライトの初期化
@@ -324,58 +324,56 @@ void GameScene::Update()
 	case GameScene::StageSelect:
 
 		if (notSousaTimer >= notTimerMax) {
-		
 
-		if (input->TriggerKey(DIK_UP)) {
-			slectButton->SetPosition({ tutorialFont->GetPosition().x, tutorialFont->GetPosition().y + plusSelectPos+20 });
-		}
-		if (input->TriggerKey(DIK_DOWN)) {
-			slectButton->SetPosition({ stage2Font->GetPosition().x,stage2Font->GetPosition().y + plusSelectPos + 20 });
-		}
-		if (input->TriggerKey(DIK_RIGHT) && slectButton->GetPosition().y != tutorialFont->GetPosition().y + plusSelectPos + 20) {
-			slectButton->SetPosition({ slectButton->GetPosition().x + 300,slectButton->GetPosition().y });
-			if (slectButton->GetPosition().x >= stage3Font->GetPosition().x)
-			{
-				slectButton->SetPosition({ stage3Font->GetPosition().x ,stage3Font->GetPosition().y + plusSelectPos + 20 });
+			if (input->TriggerKey(DIK_UP)) {
+				slectButton->SetPosition({ tutorialFont->GetPosition().x, tutorialFont->GetPosition().y + plusSelectPos + 20 });
 			}
-			
-		}
-		if (input->TriggerKey(DIK_LEFT) && slectButton->GetPosition().y != tutorialFont->GetPosition().y + plusSelectPos + 20) {
-			slectButton->SetPosition({ slectButton->GetPosition().x - 300,slectButton->GetPosition().y });
-			if (slectButton->GetPosition().x <= stage1Font->GetPosition().x) {
-				slectButton->SetPosition({ stage1Font->GetPosition().x ,stage1Font->GetPosition().y + plusSelectPos + 20 });
+			if (input->TriggerKey(DIK_DOWN)) {
+				slectButton->SetPosition({ stage2Font->GetPosition().x,stage2Font->GetPosition().y + plusSelectPos + 20 });
+			}
+			if (input->TriggerKey(DIK_RIGHT) && slectButton->GetPosition().y != tutorialFont->GetPosition().y + plusSelectPos + 20) {
+				slectButton->SetPosition({ slectButton->GetPosition().x + 300,slectButton->GetPosition().y });
+				if (slectButton->GetPosition().x >= stage3Font->GetPosition().x)
+				{
+					slectButton->SetPosition({ stage3Font->GetPosition().x ,stage3Font->GetPosition().y + plusSelectPos + 20 });
+				}
 
 			}
+			if (input->TriggerKey(DIK_LEFT) && slectButton->GetPosition().y != tutorialFont->GetPosition().y + plusSelectPos + 20) {
+				slectButton->SetPosition({ slectButton->GetPosition().x - 300,slectButton->GetPosition().y });
+				if (slectButton->GetPosition().x <= stage1Font->GetPosition().x) {
+					slectButton->SetPosition({ stage1Font->GetPosition().x ,stage1Font->GetPosition().y + plusSelectPos + 20 });
 
-
-
-		// ステージ決定
-		if (input->TriggerKey(DIK_SPACE)) {
-			// チュートリアルステージ
-			Vector2 tutorialPos = { tutorialFont->GetPosition().x, tutorialFont->GetPosition().y + plusSelectPos + 20 };
-			if (slectButton->GetPosition().x == tutorialPos.x&&
-				slectButton->GetPosition().y == tutorialPos.y) {
-				oldScene = Scene::StageSelect;
-				sceneChangeFlag = true;
+				}
 			}
-			// ステージ１
-			else if (slectButton->GetPosition().x == stage1Font->GetPosition().x){
-				oldScene = Scene::StageSelect;
-				sceneChangeFlag = true;
-			}
-			// ステージ２
-			else if (slectButton->GetPosition().x == stage2Font->GetPosition().x &&
-					 slectButton->GetPosition().y == stage2Font->GetPosition().y + plusSelectPos + 20) {
-				oldScene = Scene::StageSelect;
-				sceneChangeFlag = true;
-        	// ステージ３
+
+
+			// ステージ決定
+			if (input->TriggerKey(DIK_SPACE)) {
+				// チュートリアルステージ
+				Vector2 tutorialPos = { tutorialFont->GetPosition().x, tutorialFont->GetPosition().y + plusSelectPos + 20 };
+				if (slectButton->GetPosition().x == tutorialPos.x &&
+					slectButton->GetPosition().y == tutorialPos.y) {
+					oldScene = Scene::StageSelect;
+					sceneChangeFlag = true;
+				}
+				// ステージ１
+				else if (slectButton->GetPosition().x == stage1Font->GetPosition().x) {
+					oldScene = Scene::StageSelect;
+					sceneChangeFlag = true;
+				}
+				// ステージ２
+				else if (slectButton->GetPosition().x == stage2Font->GetPosition().x &&
+					slectButton->GetPosition().y == stage2Font->GetPosition().y + plusSelectPos + 20) {
+					oldScene = Scene::StageSelect;
+					sceneChangeFlag = true;
+				}
+				// ステージ３
 				else if (slectButton->GetPosition().x == stage3Font->GetPosition().x) {
 					oldScene = Scene::StageSelect;
 					sceneChangeFlag = true;
 
-			}
-
-			
+				}
 			}
 		}
 		break;
@@ -494,8 +492,8 @@ void GameScene::Update()
 	// シーン推移
 	BlackOut();
 
-}
 
+}
 void GameScene::ImguiUpdate()
 {
 
