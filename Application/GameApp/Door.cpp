@@ -6,7 +6,7 @@ Door::Door()
 {
 	gameObject_ = Object3d::Create();
 	doorModel = new Model();
-	doorModel = Model::LoadFromOBJ("cube");
+	doorModel = Model::LoadFromOBJ("door");
 	collider_ = new Collider();
 	clearCollider_ = new Collider;
 }
@@ -22,10 +22,11 @@ Door::~Door()
 void Door::Initialize()
 {
 	gameObject_->SetModel(doorModel);
-	gameObject_->worldTransform_.scale_ = { 2,2,1 };
-	gameObject_->worldTransform_.position_ = { 1,0,5 };
+	gameObject_->worldTransform_.scale_ = { 2,1.8f,1 };
+	gameObject_->worldTransform_.position_ = { 1,1.5f,4 };
 
 	clearPos = gameObject_->worldTransform_;
+	clearPos.position_ = { 1,0,4 };
 
 	collider_->Initialize(&gameObject_->worldTransform_);
 	collider_->SetRadius(radius_);
@@ -56,9 +57,9 @@ void Door::Update()
 	{
 		isOpen_ = false;
 		gameObject_->worldTransform_.position_.y -= 0.25f;
-		if (gameObject_->worldTransform_.position_.y <= 0)
+		if (gameObject_->worldTransform_.position_.y <= 0.8)
 		{
-			gameObject_->worldTransform_.position_.y = 0;
+			gameObject_->worldTransform_.position_.y = 0.8;
 		}
 	}
 }
@@ -87,9 +88,9 @@ void Door::SetCollider(Collider* collider)
 
 void Door::Reset()
 {
-	gameObject_->worldTransform_.scale_ = { 2,2,1 };
-	gameObject_->worldTransform_.position_ = { 1,0,5 };
-
+	gameObject_->worldTransform_.scale_ = { 2,1.5f,1 };
+	gameObject_->worldTransform_.position_ = { 1,0.8f,4 };
+	gameObject_->worldTransform_.color_ = { 0.5f,0.5f, 0.5f, 1 };
 	collider_->Initialize(&gameObject_->worldTransform_);
 	collider_->SetRadius(radius_);
 

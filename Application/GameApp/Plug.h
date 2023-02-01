@@ -34,7 +34,7 @@ private:
 
 	};
 	//コードの長さ(配列の要素数)
-	static const int cordLength_ = 20;
+	static const int cordLength_ = 25;
 	void CordUpdate();
 	void PlugUpdate();
 

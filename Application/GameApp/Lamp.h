@@ -22,6 +22,8 @@ public:
 	void SetisShining(bool isShining) { this->isShining = isShining; }
 
 	// 位置
+	Vector3 GetPos() { return lampObj->worldTransform_.position_; }
+
 	void SetPosition(Vector3& position) { lampObj->worldTransform_.position_ = position; }
 
 	// リセット
