@@ -1,5 +1,6 @@
 ﻿#include "Enemy.h"
 #include "Stage.h"
+#include "Plug.h"
 
 Enemy::Enemy()
 {
@@ -20,13 +21,13 @@ Enemy::~Enemy()
 }
 
 //初期化
-void Enemy::Initialize(int face,int plusFace)
+void Enemy::Initialize(int face, int plusFace)
 {
 	face_ = face;
 	plusFace_ = plusFace;
 
 	gameObject_->SetModel(enemyModel);
-	gameObject_->worldTransform_.position_ = { 0,0,0 };
+	gameObject_->worldTransform_.position_ = { 0,0,-4 };
 
 
 	collider_->Initialize(&gameObject_->worldTransform_);
@@ -127,7 +128,7 @@ void Enemy::Turn()
 	for (int i = 0; i < stage_->GetObjectcount(); i++)
 	{
 		if (collider_->boxCollision(stage_->GetWorldTransform(i).position_, gameObject_->worldTransform_.position_,
-			                        stage_->GetRadius(),vecPlusRadius_,vecMinusRadius_))
+			stage_->GetRadius(), vecPlusRadius_, vecMinusRadius_))
 		{
 			gameObject_->worldTransform_.position_ -= move_;
 			//フラグを切り替える
@@ -138,6 +139,29 @@ void Enemy::Turn()
 		}
 
 	}
+
+			//コードに当たった時
+	if (0 < plugNum_)
+	{
+		for (int i = 0; i < plugNum_; i++)
+		{
+			for (int j = 0; j < 20; j++)
+			{
+				if (plug_[i]->GetIsConnect() == true)
+				{
+					if (collider_->CheckCollision(*plug_[i]->GetCordCollider(j, 0)) == true)
+					{
+						gameObject_->worldTransform_.position_ -= move_;
+						//フラグを切り替える
+						isTurn_ = true;
+						isMove_ = false;
+						break;
+					}
+				}
+
+			}
+		}
+	}
 	if (isEnemyAlive_ == true && isMove_ == false && isTurn_ == true)
 	{
 		////回転させる
@@ -147,16 +171,16 @@ void Enemy::Turn()
 		//{
 		//	amountRotation_ = 0.0f;
 			//フラグを切り替える
-			isTurn_ = false;
-			isMove_ = true;
-			//moveを逆にする
-			move_ = -move_;
-			//向きを変える
-			face_ += plusFace_;
-			if (face_ >= 4)
-			{
-				face_ %= 4;
-			}
+		isTurn_ = false;
+		isMove_ = true;
+		//moveを逆にする
+		move_ = -move_;
+		//向きを変える
+		face_ += plusFace_;
+		if (face_ >= 4)
+		{
+			face_ %= 4;
+		}
 		/*}*/
 	}
 }
@@ -165,7 +189,7 @@ void Enemy::Reset(int face, int plusFace)
 {
 	face_ = face;
 	plusFace_ = plusFace;
-	gameObject_->worldTransform_.position_ = { 0,0,0 };
+	gameObject_->worldTransform_.position_ = { 0,0,-2 };
 	gameObject_->worldTransform_.rotation_ = { 0,0,0 };
 	collider_->Initialize(&gameObject_->worldTransform_);
 	collider_->SetRadius(0.5f);
@@ -190,4 +214,14 @@ void Enemy::Dead()
 void Enemy::SetStage(Stage* stage)
 {
 	stage_ = stage;
+}
+
+void Enemy::SetPlug(Plug* plug)
+{
+
+	plug_.resize(plugNum_ + 1);
+
+	plug_[plugNum_] = plug;
+
+	plugNum_++;
 }

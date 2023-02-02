@@ -143,6 +143,19 @@ private:// メンバ変数
 	int stage2_ =	 0;
 	int stage3_ = 0;
 	int select_ = 0;
+	//ゲームシーン
+	int offGlabPlug_ = 0;
+	int onGlabPlug_ = 0;
+	//押されていないキー
+	int offUp_ = 0;
+	int offDown_ = 0;
+	int offRight_ = 0;
+	int offLeft_ = 0;
+	//押されているキー
+	int onUp_ = 0;
+	int onDown_ = 0;
+	int onRight_ = 0;
+	int onLeft_ = 0;
 	//ゲームクリア
 	int gameClear_ = 0;
 	int backTitle_ = 0;
@@ -165,12 +178,16 @@ private:// メンバ変数
 	float plusSelectPos = 60.0f;
 
 	// ゲームシーンのUIスプライト
-	Sprite* gameUpkey    = nullptr;
-	Sprite* gameDownkey  = nullptr;
-	Sprite* gameLeftkey  = nullptr;
-	Sprite* gameRightkey = nullptr;
-	Sprite* gameMoveFont = nullptr;
-	Sprite* gameHaveFont = nullptr;
+	Sprite* offUpKey    = nullptr;
+	Sprite* offDownKey  = nullptr;
+	Sprite* offLeftKey  = nullptr;
+	Sprite* offRightKey = nullptr;
+	Sprite* onUpKey = nullptr;
+	Sprite* onDownKey = nullptr;
+	Sprite* onLeftKey = nullptr;
+	Sprite* onRightKey = nullptr;
+	Sprite* offGlabFont = nullptr;
+	Sprite* onGlabFont = nullptr;
 
 	// ステージクリア時のスプライト
 	Sprite* clearFont     = nullptr;

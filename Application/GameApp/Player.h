@@ -56,6 +56,12 @@ public:
 
 	bool GetIsClear() { return isClear_; }
 
+	//移動キーフラグの取得
+	bool GetIsUp() { return isUp_; }
+	bool GetIsDown() { return isDown_; }
+	bool GetIsRight() { return isRight_; }
+	bool GetIsLeft() { return isLeft_; }
+
 	//死亡
 	void Dead();
 
@@ -126,6 +132,11 @@ private:
 
 	//移動量
 	float kCharacterSpeed_ = 0.0f;
+	//移動キーのフラグ
+	bool isUp_ = false;
+	bool isDown_ = false;
+	bool isRight_ = false;
+	bool isLeft_ = false;
 
 	//移動
 	Vector3 move_ = { 0,0,0 };

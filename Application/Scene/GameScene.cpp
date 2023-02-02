@@ -78,6 +78,7 @@ void GameScene::Initialize()
 	enemy_ = new Enemy;
 	enemy_->Initialize(enemy_->EAST, 2);//引数で敵の向きと回転量を決める
 	enemy_->SetStage(stage_);
+	enemy_->SetPlug(plug_);
 
 	player_ = new Player();
 	player_->Initialize();
@@ -137,6 +138,19 @@ void GameScene::SpriteInitialize()
 	stage2_ = Texture::LoadTexture("stage2.png");
 	stage3_ = Texture::LoadTexture("stage3.png");
 	select_ = Texture::LoadTexture("select.png");
+	//ゲームシーン
+	offGlabPlug_ = Texture::LoadTexture("offGlabPlug.png");
+	onGlabPlug_ = Texture::LoadTexture("onGlabPlug.png");
+	//押されていないキー
+	offUp_ = Texture::LoadTexture("offUp.png");
+	offDown_ = Texture::LoadTexture("offDown.png");
+	offRight_ = Texture::LoadTexture("offRight.png");
+	offLeft_ = Texture::LoadTexture("offLeft.png");
+	//押されているキー
+	onUp_ = Texture::LoadTexture("onUp.png");
+	onDown_ = Texture::LoadTexture("onDown.png");
+	onRight_ = Texture::LoadTexture("onRight.png");
+	onLeft_ = Texture::LoadTexture("onLeft.png");
 	//ゲームクリア
 	gameClear_ = Texture::LoadTexture("gameClear.png");
 	backTitle_ = Texture::LoadTexture("backTitle.png");
@@ -157,8 +171,6 @@ void GameScene::SpriteInitialize()
 	Spacekey = new Sprite;
 	titleStart = new Sprite;
 
-
-
 	titleRogo->Initialize(title_, { displayCenter.x, displayCenter.y - 50 }, { 900,450 });
 	titleStart->Initialize(start_, { displayCenter.x, displayCenter.y + 150 }, { 200, 50 });
 	Spacekey->Initialize(space_, { displayCenter.x, displayCenter.y + 220 }, { 200,50 });
@@ -178,12 +190,36 @@ void GameScene::SpriteInitialize()
 	slectButton->Initialize(select_, { displayCenter.x, displayCenter.y - 70 }, { 50,50 });
 
 	// ゲームシーンのスプライトの初期化
-	gameUpkey = new Sprite;
-	gameDownkey = new Sprite;
-	gameLeftkey = new Sprite;
-	gameRightkey = new Sprite;
-	gameMoveFont = new Sprite;
-	gameHaveFont = new Sprite;
+	//矢印キー
+	//押されていない
+	offUpKey = new Sprite;
+	offDownKey = new Sprite;
+	offLeftKey = new Sprite;
+	offRightKey = new Sprite;
+	//押されている
+	onUpKey = new Sprite;
+	onDownKey = new Sprite;
+	onLeftKey = new Sprite;
+	onRightKey = new Sprite;
+	//状態
+	offGlabFont = new Sprite;
+	onGlabFont = new Sprite;
+
+	//各キーの初期化
+	//押されていない
+	offUpKey->Initialize(offUp_, { displayCenter.x - 500, displayCenter.y + 40 }, { 50,50 });
+	offDownKey->Initialize(offDown_, { displayCenter.x - 500, displayCenter.y + 160 }, { 50,50 });
+	offLeftKey->Initialize(offLeft_, { displayCenter.x - 560, displayCenter.y + 100 }, { 50,50 });
+	offRightKey->Initialize(offRight_, { displayCenter.x - 440, displayCenter.y + 100 }, { 50,50 });
+	//押されている
+	onUpKey->Initialize(onUp_, { displayCenter.x - 500, displayCenter.y + 40 }, { 50,50 });
+	onDownKey->Initialize(onDown_, { displayCenter.x - 500, displayCenter.y + 160 }, { 50,50 });
+	onLeftKey->Initialize(onLeft_, { displayCenter.x - 560, displayCenter.y + 100 }, { 50,50 });
+	onRightKey->Initialize(onRight_, { displayCenter.x - 440, displayCenter.y + 100 }, { 50,50 });
+	//状態の初期化
+	offGlabFont->Initialize(offGlabPlug_, { displayCenter.x - 500, displayCenter.y - 100 }, { 300,75 });
+	onGlabFont->Initialize(onGlabPlug_, { displayCenter.x - 500, displayCenter.y - 100 }, { 300,75 });
+
 
 	// ステージクリアのスプライトの初期化
 	clearFont = new Sprite;
@@ -221,12 +257,16 @@ void GameScene::DeleteSprite()
 	delete slectButton;
 
 	// ゲームシーンのUIスプライト
-	delete gameUpkey;
-	delete gameDownkey;
-	delete gameLeftkey;
-	delete gameRightkey;
-	delete gameMoveFont;
-	delete gameHaveFont;
+	delete offUpKey;
+	delete offDownKey;
+	delete offLeftKey;
+	delete offRightKey;
+	delete onUpKey;
+	delete onDownKey;
+	delete onLeftKey;
+	delete onRightKey;
+	delete offGlabFont;
+	delete onGlabFont;
 
 	// ステージクリア時のスプライト
 	delete clearFont;
@@ -260,6 +300,51 @@ void GameScene::SpriteDraw()
 
 		break;
 	case GameScene::Game:
+		//対応したキーが押されていたら変化させる
+		if (player_->GetIsUp() == true)
+		{
+			onUpKey->Draw();
+		}
+		else
+		{
+			offUpKey->Draw();
+		}
+		if (player_->GetIsDown() == true)
+		{
+			onDownKey->Draw();
+		}
+		else
+		{
+			offDownKey->Draw();
+		}
+		if (player_->GetIsRight() == true)
+		{
+			onRightKey->Draw();
+		}
+		else
+		{
+			offRightKey->Draw();
+		}
+		if (player_->GetIsLeft() == true)
+		{
+			onLeftKey
+				
+				->Draw();
+		}
+		else
+		{
+			offLeftKey->Draw();
+		}
+		//プラグをつかんでいるか
+		if (plug_->GetIsGrabbed() == true)
+		{
+			onGlabFont->Draw();
+		}
+		else
+		{
+			offGlabFont->Draw();
+		}
+		Spacekey->Draw();
 		break;
 	case GameScene::StageClear:
 		backGround->Draw();
@@ -312,6 +397,9 @@ void GameScene::Update()
 	switch (scene)
 	{
 	case GameScene::Title:
+
+		Spacekey->SetPosition(Vector2{ displayCenter.x, displayCenter.y + 220 });
+
 		if (notSousaTimer >= notTimerMax) {
 			if (input->TriggerKey(DIK_SPACE)) {
 				// 次のシーンをセット
@@ -379,6 +467,8 @@ void GameScene::Update()
 		break;
 	case GameScene::Game:
 		//PointLightUpdate();
+
+		Spacekey->SetPosition(Vector2{ displayCenter.x - 500, displayCenter.y - 200 });
 
 		light->SetSpotLightDir(0, spotLightDir);
 		light->SetSpotLightPos(0, spotLightPos);
