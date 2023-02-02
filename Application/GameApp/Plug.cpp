@@ -582,11 +582,7 @@ void Plug::PlugUpdate() {
 		if (isGrabbed_ == false) {
 			if (plugCollider_->CheckCollision(socket_[i]->GetCollider())) {
 
-				plug_->worldTransform_.position_ = {
-					socket_[i]->GetWorldTransform().position_.x + 2.0f * sin(MathFunc::Utility::Deg2Rad(90) * socket_[i]->GetFace()) ,
-					socket_[i]->GetWorldTransform().position_.y ,
-					socket_[i]->GetWorldTransform().position_.z + 2.0f * cos(MathFunc::Utility::Deg2Rad(90) * socket_[i]->GetFace())
-				};
+				
 
 				float angleY = 0;
 				// –k
@@ -612,10 +608,15 @@ void Plug::PlugUpdate() {
 				};
 
 				if (socket_[i]->GetIsEnemy() == false) {
+					plug_->worldTransform_.position_ = {
+					socket_[i]->GetWorldTransform().position_.x + 2.0f * sin(MathFunc::Utility::Deg2Rad(90) * socket_[i]->GetFace()) ,
+					socket_[i]->GetWorldTransform().position_.y ,
+					socket_[i]->GetWorldTransform().position_.z + 2.0f * cos(MathFunc::Utility::Deg2Rad(90) * socket_[i]->GetFace())
+					};
 					isConnect_ = true;
 					isReel_ = false;
 				}
-				else if (socket_[i]->GetIsEnemy() == true) {
+				else if (socket_[i]->GetIsEnemy() == true && isConnect_ == false) {
 					isEnemyConnect = true;
 					isReel_ = true;
 				}
