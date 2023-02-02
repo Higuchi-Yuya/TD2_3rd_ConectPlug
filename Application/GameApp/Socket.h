@@ -25,7 +25,9 @@ public:
 
 	Collider GetCollider();
 	WorldTransform GetWorldTransform();
-
+	void SetParent(WorldTransform& parent) { gameObject_->worldTransform_.parent_ = &parent; }
+	bool GetIsEnemy() { return isEnemy; }
+	void SetisEnemy(bool isEnemy) { this->isEnemy = isEnemy; }
 	//enum
 	enum FACE {
 		NORTH ,
@@ -44,5 +46,6 @@ private:
 
 	int face_ = NORTH;
 
+	bool isEnemy = false;
 };
 

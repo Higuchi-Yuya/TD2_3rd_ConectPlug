@@ -66,18 +66,23 @@ void GameScene::Initialize()
 	socket1_ = new Socket;
 	socket1_->Initialize(Vector3(-2, 0, 2), socket1_->SOUTH);
 
-	plug_ = new Plug();
-	plug_->Initialize(Vector3(11.0, 0, -9.0), plug_->WEST);
-	plug_->SetStage(stage_);
-	plug_->SetSocket(socket1_);
+	
 
-	door_ = new Door;
-	door_->Initialize();
-	door_->SetPlug(plug_);
+
 
 	enemy_ = new Enemy;
 	enemy_->Initialize(enemy_->EAST, 2);//引数で敵の向きと回転量を決める
 	enemy_->SetStage(stage_);
+
+	plug_ = new Plug();
+	plug_->Initialize(Vector3(11.0, 0, -9.0), plug_->WEST);
+	plug_->SetStage(stage_);
+	plug_->SetSocket(socket1_,false);
+	plug_->SetSocket(enemy_->GetSocket(),true);
+	enemy_->SetPlug(plug_);
+	door_ = new Door;
+	door_->Initialize();
+	door_->SetPlug(plug_);
 
 	player_ = new Player();
 	player_->Initialize();
@@ -85,6 +90,8 @@ void GameScene::Initialize()
 	player_->SetPlug(plug_);
 	player_->SetDoor(door_);
 	player_->SetEnemy(enemy_);
+
+
 
 	lamp_ = new Lamp;
 	lamp_->Initialize();

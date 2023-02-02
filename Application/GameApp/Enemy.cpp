@@ -1,6 +1,6 @@
 ﻿#include "Enemy.h"
 #include "Stage.h"
-
+#include "Plug.h"
 Enemy::Enemy()
 {
 	gameObject_ = Object3d::Create();
@@ -9,6 +9,7 @@ Enemy::Enemy()
 	enemyModel = new Model();
 	enemyModel = Model::LoadFromOBJ("enemy");
 	collider_ = new Collider();
+	enemySocket = new Socket;
 }
 
 Enemy::~Enemy()
@@ -17,6 +18,7 @@ Enemy::~Enemy()
 	delete enemyModel;
 	delete gameObject_;
 	delete collider_;
+	delete enemySocket;
 }
 
 //初期化
@@ -28,6 +30,8 @@ void Enemy::Initialize(int face,int plusFace)
 	gameObject_->SetModel(enemyModel);
 	gameObject_->worldTransform_.position_ = { 0,0,0 };
 
+	enemySocket->Initialize(gameObject_->worldTransform_.position_, Socket::SOUTH);
+	enemySocket->SetParent(gameObject_->worldTransform_);
 
 	collider_->Initialize(&gameObject_->worldTransform_);
 	collider_->SetRadius(0.5f);
@@ -49,12 +53,23 @@ void Enemy::Update()
 	collider_->Update();
 	//更新
 	gameObject_->Update();
+	enemySocket->Update();
 
 	//生存フラグをfalseにする
 	if (input->TriggerKey(DIK_B))
 	{
 		isEnemyAlive_ = false;
 	}
+	if (0 < plugNum_) {
+
+		for (int i = 0; i < plugNum_; i++) {
+			if (plug_[i]->GetIsEnemyConnect()==true) {
+				isEnemyAlive_ = false;
+
+			}
+		}
+	}
+	
 
 	//死亡
 	Dead();
@@ -70,6 +85,7 @@ void Enemy::Update()
 void Enemy::Draw(ViewProjection* viewProjection)
 {
 	gameObject_->Draw(viewProjection);
+	enemySocket->Draw(viewProjection);
 }
 
 //移動

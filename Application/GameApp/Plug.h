@@ -53,10 +53,13 @@ public:
 	void SetIsGrabbed(int isGrabbed);
 
 	void SetStage(Stage* stage);
-	void SetSocket(Socket* socket);
+	void SetSocket(Socket* socket,bool isEnemy);
 
 	int GetIsConnect();
 	void SetIsConnect(int isConnect);
+
+	bool GetIsEnemyConnect() { return isEnemyConnect; }
+
 
 	int GetIsLimit();
 
@@ -100,6 +103,7 @@ private:
 
 	//ƒtƒ‰ƒO
 	int isConnect_ = false;
+	bool isEnemyConnect = false;
 	int isGrabbed_ = false;
 	int isReel_ = false;
 	int isLimit_ = false;
