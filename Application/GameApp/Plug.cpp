@@ -271,7 +271,7 @@ void Plug::Reset(Vector3 pos, int face)
 		cord_[i].oldEnd.position_ = cord_[i].end.position_;
 
 	}
-
+	isEnemyConnect = false;
 	isConnect_ = false;
 	isGrabbed_ = false;
 	isReel_ = false;
@@ -611,8 +611,15 @@ void Plug::PlugUpdate() {
 					0
 				};
 
-				isConnect_ = true;
-				isReel_ = false;
+				if (socket_[i]->GetIsEnemy() == false) {
+					isConnect_ = true;
+					isReel_ = false;
+				}
+				else if (socket_[i]->GetIsEnemy() == true) {
+					isEnemyConnect = true;
+					isReel_ = true;
+				}
+				
 			}
 
 			for (int i = 0; i < cordLength_; i++) {
@@ -715,12 +722,12 @@ void Plug::SetStage(Stage* stage) {
 	stage_ = stage;
 }
 
-void Plug::SetSocket(Socket* socket) {
+void Plug::SetSocket(Socket* socket,bool isEnemy) {
 
 	socket_.resize(socketNum + 1);
 
 	socket_[socketNum] = socket;
-
+	socket_[socketNum]->SetisEnemy(isEnemy);
 	socketNum++;
 
 }

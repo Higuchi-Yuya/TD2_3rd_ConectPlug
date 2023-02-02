@@ -3,6 +3,7 @@
 #include "Collider.h"
 #include "Input.h"
 #include "MathFunc.h"
+#include "Socket.h"
 class Stage;
 class Plug;
 
@@ -32,6 +33,14 @@ public:
 	void Dead();
 	//colliderのgetter
 	Collider* GetCollider() { return collider_; };
+	Socket* GetSocket() { return enemySocket; }
+	void SetPlug(Plug* plug){
+		plug_.resize(plugNum_ + 1);
+
+		plug_[plugNum_] = plug;
+
+		plugNum_++;
+	};
 	//stageのsetter
 	void SetStage(Stage* stage);
 	//plugのsetter
@@ -92,5 +101,12 @@ private:
 
 	//速度
 	float kCharacterSpeed_ = 0.05f;
+
+	// ソケット
+	Socket* enemySocket = nullptr;
+
+	//プラグ
+	std::vector<Plug*> plug_;
+	int plugNum_ = 0;
 };
 
