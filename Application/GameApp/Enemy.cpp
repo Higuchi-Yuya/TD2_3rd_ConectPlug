@@ -31,7 +31,7 @@ void Enemy::Initialize(int face, int plusFace)
 	gameObject_->SetModel(enemyModel);
 	gameObject_->worldTransform_.position_ = { 0,0,-4 };
 
-	enemySocket->Initialize(gameObject_->worldTransform_.position_, Socket::SOUTH);
+	enemySocket->Initialize({0,0,-1}, Socket::SOUTH);
 	enemySocket->SetParent(gameObject_->worldTransform_);
 
 	collider_->Initialize(&gameObject_->worldTransform_);
@@ -230,14 +230,4 @@ void Enemy::Dead()
 void Enemy::SetStage(Stage* stage)
 {
 	stage_ = stage;
-}
-
-void Enemy::SetPlug(Plug* plug)
-{
-
-	plug_.resize(plugNum_ + 1);
-
-	plug_[plugNum_] = plug;
-
-	plugNum_++;
 }

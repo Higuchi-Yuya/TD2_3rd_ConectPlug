@@ -43,8 +43,6 @@ public:
 	};
 	//stageのsetter
 	void SetStage(Stage* stage);
-	//plugのsetter
-	void SetPlug(Plug* plug);
 	//回転
 	void Turn();
 	// リセット
@@ -61,9 +59,6 @@ private:
 
 	//ステージ
 	Stage* stage_ = nullptr;
-
-	//プラグ
-	std::vector<Plug*> plug_;
 
 	//キー入力
 	Input* input = nullptr;
@@ -96,8 +91,6 @@ private:
 
 	//壁に触れた時にfaceを変更する変数
 	int plusFace_ = 0;
-
-	int plugNum_ = 0;
 
 	//速度
 	float kCharacterSpeed_ = 0.05f;
