@@ -6,6 +6,7 @@
 #include "Socket.h"
 class Stage;
 class Plug;
+
 class Enemy
 {
 public:
@@ -42,6 +43,8 @@ public:
 	};
 	//stageのsetter
 	void SetStage(Stage* stage);
+	//plugのsetter
+	void SetPlug(Plug* plug);
 	//回転
 	void Turn();
 	// リセット
@@ -59,6 +62,9 @@ private:
 	//ステージ
 	Stage* stage_ = nullptr;
 
+	//プラグ
+	std::vector<Plug*> plug_;
+
 	//キー入力
 	Input* input = nullptr;
 
@@ -73,7 +79,7 @@ private:
 
 	//半径
 	float radius_ = 1.0f;
-	float radiusVec = 0.5f;
+	float radiusVec = 1.0f;
 
 	//半径Vector3
 	Vector3 vecPlusRadius_ = { radiusVec,radiusVec,radiusVec };
@@ -90,6 +96,8 @@ private:
 
 	//壁に触れた時にfaceを変更する変数
 	int plusFace_ = 0;
+
+	int plugNum_ = 0;
 
 	//速度
 	float kCharacterSpeed_ = 0.05f;

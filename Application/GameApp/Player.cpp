@@ -112,6 +112,11 @@ void Player::Draw(ViewProjection* viewProjection) {
 
 void Player::Move() {
 	move_ = { 0 , 0 , 0 };
+	isUp_ = false;
+	isDown_ = false;
+	isRight_ = false;
+	isLeft_ = false;
+
 	waitFlag = true;
 	Vector3 pos = gameObject_->worldTransform_.position_;
 	// プレイヤーが今いる高さを検索
@@ -135,6 +140,7 @@ void Player::Move() {
 	if (operate_) {
 		//押した方向で移動量を変化
 		if (input->PushKey(DIK_RIGHT)) {
+			isRight_ = true;
 			kCharacterSpeed_ = 0.1f;
 			move_.x = kCharacterSpeed_;
 			gameObject_->worldTransform_.rotation_.y = MathFunc::Utility::Deg2Rad(90.0f);
@@ -144,6 +150,7 @@ void Player::Move() {
 
 		}
 		else if (input->PushKey(DIK_LEFT)) {
+			isLeft_ = true;
 			kCharacterSpeed_ = 0.1f;
 			move_.x = -kCharacterSpeed_;
 			gameObject_->worldTransform_.rotation_.y = MathFunc::Utility::Deg2Rad(270.0f);
@@ -153,6 +160,7 @@ void Player::Move() {
 		}
 
 		if (input->PushKey(DIK_UP)) {
+			isUp_ = true;
 			kCharacterSpeed_ = 0.1f;
 			move_.z = kCharacterSpeed_;
 			gameObject_->worldTransform_.rotation_.y = MathFunc::Utility::Deg2Rad(0.0f);
@@ -161,6 +169,7 @@ void Player::Move() {
 			waitFlag = false;
 		}
 		else if (input->PushKey(DIK_DOWN)) {
+			isDown_ = true;
 			kCharacterSpeed_ = 0.1f;
 			move_.z = -kCharacterSpeed_;
 			gameObject_->worldTransform_.rotation_.y = MathFunc::Utility::Deg2Rad(180.0f);
@@ -474,7 +483,7 @@ void Player::ActionPlug() {
 					plug_[i]->SetWorldPos(gameObject_->worldTransform_.position_);
 				}
 			}
-
+			//プラグとの当たり判定(当たったら止まる)
 			for (int j = 0; j < 20; j++) {
 				if (j != 0&&j!=1) {
 					if (plug_[i]->GetIsConnect() == true) {
@@ -556,6 +565,10 @@ void Player::Reset()
 	upFlag = false;
 	isPlayerAlive_ = true;
 	isClear_ = false;
+	isUp_ = false;
+	isDown_ = false;
+	isRight_ = false;
+	isLeft_ = false;
 
 	// 使っているメンバ変数の初期化
 	radius_ = 1.0f;
