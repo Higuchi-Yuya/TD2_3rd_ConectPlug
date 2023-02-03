@@ -23,7 +23,8 @@ void Door::Initialize()
 {
 	gameObject_->SetModel(doorModel);
 	gameObject_->worldTransform_.scale_ = { 2,1.8f,1 };
-	gameObject_->worldTransform_.position_ = { 1,1.5f,4 };
+	gameObject_->worldTransform_.position_ = { 1,0.8f,4 };
+	gameObject_->worldTransform_.color_ = { 0.5f,0.5f, 0.5f, 1 };
 
 	clearPos = gameObject_->worldTransform_;
 	clearPos.position_ = { 1,0,4 };
@@ -88,7 +89,7 @@ void Door::SetCollider(Collider* collider)
 
 void Door::Reset()
 {
-	gameObject_->worldTransform_.scale_ = { 2,1.5f,1 };
+	gameObject_->worldTransform_.scale_ = { 2,1.8f,1 };
 	gameObject_->worldTransform_.position_ = { 1,0.8f,4 };
 	gameObject_->worldTransform_.color_ = { 0.5f,0.5f, 0.5f, 1 };
 	collider_->Initialize(&gameObject_->worldTransform_);

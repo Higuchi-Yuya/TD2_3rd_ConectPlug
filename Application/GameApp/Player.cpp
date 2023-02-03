@@ -137,7 +137,7 @@ void Player::Move() {
 		step = Step::Third;
 	}
 
-	if (operate_) {
+	if (operate_ == true) {
 		//押した方向で移動量を変化
 		if (input->PushKey(DIK_RIGHT)) {
 			isRight_ = true;
@@ -537,8 +537,10 @@ void Player::Dead()
 {
 	if (isPlayerAlive_ == false)
 	{
-		gameObject_->worldTransform_.position_.y++;
+		operate_ = false;
+		gameObject_->worldTransform_.position_.y += 0.5f;
 		gameObject_->worldTransform_.rotation_.y++;
+		gameObject_->worldTransform_.rotation_.x++;
 	}
 }
 
@@ -546,6 +548,7 @@ void Player::Reset()
 {
 	gameObject_->worldTransform_.position_ = { 7,0,-5 };
 	gameObject_->worldTransform_.rotation_.y = MathFunc::Utility::Deg2Rad(0.0f);
+	gameObject_->worldTransform_.rotation_.x = MathFunc::Utility::Deg2Rad(0.0f);
 	playerHandObj1->worldTransform_.position_ = { 1.0f,0,0 };
 	playerHandObj1->worldTransform_.scale_ = { 0.2f,0.2f, 0.2f };
 	playerHandObj1->worldTransform_.parent_ = &gameObject_->worldTransform_;
