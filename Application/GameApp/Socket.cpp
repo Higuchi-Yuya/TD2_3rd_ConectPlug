@@ -23,6 +23,8 @@ void Socket::Initialize(Vector3 pos , int face) {
 
 	gameObject_->worldTransform_.position_ = pos;
 
+	gameObject_->worldTransform_.scale_ = { 0.95f,0.95f,0.95f };
+
 	gameObject_->worldTransform_.rotation_ = {
 		0 ,
 		MathFunc::Utility::Deg2Rad(90) * face_ ,
