@@ -191,6 +191,53 @@ void Stage::TutorialPosSet()
 	}
 }
 
+void Stage::Stage1Reset()
+{
+	int num = 0;
+	// 必要なブロック分だけ初期化
+	for (int z = 0; z < 10; z++) {
+		for (int x = 0; x < 10; x++)
+		{
+			if (zeroStage1[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage0W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (firstStage1[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage1W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (secondStage1[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage2W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (thirdStage1[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage3W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+		}
+	}
+}
+
 Collider Stage::GetCollider(int num)
 {
 	return *collider_[num];

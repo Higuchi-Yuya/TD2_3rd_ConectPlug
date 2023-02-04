@@ -32,6 +32,14 @@ public:// メンバ関数
 		GameOver,
 	};
 
+	enum StageNum
+	{
+		Tutorial,
+		Stage1,
+		Stage2,
+		Stage3,
+	};
+
 	// デストラクタ
 	~GameScene();
 
@@ -127,6 +135,9 @@ private:// メンバ変数
 
 	// シーン
 	Scene scene = Scene::Title;
+
+	// ステージ
+	StageNum stageNum = StageNum::Tutorial;
 
 #pragma region スプライト
 	// テクスチャハンドル
