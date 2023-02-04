@@ -1070,6 +1070,7 @@ void GameScene::Reset()
 			// ソケットのリセット
 			socket1_[0]->Reset(Vector3(-2, 2, 2), socket1_[0]->SOUTH);
 			socket1_[1]->Reset(Vector3(6, 0, 4), socket1_[1]->SOUTH);
+			socket1_[2]->Reset(Vector3(-2, 100, 2), socket1_[2]->SOUTH);
 
 			// ランプのリセット
 			lamp_[0]->Reset({ 4,2,2 });
@@ -1077,8 +1078,66 @@ void GameScene::Reset()
 			lamp_[2]->Reset({ 8,100,2 });
 			break;
 		case GameScene::Stage2:
+			stage_->Stage2Reset();
+
+			viewProjection_->eye = { 5,50,-5 };
+			viewProjection_->target = { 5,0,0 };
+			notSousaTimer = 0;
+			isCameraStart_ = true;
+			isClear = false;
+			player_->Reset();
+			door_->Reset();
+
+			// エネミーのリセット
+			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2);
+			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2);
+			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2);
+
+			// プラグのリセット
+			plug_[0]->Reset(Vector3(4.0, 2, -12.0), plug_[0]->NORTH);
+			plug_[1]->Reset(Vector3(12.0, 0, -8.0), plug_[1]->WEST);
+			plug_[2]->Reset(Vector3(12.0, 100, -10.0), plug_[2]->WEST);
+
+			// ソケットのリセット
+			socket1_[0]->Reset(Vector3(-2, 2, 2), socket1_[0]->SOUTH);
+			socket1_[1]->Reset(Vector3(6, 0, 4), socket1_[1]->SOUTH);
+			socket1_[2]->Reset(Vector3(-2, 100, 2), socket1_[2]->SOUTH);
+
+			// ランプのリセット
+			lamp_[0]->Reset({ 4,2,2 });
+			lamp_[1]->Reset({ 6,2,2 });
+			lamp_[2]->Reset({ 8,100,2 });
 			break;
 		case GameScene::Stage3:
+			stage_->Stage3Reset();
+
+			viewProjection_->eye = { 5,50,-5 };
+			viewProjection_->target = { 5,0,0 };
+			notSousaTimer = 0;
+			isCameraStart_ = true;
+			isClear = false;
+			player_->Reset();
+			door_->Reset();
+
+			// エネミーのリセット
+			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2);
+			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2);
+			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2);
+
+			// プラグのリセット
+			plug_[0]->Reset(Vector3(4.0, 2, -12.0), plug_[0]->NORTH);
+			plug_[1]->Reset(Vector3(12.0, 0, -8.0), plug_[1]->WEST);
+			plug_[2]->Reset(Vector3(12.0, 100, -10.0), plug_[2]->WEST);
+
+			// ソケットのリセット
+			socket1_[0]->Reset(Vector3(-2, 2, 2), socket1_[0]->SOUTH);
+			socket1_[1]->Reset(Vector3(6, 0, 4), socket1_[1]->SOUTH);
+			socket1_[2]->Reset(Vector3(-2, 100, 2), socket1_[2]->SOUTH);
+
+			// ランプのリセット
+			lamp_[0]->Reset({ 4,2,2 });
+			lamp_[1]->Reset({ 6,2,2 });
+			lamp_[2]->Reset({ 8,100,2 });
 			break;
 		default:
 			break;

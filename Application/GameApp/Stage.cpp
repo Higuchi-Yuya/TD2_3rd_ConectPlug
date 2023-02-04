@@ -191,6 +191,7 @@ void Stage::TutorialPosSet()
 	}
 }
 
+#pragma region ステージ1のセット
 void Stage::Stage1Reset()
 {
 	objectCount = 0;
@@ -251,6 +252,133 @@ void Stage::Stage1Reset()
 		}
 	}
 }
+#pragma endregion
+
+#pragma region ステージ2のセット
+void Stage::Stage2Reset()
+{
+	objectCount = 0;
+	int num = 0;
+	// 必要なブロック分だけ初期化
+	for (int z = 0; z < 10; z++) {
+		for (int x = 0; x < 10; x++)
+		{
+			if (zeroStage2[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage0W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (firstStage2[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage1W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (secondStage2[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage2W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (thirdStage2[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage3W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+
+			if (zeroStage2[z][x] == 1) {
+				objectCount++;
+			}
+			if (firstStage2[z][x] == 1) {
+				objectCount++;
+			}
+			if (secondStage2[z][x] == 1) {
+				objectCount++;
+			}
+			if (thirdStage2[z][x] == 1) {
+				objectCount++;
+			}
+		}
+	}
+}
+#pragma endregion
+
+#pragma region ステージ3のセット
+void Stage::Stage3Reset()
+{
+	objectCount = 0;
+	int num = 0;
+	// 必要なブロック分だけ初期化
+	for (int z = 0; z < 10; z++) {
+		for (int x = 0; x < 10; x++)
+		{
+			if (zeroStage3[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage0W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (firstStage3[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage1W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (secondStage3[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage2W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+			if (thirdStage3[z][x] == 1) {
+
+				stageBlock[num]->worldTransform_.position_ = stage3W[z][x]->position_;
+
+				collider_[num]->Initialize(&stageBlock[num]->worldTransform_);
+				collider_[num]->SetRadius(radius);
+
+				num++;
+			}
+
+			if (zeroStage3[z][x] == 1) {
+				objectCount++;
+			}
+			if (firstStage3[z][x] == 1) {
+				objectCount++;
+			}
+			if (secondStage3[z][x] == 1) {
+				objectCount++;
+			}
+			if (thirdStage3[z][x] == 1) {
+				objectCount++;
+			}
+		}
+	}
+}
+#pragma endregion
 
 Collider Stage::GetCollider(int num)
 {
