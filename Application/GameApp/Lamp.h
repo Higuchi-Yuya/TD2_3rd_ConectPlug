@@ -8,7 +8,7 @@ public:
 	Lamp();
 	~Lamp();
 	// 初期化処理
-	void Initialize();
+	void Initialize(Vector3 pos);
 
 	// 更新処理
 	void Update();
@@ -27,7 +27,7 @@ public:
 	void SetPosition(Vector3& position) { lampObj->worldTransform_.position_ = position; }
 
 	// リセット
-	void Reset();
+	void Reset(Vector3 pos);
 
 private:
 	Model* lampModel = nullptr;

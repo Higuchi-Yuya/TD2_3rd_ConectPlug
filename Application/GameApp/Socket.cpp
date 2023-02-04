@@ -35,7 +35,7 @@ void Socket::Initialize(Vector3 pos , int face) {
 
 	
 	collider_->Initialize(&gameObject_->worldTransform_);
-	collider_->SetRadius(2.0f);
+	collider_->SetRadius(1.5f);
 }
 
 void Socket::Update() {
@@ -65,7 +65,7 @@ void Socket::Reset(Vector3 pos, int face)
 
 	// コライダーにソケットの情報をセット
 	collider_->Initialize(&gameObject_->worldTransform_);
-	collider_->SetRadius(2.0f);
+	collider_->SetRadius(1.5f);
 }
 
 int Socket::GetFace() {

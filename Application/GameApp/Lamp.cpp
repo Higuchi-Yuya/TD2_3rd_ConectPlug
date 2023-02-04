@@ -13,12 +13,12 @@ Lamp::~Lamp()
 	delete lampObj;
 }
 
-void Lamp::Initialize()
+void Lamp::Initialize(Vector3 pos)
 {
 	// オブジェクトの初期化
 	lampObj->SetModel(lampModel);
-	lampObj->worldTransform_.position_ = { 4,2,2 };
-	lampObj->worldTransform_.color_ = { 0.2f,0.2,0.2f,0.8f };
+	lampObj->worldTransform_.position_ = pos;
+	lampObj->worldTransform_.color_ = { 0.2f,0.2,0.2f,1.0f };
 
 	isShining = false;
 
@@ -33,7 +33,7 @@ void Lamp::Update()
 		g += colorConst;
 		b += colorConst;
 		// 代入
-		lampObj->worldTransform_.color_ = { r,g,b,0.8f };
+		lampObj->worldTransform_.color_ = { r,g,b,1.0f };
 		// 元の色情報を超えないように
 		if (r >= 0.8f) {
 			r = 0.8f;
@@ -48,7 +48,7 @@ void Lamp::Update()
 		g -= colorConst;
 		b -= colorConst;
 		// 代入
-		lampObj->worldTransform_.color_ = { r,g,b,0.8f };
+		lampObj->worldTransform_.color_ = { r,g,b,1.0f };
 		// 規定値の色情報を超えないように
 		if (r <= 0.2f) {
 			r = 0.2f;
@@ -64,9 +64,9 @@ void Lamp::Draw(ViewProjection* viewProjection)
 	lampObj->Draw(viewProjection);
 }
 
-void Lamp::Reset()
+void Lamp::Reset(Vector3 pos)
 {
-	lampObj->worldTransform_.position_ = { 4,2,2 };
+	lampObj->worldTransform_.position_ = pos;
 	lampObj->worldTransform_.color_ = { 0.2f,0.2,0.2f,0.8f };
 	r = 0.2f, g = 0.2f, b = 0.2f;
 	lampObj->worldTransform_.UpdateMatrix();

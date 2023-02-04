@@ -61,6 +61,12 @@ public:// メンバ関数
 	// 更新処理
 	void Update();
 
+	// ステージごとの更新処理
+	void StageUpdate();
+
+	// ステージごとの描画処理
+	void StageDraw();
+
 	// Imguiの更新処理
 	void ImguiUpdate();
 
@@ -119,12 +125,12 @@ private:// メンバ変数
 	//プレイヤー
 	Player* player_ = nullptr;
 	//敵
-	Enemy* enemy_ = nullptr;
-
+	Enemy* enemy_[3];
+	int enemyCount = 3;
 	//プラグ
-	Plug* plug_ = nullptr;
+	Plug* plug_[3];
 	//ソケット
-	Socket* socket1_ = nullptr;
+	Socket* socket1_[3];
 	//天球
 	SkyBox* skyBox_ = nullptr;
 	//ステージ
@@ -134,7 +140,7 @@ private:// メンバ変数
 	Door* door_ = nullptr;
 
 	// ランプ
-	Lamp* lamp_ = nullptr;
+	Lamp* lamp_[3];
 
 	// シーン
 	Scene scene = Scene::Title;

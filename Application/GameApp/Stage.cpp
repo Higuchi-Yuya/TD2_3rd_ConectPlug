@@ -193,6 +193,7 @@ void Stage::TutorialPosSet()
 
 void Stage::Stage1Reset()
 {
+	objectCount = 0;
 	int num = 0;
 	// 必要なブロック分だけ初期化
 	for (int z = 0; z < 10; z++) {
@@ -233,6 +234,19 @@ void Stage::Stage1Reset()
 				collider_[num]->SetRadius(radius);
 
 				num++;
+			}
+
+			if (zeroStage1[z][x] == 1) {
+				objectCount++;
+			}
+			if (firstStage1[z][x] == 1) {
+				objectCount++;
+			}
+			if (secondStage1[z][x] == 1) {
+				objectCount++;
+			}
+			if (thirdStage1[z][x] == 1) {
+				objectCount++;
 			}
 		}
 	}
