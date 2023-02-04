@@ -58,15 +58,11 @@ void Enemy::Update()
 	gameObject_->Update();
 	enemySocket->Update();
 
-	//生存フラグをfalseにする
-	if (input->TriggerKey(DIK_B))
-	{
-		isEnemyAlive_ = false;
-	}
+	//プラグがつながったら死亡フラグを切り替える
 	if (0 < plugNum_) {
 
 		for (int i = 0; i < plugNum_; i++) {
-			if (plug_[i]->GetIsEnemyConnect()==true) {
+			if (plug_[i]->GetIsEnemyConnect(enemyNum)==true) {
 				isEnemyAlive_ = false;
 
 			}
@@ -76,13 +72,6 @@ void Enemy::Update()
 
 	//死亡
 	Dead();
-
-
-	//リセット
-	if (input->PushKey(DIK_2))
-	{
-		Reset({0,0,-4}, EAST, 2);
-	}
 }
 
 //描画
@@ -104,7 +93,7 @@ void Enemy::Move()
 		vecMinusRadius_.x = radius_;
 		vecPlusRadius_.z = radius_;
 		vecPlusRadius_.x = radius_;
-
+		gameObject_->worldTransform_.rotation_.y = MathFunc::Utility::Deg2Rad(0);
 	}
 	else if (face_ == EAST)
 	{
@@ -164,7 +153,7 @@ void Enemy::Turn()
 	{
 		for (int i = 0; i < plugNum_; i++)
 		{
-			for (int j = 0; j < 20; j++)
+			for (int j = 0; j < 50; j++)
 			{
 				if (plug_[i]->GetIsConnect() == true)
 				{
@@ -204,8 +193,9 @@ void Enemy::Turn()
 	}
 }
 
-void Enemy::Reset(Vector3 pos,int face, int plusFace)
+void Enemy::Reset(Vector3 pos,int face, int plusFace,int enemyNum)
 {
+	this->enemyNum = enemyNum;
 	face_ = face;
 	plusFace_ = plusFace;
 	gameObject_->worldTransform_.position_ = pos;

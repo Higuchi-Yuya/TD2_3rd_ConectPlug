@@ -100,7 +100,7 @@ void Player::Update() {
 	//リセット
 	if (input->PushKey(DIK_1))
 	{
-		Reset();
+		Reset({ 7, 0, -5 });
 	}
 };
 
@@ -552,9 +552,9 @@ void Player::Move() {
 		}
 	}
 
-	void Player::Reset()
+	void Player::Reset(Vector3 pos)
 	{
-		gameObject_->worldTransform_.position_ = { 7,0,-5 };
+		gameObject_->worldTransform_.position_ = pos;
 		gameObject_->worldTransform_.rotation_.y = MathFunc::Utility::Deg2Rad(0.0f);
 		gameObject_->worldTransform_.rotation_.x = MathFunc::Utility::Deg2Rad(0.0f);
 		playerHandObj1->worldTransform_.position_ = { 1.0f,0,0 };

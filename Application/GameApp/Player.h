@@ -66,7 +66,7 @@ public:
 	void Dead();
 
 	// リセット
-	void Reset();
+	void Reset(Vector3 pos);
 
 private:
 	//上昇
