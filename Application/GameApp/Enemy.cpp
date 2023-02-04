@@ -23,13 +23,15 @@ Enemy::~Enemy()
 }
 
 //初期化
-void Enemy::Initialize(int face, int plusFace)
+void Enemy::Initialize(Vector3 pos,int face, int plusFace)
 {
 	face_ = face;
 	plusFace_ = plusFace;
 
 	gameObject_->SetModel(enemyModel);
-	gameObject_->worldTransform_.position_ = { 0,0,-2 };
+
+	gameObject_->worldTransform_.position_ = pos;
+
 
 	enemySocket->Initialize({0,0,-1}, Socket::SOUTH);
 	enemySocket->SetParent(gameObject_->worldTransform_);
@@ -74,6 +76,13 @@ void Enemy::Update()
 
 	//死亡
 	Dead();
+
+
+	//リセット
+	if (input->PushKey(DIK_2))
+	{
+		Reset({0,0,-4}, EAST, 2);
+	}
 }
 
 //描画
@@ -195,11 +204,11 @@ void Enemy::Turn()
 	}
 }
 
-void Enemy::Reset(int face, int plusFace)
+void Enemy::Reset(Vector3 pos,int face, int plusFace)
 {
 	face_ = face;
 	plusFace_ = plusFace;
-	gameObject_->worldTransform_.position_ = { 0,0,-2 };
+	gameObject_->worldTransform_.position_ = pos;
 	gameObject_->worldTransform_.rotation_ = { 0,0,0 };
 	collider_->Initialize(&gameObject_->worldTransform_);
 	collider_->SetRadius(0.5f);

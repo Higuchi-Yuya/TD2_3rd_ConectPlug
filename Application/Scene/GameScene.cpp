@@ -67,7 +67,7 @@ void GameScene::Initialize()
 	socket1_->Initialize(Vector3(-2, 0, 3), socket1_->SOUTH);
 
 	enemy_ = new Enemy;
-	enemy_->Initialize(enemy_->EAST, 2);//引数で敵の向きと回転量を決める
+	enemy_->Initialize({0,0,-2}, enemy_->EAST, 2);//引数で敵の向きと回転量を決める
 	enemy_->SetStage(stage_);
 
 	plug_ = new Plug();
@@ -446,22 +446,26 @@ void GameScene::Update()
 				if (slectButton->GetPosition().x == tutorialPos.x &&
 					slectButton->GetPosition().y == tutorialPos.y) {
 					oldScene = Scene::StageSelect;
+					stageNum = StageNum::Tutorial;
 					sceneChangeFlag = true;
 				}
 				// ステージ１
 				else if (slectButton->GetPosition().x == stage1Font->GetPosition().x) {
 					oldScene = Scene::StageSelect;
+					stageNum = StageNum::Stage1;
 					sceneChangeFlag = true;
 				}
 				// ステージ２
 				else if (slectButton->GetPosition().x == stage2Font->GetPosition().x &&
 					slectButton->GetPosition().y == stage2Font->GetPosition().y + plusSelectPos + 20) {
 					oldScene = Scene::StageSelect;
+					stageNum = StageNum::Stage2;
 					sceneChangeFlag = true;
 				}
 				// ステージ３
 				else if (slectButton->GetPosition().x == stage3Font->GetPosition().x) {
 					oldScene = Scene::StageSelect;
+					stageNum = StageNum::Stage3;
 					sceneChangeFlag = true;
 
 				}
@@ -892,12 +896,29 @@ void GameScene::Reset()
 		isCameraStart_ = true;
 		isClear = false;
 		player_->Reset();
-		enemy_->Reset(enemy_->EAST, 2);
-		plug_->Reset(Vector3(11.0, 0, -9.0), plug_->WEST);
+		enemy_->Reset({0,0,-2}, enemy_->EAST, 2);
+		plug_->Reset(Vector3(12.0, 0, -10.0), plug_->WEST);
 		socket1_->Reset(Vector3(-2, 0, 2), socket1_->SOUTH);
 		door_->Reset();
 		lamp_->Reset();
-		stage_->TutorialReset();
+		
+
+		switch (stageNum)
+		{
+		case GameScene::Tutorial:
+			stage_->TutorialReset();
+			break;
+		case GameScene::Stage1:
+			stage_->Stage1Reset();
+			break;
+		case GameScene::Stage2:
+			break;
+		case GameScene::Stage3:
+			break;
+		default:
+			break;
+		}
+
 		// とりあえず一回だけ更新を行う
 		light->SetCircleShadowDir(0, circleShadowDir);
 		light->SetCircleShadowCasterPos(0, player_->GetWorldPosition());
@@ -925,6 +946,7 @@ void GameScene::Reset()
 		// ランプ
 		lamp_->SetisShining(plug_->GetIsConnect());
 		lamp_->Update();
+
 		break;
 	case GameScene::StageClear:
 		notSousaTimer = 0;

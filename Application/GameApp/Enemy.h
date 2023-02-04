@@ -22,7 +22,7 @@ public:
 	Enemy();
 	~Enemy();
 	//初期化
-	void Initialize(int face,int plusFace);
+	void Initialize(Vector3 pos,int face,int plusFace);
 	//更新
 	void Update();
 	//描画
@@ -46,7 +46,7 @@ public:
 	//回転
 	void Turn();
 	// リセット
-	void Reset(int face, int plusFace);
+	void Reset(Vector3 pos,int face, int plusFace);
 
 private:
 	Model* enemyModel = nullptr;
