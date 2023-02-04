@@ -93,7 +93,7 @@ void GameScene::Initialize()
 	}
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < enemyCount; j++) {
-			plug_[i]->SetSocket(enemy_[j]->GetSocket(), true);
+			plug_[i]->SetEnemySocket(enemy_[j]->GetSocket(), true);
 		}
 	}
 
@@ -139,6 +139,16 @@ void GameScene::Initialize()
 
 	viewProjection_->UpdateMatrix();
 
+	for (int i = 0; i < 3; i++) {
+		//ソケット更新
+		socket1_[i]->Update();
+		//プラグ更新
+		plug_[i]->Update();
+		// ランプ
+		lamp_[i]->SetisShining(plug_[i]->GetIsConnect());
+		lamp_[i]->Update();
+	}
+
 	//敵更新
 	for (int i = 0; i < enemyCount; i++) {
 		enemy_[i]->Update();
@@ -153,15 +163,6 @@ void GameScene::Initialize()
 	//ドア更新
 	door_->Update();
 
-	for (int i = 0; i < 3; i++) {
-		//ソケット更新
-		socket1_[i]->Update();
-		//プラグ更新
-		plug_[i]->Update();
-		// ランプ
-		lamp_[i]->SetisShining(plug_[i]->GetIsConnect());
-		lamp_[i]->Update();
-	}
 }
 
 void GameScene::SpriteInitialize()
@@ -672,12 +673,12 @@ void GameScene::StageUpdate()
 		break;
 	case GameScene::Stage2:
 		//敵更新
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 6; i++) {
 			enemy_[i]->Update();
 		}
 
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 1; i++) {
 			//プラグ更新
 			plug_[i]->Update();
 			//ソケット更新
@@ -746,7 +747,7 @@ void GameScene::StageDraw()
 		}
 		break;
 	case GameScene::Stage2:
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 1; i++) {
 			//プラグ
 			plug_[i]->Draw(viewProjection_);
 			//ソケット
@@ -754,7 +755,7 @@ void GameScene::StageDraw()
 			// ランプ
 			lamp_[i]->Draw(viewProjection_);
 		}
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 6; i++) {
 			//エネミー
 			enemy_[i]->Draw(viewProjection_);
 		}
@@ -1082,11 +1083,14 @@ void GameScene::Reset()
 			notSousaTimer = 0;
 			isCameraStart_ = true;
 			isClear = false;
-			player_->Reset();
+			player_->Reset({ 7, 0, -5 });
 			// エネミーのリセット
-			enemy_[0]->Reset({0,0,-2}, enemy_[0]->EAST, 2);
-			enemy_[1]->Reset({ 0,100,-2 }, enemy_[1]->EAST, 2);
-			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2);
+			enemy_[0]->Reset({0,0,-2}, enemy_[0]->EAST, 2,0);
+			enemy_[1]->Reset({ 0,100,-2 }, enemy_[1]->EAST, 2,1);
+			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,2);
+			enemy_[3]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,3);
+			enemy_[4]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,4);
+			enemy_[5]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,5);
 
 			// プラグのリセット
 			plug_[0]->Reset(Vector3(12.0, 0, -10.0), plug_[0]->WEST);
@@ -1112,13 +1116,17 @@ void GameScene::Reset()
 			notSousaTimer = 0;
 			isCameraStart_ = true;
 			isClear = false;
-			player_->Reset();
+			player_->Reset({ 7, 0, -5 });
 			door_->Reset(2);
 
 			// エネミーのリセット
-			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2);
-			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2);
-			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2);
+			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2,0);
+			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2,1);
+			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,2);
+			enemy_[3]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,3);
+			enemy_[4]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,4);
+			enemy_[5]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,5);
+
 			
 			// プラグのリセット
 			plug_[0]->Reset(Vector3(4.0, 2, -12.0), plug_[0]->NORTH);
@@ -1143,27 +1151,30 @@ void GameScene::Reset()
 			notSousaTimer = 0;
 			isCameraStart_ = true;
 			isClear = false;
-			player_->Reset();
+			player_->Reset({ 6, 0, -10 });
 			door_->Reset(1);
 
 			// エネミーのリセット
-			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2);
-			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2);
-			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2);
+			enemy_[0]->Reset({ -2,0,0 }, enemy_[0]->EAST, 2,0);
+			enemy_[1]->Reset({ -2,100,-8 }, enemy_[1]->EAST, 2,1);
+			enemy_[2]->Reset({ -2,0,-12 }, enemy_[2]->NORTH, 2,2);
+			enemy_[3]->Reset({ 8,0,+2 }, enemy_[3]->SOUTH, 2,3);
+			enemy_[4]->Reset({ 10,0,-2 }, enemy_[4]->WEST, 2,4);
+			enemy_[5]->Reset({ 12,0,-10 }, enemy_[5]->NORTH, 2,5);
 
 			// プラグのリセット
-			plug_[0]->Reset(Vector3(4.0, 2, -12.0), plug_[0]->NORTH);
-			plug_[1]->Reset(Vector3(12.0, 0, -8.0), plug_[1]->WEST);
+			plug_[0]->Reset(Vector3(4.0, 0, -12.0), plug_[0]->NORTH);
+			plug_[1]->Reset(Vector3(12.0, 100, -10.0), plug_[1]->WEST);
 			plug_[2]->Reset(Vector3(12.0, 100, -10.0), plug_[2]->WEST);
 
 			// ソケットのリセット
-			socket1_[0]->Reset(Vector3(-2, 2, 2), socket1_[0]->SOUTH);
-			socket1_[1]->Reset(Vector3(6, 0, 4), socket1_[1]->SOUTH);
+			socket1_[0]->Reset(Vector3(6, 0, 2), socket1_[0]->SOUTH);
+			socket1_[1]->Reset(Vector3(-2, 100, 2), socket1_[1]->SOUTH);
 			socket1_[2]->Reset(Vector3(-2, 100, 2), socket1_[2]->SOUTH);
 
 			// ランプのリセット
 			lamp_[0]->Reset({ 4,2,2 });
-			lamp_[1]->Reset({ 6,2,2 });
+			lamp_[1]->Reset({ 8,100,2 });
 			lamp_[2]->Reset({ 8,100,2 });
 			break;
 		case GameScene::Stage3:
@@ -1174,13 +1185,16 @@ void GameScene::Reset()
 			notSousaTimer = 0;
 			isCameraStart_ = true;
 			isClear = false;
-			player_->Reset();
+			player_->Reset({ 6, 0, -10 });
 			door_->Reset(3);
 
 			// エネミーのリセット
-			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2);
-			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2);
-			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2);
+			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2,0);
+			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2,1);
+			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,2);
+			enemy_[3]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,3);
+			enemy_[4]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,4);
+			enemy_[5]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,5);
 
 			// プラグのリセット
 			plug_[0]->Reset(Vector3(4.0, 2, -12.0), plug_[0]->NORTH);

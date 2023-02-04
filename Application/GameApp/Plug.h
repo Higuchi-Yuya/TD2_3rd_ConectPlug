@@ -34,7 +34,7 @@ private:
 
 	};
 	//コードの長さ(配列の要素数)
-	static const int cordLength_ = 25;
+	static const int cordLength_ = 50;
 	void CordUpdate();
 	void PlugUpdate();
 
@@ -54,11 +54,12 @@ public:
 
 	void SetStage(Stage* stage);
 	void SetSocket(Socket* socket,bool isEnemy);
+	void SetEnemySocket(Socket* enemySocket, bool isEnemy);
 
 	int GetIsConnect();
 	void SetIsConnect(int isConnect);
 
-	bool GetIsEnemyConnect() { return isEnemyConnect; }
+	bool GetIsEnemyConnect(int num) { return isEnemyConnect[num]; }
 
 
 	int GetIsLimit();
@@ -103,14 +104,16 @@ private:
 
 	//フラグ
 	int isConnect_ = false;
-	bool isEnemyConnect = false;
+	bool isEnemyConnect[6] = {0,0,0,0,0,0};
 	int isGrabbed_ = false;
 	int isReel_ = false;
 	int isLimit_ = false;
 
 	Stage* stage_ = nullptr;
-
+	//ソケット
 	std::vector<Socket*> socket_;
 	int socketNum = 0;
-
+	//enemyソケット
+	std::vector<Socket*> enemySocket_;
+	int enemySocketNum = 0;
 };

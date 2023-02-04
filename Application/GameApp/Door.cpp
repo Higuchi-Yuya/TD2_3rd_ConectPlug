@@ -50,11 +50,19 @@ void Door::Update()
 			{
 				connectOpen = true;
 			}
+			else
+			{
+				connectOpen = false;
+			}
 		}
 		else if(connectMax==2){
 			if (plug_[0]->GetIsConnect() == true&& plug_[1]->GetIsConnect() == true)
 			{
 				connectOpen = true;
+			}
+			else
+			{
+				connectOpen = false;
 			}
 		}
 		else if (connectMax ==3) {
@@ -63,6 +71,10 @@ void Door::Update()
 				plug_[3]->GetIsConnect() == true)
 			{
 				connectOpen = true;
+			}
+			else
+			{
+				connectOpen = false;
 			}
 		}
 	}

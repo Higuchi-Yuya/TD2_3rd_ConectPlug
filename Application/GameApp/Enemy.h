@@ -46,7 +46,7 @@ public:
 	//回転
 	void Turn();
 	// リセット
-	void Reset(Vector3 pos,int face, int plusFace);
+	void Reset(Vector3 pos,int face, int plusFace,int enemyNum);
 
 private:
 	Model* enemyModel = nullptr;
@@ -94,6 +94,9 @@ private:
 
 	//速度
 	float kCharacterSpeed_ = 0.05f;
+
+	//enemyのID
+	int enemyNum = 0;
 
 	// ソケット
 	Socket* enemySocket = nullptr;

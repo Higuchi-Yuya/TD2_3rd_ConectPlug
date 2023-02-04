@@ -125,8 +125,8 @@ private:// メンバ変数
 	//プレイヤー
 	Player* player_ = nullptr;
 	//敵
-	Enemy* enemy_[3];
-	int enemyCount = 3;
+	Enemy* enemy_[6];
+	int enemyCount = 6;
 	//プラグ
 	Plug* plug_[3];
 	//ソケット
