@@ -16,7 +16,7 @@ SkyBox::~SkyBox()
 void SkyBox::Initialize()
 {
 	skyBox_->SetModel(skyModel);
-	skyBox_->worldTransform_.scale_ = { 10.0f,20.0f,15.0f };
+	skyBox_->worldTransform_.scale_ = { 10.0f,40.0f,12.0f };
 	skyBox_->worldTransform_.position_ = { 5,5,-7 };
 }
 

@@ -75,6 +75,8 @@ public:// メンバ関数
 
 	void Reset();
 
+	void StartCameraWork(ViewProjection* viewProjection_);
+
 private:// メンバ変数
 
 	// 入力
@@ -108,11 +110,12 @@ private:// メンバ変数
 
 	Vector3 fighterPos = { 1,0.0f,0 };
 
-	// モデル
-
-	// オブジェクト
-
+	//ビュー
 	ViewProjection* viewProjection_ = nullptr;
+
+	//カメラワークのフラグ
+	bool isCameraStart_ = false;
+
 	//プレイヤー
 	Player* player_ = nullptr;
 	//敵
@@ -143,18 +146,20 @@ private:// メンバ変数
 	// テクスチャハンドル
 	//ダミー
 	int otamesiTexHandle_ = 0;
-	//タイトル画面
+	////タイトル画面////
 	int backTexture_ = 0;
 	int start_ = 0;
 	int title_ = 0;
 	int space_ = 0;
-	//ステージ選択
+
+	////ステージ選択////
 	int tutorial_ = 0;
 	int stage1_ = 0;
 	int stage2_ =	 0;
 	int stage3_ = 0;
 	int select_ = 0;
-	//ゲームシーン
+
+	////ゲームシーン////
 	int offGlabPlug_ = 0;
 	int onGlabPlug_ = 0;
 	//押されていないキー
@@ -167,11 +172,13 @@ private:// メンバ変数
 	int onDown_ = 0;
 	int onRight_ = 0;
 	int onLeft_ = 0;
-	//ゲームクリア
+
+	////ゲームクリア////
 	int gameClear_ = 0;
 	int backTitle_ = 0;
 	int replay_ = 0;
-	//ゲームオーバー
+
+	////ゲームオーバー//
 	int gameOver_ = 0;
 
 	// タイトルシーンのスプライト
@@ -230,7 +237,6 @@ private:// メンバ変数
 	int notSousaTimer = 0;
 	int notTimerMax = 0.8 * 60;
 #pragma endregion
-
 	
 };
 

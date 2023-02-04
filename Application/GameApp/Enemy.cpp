@@ -29,7 +29,9 @@ void Enemy::Initialize(Vector3 pos,int face, int plusFace)
 	plusFace_ = plusFace;
 
 	gameObject_->SetModel(enemyModel);
+
 	gameObject_->worldTransform_.position_ = pos;
+
 
 	enemySocket->Initialize({0,0,-1}, Socket::SOUTH);
 	enemySocket->SetParent(gameObject_->worldTransform_);
@@ -74,6 +76,7 @@ void Enemy::Update()
 
 	//死亡
 	Dead();
+
 
 	//リセット
 	if (input->PushKey(DIK_2))

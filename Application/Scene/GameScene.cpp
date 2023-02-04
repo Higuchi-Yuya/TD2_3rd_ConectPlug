@@ -50,10 +50,10 @@ void GameScene::Initialize()
 	// 3Dオブジェクトにライトをセット
 	Object3d::SetLight(light);
 
-	// モデルの読み込み
+	//カメラの初期化と位置設定
 	viewProjection_ = new ViewProjection;
 	viewProjection_->Initialize();
-	viewProjection_->eye = { 5,30,-25 };
+	viewProjection_->eye = {5,50,-5};
 	viewProjection_->target = { 5,0,0 };
 
 	// オブジェクトの初期化
@@ -64,11 +64,7 @@ void GameScene::Initialize()
 	stage_->Initialize();
 
 	socket1_ = new Socket;
-	socket1_->Initialize(Vector3(-2, 0, 2), socket1_->SOUTH);
-
-	
-
-
+	socket1_->Initialize(Vector3(-2, 0, 3), socket1_->SOUTH);
 
 	enemy_ = new Enemy;
 	enemy_->Initialize({0,0,-2}, enemy_->EAST, 2);//引数で敵の向きと回転量を決める
@@ -77,8 +73,8 @@ void GameScene::Initialize()
 	plug_ = new Plug();
 	plug_->Initialize(Vector3(11.0, 0, -9.0), plug_->WEST);
 	plug_->SetStage(stage_);
-	plug_->SetSocket(socket1_,false);
-	plug_->SetSocket(enemy_->GetSocket(),true);
+	plug_->SetSocket(socket1_, false);
+	plug_->SetSocket(enemy_->GetSocket(), true);
 	enemy_->SetPlug(plug_);
 
 	door_ = new Door;
@@ -335,7 +331,7 @@ void GameScene::SpriteDraw()
 		if (player_->GetIsLeft() == true)
 		{
 			onLeftKey
-				
+
 				->Draw();
 		}
 		else
@@ -493,46 +489,50 @@ void GameScene::Update()
 		light->SetCircleShadowFactorAngle(0, circleShadowFactorAngle);
 		light->Update();
 
-
+		//カメラワーク
+		StartCameraWork(viewProjection_);
 		viewProjection_->UpdateMatrix();
 
-		//敵更新
-		enemy_->Update();
-		//プラグ更新
-		plug_->Update();
+		if (isCameraStart_ == false)
+		{
+			//敵更新
+			enemy_->Update();
+			//プラグ更新
+			plug_->Update();
 
-		//player更新
-		//player_->SetPlug(plug_);
-		player_->Update();
-		//ステージ更新
-		stage_->Update();
-		//天球更新
-		skyBox_->Update();
-		//ソケット更新
-		socket1_->Update();
-		//ドア更新
-		door_->Update();
+			//player更新
+			//player_->SetPlug(plug_);
+			player_->Update();
+			//ステージ更新
+			stage_->Update();
+			//天球更新
+			skyBox_->Update();
+			//ソケット更新
+			socket1_->Update();
+			//ドア更新
+			door_->Update();
 
-		// ランプ
-		lamp_->SetisShining(plug_->GetIsConnect());
-		lamp_->Update();
+			// ランプ
+			lamp_->SetisShining(plug_->GetIsConnect());
+			lamp_->Update();
 
-		// プレイヤーがドアを通ったら
-		if (player_->GetIsClear() == true) {
-			isClear = true;
-			oldScene = Scene::Game;
-			sceneChangeFlag = true;
-		}
+			// プレイヤーがドアを通ったら
+			if (player_->GetIsClear() == true) {
+				isClear = true;
+				oldScene = Scene::Game;
+				sceneChangeFlag = true;
+			}
 
-		// プレイヤーが死亡したらゲームオーバーに移動
-		if (player_->GetIsAlive() == false && isClear == false) {
-			oldScene = Scene::Game;
-			sceneChangeFlag = true;
-		}
+			// プレイヤーが死亡したらゲームオーバーに移動
+			if (player_->GetIsAlive() == false && isClear == false) {
+				oldScene = Scene::Game;
+				sceneChangeFlag = true;
+			}
 
-		// とりあえずループの確認用のZキーでタイトルに戻る
-		if (input->TriggerKey(DIK_Z)) {
-			scene = Scene::StageSelect;
+			// とりあえずループの確認用のZキーでタイトルに戻る
+			if (input->TriggerKey(DIK_Z)) {
+				scene = Scene::StageSelect;
+			}
 		}
 
 		break;
@@ -579,7 +579,7 @@ void GameScene::Update()
 				}
 				else if (resultChange == true) {
 					oldScene = Scene::GameOver;
- 					sceneChangeFlag = true;
+					sceneChangeFlag = true;
 				}
 			}
 		}
@@ -743,6 +743,7 @@ void GameScene::Draw2DFront()
 	SpriteDraw();
 }
 
+//シーン遷移
 void GameScene::BlackOut()
 {
 	if (sceneChangeFlag == true) {
@@ -889,7 +890,10 @@ void GameScene::Reset()
 
 		break;
 	case GameScene::Game:
+		viewProjection_->eye = { 5,50,-5 };
+		viewProjection_->target = { 5,0,0 };
 		notSousaTimer = 0;
+		isCameraStart_ = true;
 		isClear = false;
 		player_->Reset();
 		enemy_->Reset({0,0,-2}, enemy_->EAST, 2);
@@ -915,6 +919,34 @@ void GameScene::Reset()
 			break;
 		}
 
+		// とりあえず一回だけ更新を行う
+		light->SetCircleShadowDir(0, circleShadowDir);
+		light->SetCircleShadowCasterPos(0, player_->GetWorldPosition());
+		light->SetCircleShadowAtten(0, circleShadowAtten);
+		light->SetCircleShadowFactorAngle(0, circleShadowFactorAngle);
+		light->Update();
+
+		viewProjection_->UpdateMatrix();
+
+		//敵更新
+		enemy_->Update();
+		//プラグ更新
+		plug_->Update();
+		//player更新
+		player_->Update();
+		//ステージ更新
+		stage_->Update();
+		//天球更新
+		skyBox_->Update();
+		//ソケット更新
+		socket1_->Update();
+		//ドア更新
+		door_->Update();
+
+		// ランプ
+		lamp_->SetisShining(plug_->GetIsConnect());
+		lamp_->Update();
+
 		break;
 	case GameScene::StageClear:
 		notSousaTimer = 0;
@@ -931,4 +963,20 @@ void GameScene::Reset()
 	}
 
 
+}
+
+void GameScene::StartCameraWork(ViewProjection* viewProjection_)
+{
+		
+	if (isCameraStart_ == true)
+	{
+		viewProjection_->eye.y -= 0.25f;
+		viewProjection_->eye.z -= 0.21f;
+	if (viewProjection_->eye.y <= 30 && viewProjection_->eye.z <= -22)
+		{
+			viewProjection_->eye.y = 30;
+			viewProjection_->eye.z = -22;
+			isCameraStart_ = false;
+		}
+	}
 }
