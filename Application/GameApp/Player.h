@@ -93,11 +93,12 @@ private:
 	//ステージ
 	Stage* stage_ = nullptr;
 
-	//ドア
+	//ドア 
 	Door* door_ = nullptr;
 
 	//敵
-	Enemy* enemy_ = nullptr;
+	std::vector<Enemy*> enemy_;
+	int enemyNum_ = 0;
 
 	//キー入力
 	Input* input = nullptr;
