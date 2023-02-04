@@ -1060,6 +1060,7 @@ void GameScene::Reset()
 			// エネミーのリセット
 			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2);
 			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2);
+			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2);
 			
 			// プラグのリセット
 			plug_[0]->Reset(Vector3(4.0, 2, -12.0), plug_[0]->NORTH);
