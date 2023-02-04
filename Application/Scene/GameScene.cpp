@@ -671,8 +671,42 @@ void GameScene::StageUpdate()
 		}
 		break;
 	case GameScene::Stage2:
+		//敵更新
+		for (int i = 0; i < 2; i++) {
+			enemy_[i]->Update();
+		}
+
+
+		for (int i = 0; i < 2; i++) {
+			//プラグ更新
+			plug_[i]->Update();
+			//ソケット更新
+			socket1_[i]->Update();
+
+
+			// ランプ
+			lamp_[i]->SetisShining(plug_[i]->GetIsConnect());
+			lamp_[i]->Update();
+		}
 		break;
 	case GameScene::Stage3:
+		//敵更新
+		for (int i = 0; i < 2; i++) {
+			enemy_[i]->Update();
+		}
+
+
+		for (int i = 0; i < 2; i++) {
+			//プラグ更新
+			plug_[i]->Update();
+			//ソケット更新
+			socket1_[i]->Update();
+
+
+			// ランプ
+			lamp_[i]->SetisShining(plug_[i]->GetIsConnect());
+			lamp_[i]->Update();
+		}
 		break;
 	default:
 		break;
@@ -712,8 +746,32 @@ void GameScene::StageDraw()
 		}
 		break;
 	case GameScene::Stage2:
+		for (int i = 0; i < 2; i++) {
+			//プラグ
+			plug_[i]->Draw(viewProjection_);
+			//ソケット
+			socket1_[i]->Draw(viewProjection_);
+			// ランプ
+			lamp_[i]->Draw(viewProjection_);
+		}
+		for (int i = 0; i < 2; i++) {
+			//エネミー
+			enemy_[i]->Draw(viewProjection_);
+		}
 		break;
 	case GameScene::Stage3:
+		for (int i = 0; i < 2; i++) {
+			//プラグ
+			plug_[i]->Draw(viewProjection_);
+			//ソケット
+			socket1_[i]->Draw(viewProjection_);
+			// ランプ
+			lamp_[i]->Draw(viewProjection_);
+		}
+		for (int i = 0; i < 2; i++) {
+			//エネミー
+			enemy_[i]->Draw(viewProjection_);
+		}
 		break;
 	default:
 		break;
@@ -1086,7 +1144,7 @@ void GameScene::Reset()
 			isCameraStart_ = true;
 			isClear = false;
 			player_->Reset();
-			door_->Reset();
+			door_->Reset(1);
 
 			// エネミーのリセット
 			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2);
@@ -1117,7 +1175,7 @@ void GameScene::Reset()
 			isCameraStart_ = true;
 			isClear = false;
 			player_->Reset();
-			door_->Reset();
+			door_->Reset(3);
 
 			// エネミーのリセット
 			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2);
