@@ -29,7 +29,7 @@ public:
 	bool GetOpen() { return isOpen_; }
 
 	// リセット
-	void Reset();
+	void Reset(int connectMax);
 
 private:
 	Model* doorModel = nullptr;
@@ -41,6 +41,8 @@ private:
 	WorldTransform clearPos;
 	Collider* clearCollider_ = nullptr;
 	//開いているか
+	bool connectOpen = 0;
+	int connectMax = 1;
 	bool isOpen_ = false;
 
 	//半径

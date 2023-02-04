@@ -44,7 +44,30 @@ void Door::Update()
 	collider_->Update();
 	clearCollider_->Update();
 	//ƒvƒ‰ƒO‚ª‚Â‚È‚ª‚Á‚Ä‚¢‚½‚çŠJ‚­
-	if (plug_[0]->GetIsConnect() == true)
+	for (int i = 0; i < plugNum_; i++) {
+		if (connectMax == 1) {
+			if (plug_[0]->GetIsConnect() == true)
+			{
+				connectOpen = true;
+			}
+		}
+		else if(connectMax==2){
+			if (plug_[0]->GetIsConnect() == true&& plug_[1]->GetIsConnect() == true)
+			{
+				connectOpen = true;
+			}
+		}
+		else if (connectMax ==3) {
+			if (plug_[0]->GetIsConnect() == true && 
+				plug_[1]->GetIsConnect() == true&&
+				plug_[3]->GetIsConnect() == true)
+			{
+				connectOpen = true;
+			}
+		}
+	}
+
+	if (connectOpen == true)
 	{
 		isOpen_ = true;
 
@@ -87,7 +110,7 @@ void Door::SetCollider(Collider* collider)
 	collider_ = collider;
 }
 
-void Door::Reset()
+void Door::Reset(int connectMax)
 {
 	gameObject_->worldTransform_.scale_ = { 2,1.8f,1 };
 	gameObject_->worldTransform_.position_ = { 1,0.8f,4 };
@@ -98,5 +121,7 @@ void Door::Reset()
 	clearCollider_->Initialize(&clearPos);
 	clearCollider_->SetRadius(0.01f);
 
+	this->connectMax = connectMax;
+	this->connectOpen = false;
 	isOpen_ = false;
 }

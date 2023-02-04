@@ -1039,7 +1039,7 @@ void GameScene::Reset()
 			socket1_[0]->Reset(Vector3(-2, 0, 2), socket1_[0]->SOUTH);
 			socket1_[1]->Reset(Vector3(-2, 100, 2), socket1_[1]->SOUTH);
 			socket1_[2]->Reset(Vector3(-2, 100, 2), socket1_[2]->SOUTH);
-			door_->Reset();
+			door_->Reset(1);
 
 			// ランプのリセット
 			lamp_[0]->Reset({4,2,2});
@@ -1055,7 +1055,7 @@ void GameScene::Reset()
 			isCameraStart_ = true;
 			isClear = false;
 			player_->Reset();
-			door_->Reset();
+			door_->Reset(2);
 
 			// エネミーのリセット
 			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2);
