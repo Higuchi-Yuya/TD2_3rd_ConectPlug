@@ -12,9 +12,11 @@ GameScene::~GameScene()
 		delete plug_[i];
 		delete socket1_[i];
 		delete lamp_[i];
+		
+	}
+	for (int i = 0; i < 6; i++) {
 		delete enemy_[i];
 	}
-
 	delete stage_;
 	delete skyBox_;
 	delete door_;

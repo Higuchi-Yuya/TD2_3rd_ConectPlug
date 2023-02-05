@@ -39,6 +39,7 @@ Plug::~Plug() {
 		delete cord_[i].collider[1];
 		delete cord_[i].collider[2];
 	}
+	
 	delete plugCollider_;
 	delete blockCollider_;
 	delete plug_;
@@ -621,49 +622,7 @@ void Plug::PlugUpdate() {
 				}
 				
 			}
-			//“G
-			if (plugCollider_->CheckCollision(enemySocket_[i]->GetCollider())) {
 
-
-
-				float angleY = 0;
-				// –k
-				if (enemySocket_[i]->GetFace() == 0) {
-					angleY = MathFunc::Utility::Deg2Rad(90) * 2;
-				}
-				// “Œ
-				if (enemySocket_[i]->GetFace() == 1) {
-					angleY = MathFunc::Utility::Deg2Rad(90) * 3;
-				}
-				// “ì
-				if (enemySocket_[i]->GetFace() == 2) {
-					angleY = MathFunc::Utility::Deg2Rad(90) * 0;
-				}
-				// ¼
-				if (enemySocket_[i]->GetFace() == 3) {
-					angleY = MathFunc::Utility::Deg2Rad(90) * 1;
-				}
-				plug_->worldTransform_.rotation_ = {
-					0 ,
-					angleY,
-					0
-				};
-
-				if (enemySocket_[i]->GetIsEnemy() == false) {
-					plug_->worldTransform_.position_ = {
-					enemySocket_[i]->GetWorldTransform().position_.x + 2.0f * sin(MathFunc::Utility::Deg2Rad(90) * enemySocket_[i]->GetFace()) ,
-					enemySocket_[i]->GetWorldTransform().position_.y ,
-					enemySocket_[i]->GetWorldTransform().position_.z + 2.0f * cos(MathFunc::Utility::Deg2Rad(90) * enemySocket_[i]->GetFace())
-					};
-					isConnect_ = true;
-					isReel_ = false;
-				}
-				else if (enemySocket_[i]->GetIsEnemy() == true && isConnect_ == false) {
-					isEnemyConnect[i] = true;
-					isReel_ = true;
-				}
-
-			}
 
 			for (int i = 0; i < cordLength_; i++) {
 
@@ -705,6 +664,50 @@ void Plug::PlugUpdate() {
 		}
 	}
 
+	for (int i = 0; i < enemySocketNum; i++) {
+		if (isGrabbed_ == false) {
+			//“G
+			if (plugCollider_->CheckCollision(enemySocket_[i]->GetCollider())) {
+				float angleY = 0;
+				// –k
+				if (enemySocket_[i]->GetFace() == 0) {
+					angleY = MathFunc::Utility::Deg2Rad(90) * 2;
+				}
+				// “Œ
+				if (enemySocket_[i]->GetFace() == 1) {
+					angleY = MathFunc::Utility::Deg2Rad(90) * 3;
+				}
+				// “ì
+				if (enemySocket_[i]->GetFace() == 2) {
+					angleY = MathFunc::Utility::Deg2Rad(90) * 0;
+				}
+				// ¼
+				if (enemySocket_[i]->GetFace() == 3) {
+					angleY = MathFunc::Utility::Deg2Rad(90) * 1;
+				}
+				plug_->worldTransform_.rotation_ = {
+					0 ,
+					angleY,
+					0
+				};
+
+				if (enemySocket_[i]->GetIsEnemy() == false) {
+					plug_->worldTransform_.position_ = {
+					enemySocket_[i]->GetWorldTransform().position_.x + 2.0f * sin(MathFunc::Utility::Deg2Rad(90) * enemySocket_[i]->GetFace()) ,
+					enemySocket_[i]->GetWorldTransform().position_.y ,
+					enemySocket_[i]->GetWorldTransform().position_.z + 2.0f * cos(MathFunc::Utility::Deg2Rad(90) * enemySocket_[i]->GetFace())
+					};
+					isConnect_ = true;
+					isReel_ = false;
+				}
+				else if (enemySocket_[i]->GetIsEnemy() == true && isConnect_ == false) {
+					isEnemyConnect[i] = true;
+					isReel_ = true;
+				}
+
+			}
+		}
+	}
 	if (isReel_ == true) {
 
 		if (plugCollider_->CheckCollision(*blockCollider_) == true) {
