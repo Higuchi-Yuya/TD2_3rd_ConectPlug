@@ -3,6 +3,7 @@
 #include "Object3d.h"
 
 class Plug;
+class Sound;
 
 class Door
 {
@@ -52,5 +53,9 @@ private:
 	//プラグ
 	std::vector<Plug*> plug_;
 	int plugNum_ = 0;
+
+	// ドアが開く時の効果音
+	Sound* openSE = nullptr;
+	bool isOpenSE = false;
 };
 

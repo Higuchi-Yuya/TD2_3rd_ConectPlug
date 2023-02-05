@@ -1,6 +1,7 @@
 #include "Plug.h"
 #include "Stage.h"
 #include "Socket.h"
+#include "Sound.h"
 
 //コンストラクタ
 Plug::Plug() {
@@ -47,6 +48,8 @@ Plug::~Plug() {
 	delete cordModel;
 	delete plugModel;
 	delete blockModel;
+
+	delete connectSE;
 }
 
 //メンバ関数
@@ -153,7 +156,8 @@ void Plug::Initialize(Vector3 pos, int face) {
 		cord_[i].oldEnd.position_ = cord_[i].end.position_;
 
 	}
-
+	connectSE = new Sound;
+	connectSE->SoundLoadWave("Resources/Sound/ConnectSE1.wav");
 }
 
 void Plug::Update() {
@@ -619,10 +623,17 @@ void Plug::PlugUpdate() {
 					};
 					isConnect_ = true;
 					isReel_ = false;
+
+					if (isSE == true) {
+						connectSE->SoundPlayWave(false, 1.0f);
+						isSE = false;
+					}
+					
+
 				}
 				
 			}
-
+			
 
 			for (int i = 0; i < cordLength_; i++) {
 
@@ -661,6 +672,9 @@ void Plug::PlugUpdate() {
 
 			}
 
+		}
+		else {
+			isSE = true;
 		}
 	}
 
@@ -703,6 +717,11 @@ void Plug::PlugUpdate() {
 				else if (enemySocket_[i]->GetIsEnemy() == true && isConnect_ == false) {
 					isEnemyConnect[i] = true;
 					isReel_ = true;
+
+					if (isSE == true) {
+						connectSE->SoundPlayWave(false, 1.0f);
+						isSE = false;
+					}
 				}
 
 			}

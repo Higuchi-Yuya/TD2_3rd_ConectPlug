@@ -7,6 +7,7 @@
 #include "LightGroup.h"
 #include "ImGuiManager.h"
 #include "CollisionPrimitive.h"
+#include "Sound.h"
 
 #include"Player.h"
 #include"Plug.h"
@@ -30,6 +31,7 @@ public:// メンバ関数
 		Game,
 		StageClear,
 		GameOver,
+		GameReset,
 	};
 
 	enum StageNum
@@ -236,6 +238,7 @@ private:// メンバ変数
 
 	float blackAlpha = 0.0f;
 	bool isClear = false;
+	bool isGameReset = false;
 	bool sceneChangeFlag = false;
 	Scene oldScene = Scene::Title;
 	bool resultChange = true;
@@ -244,5 +247,15 @@ private:// メンバ変数
 	int notTimerMax = 0.8 * 60;
 #pragma endregion
 	
+#pragma region サウンド
+	Sound* titleBGM = nullptr;
+	Sound* gameBGM = nullptr;
+	Sound* selectSE = nullptr;
+
+	// BGMを一回だけ鳴らすフラグ
+	bool isTitleBGM = false;
+	bool isGameBGM = false;
+#pragma endregion
+
 };
 

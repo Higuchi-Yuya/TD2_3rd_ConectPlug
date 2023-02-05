@@ -1,10 +1,11 @@
 #include "Object3d.h"
 #include "Collider.h"
 #include "MathFunc.h"
+
 class Stage;
 class Socket;
 class Player;
-
+class Sound;
 class Plug {
 public:
 	Plug();
@@ -116,4 +117,8 @@ private:
 	//enemyソケット
 	std::vector<Socket*> enemySocket_;
 	int enemySocketNum = 0;
+
+	// プラグを繋げた時の音
+	Sound* connectSE = nullptr;
+	bool isSE = false;
 };

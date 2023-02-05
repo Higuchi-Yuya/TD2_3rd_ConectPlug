@@ -6,6 +6,7 @@
 #include "Socket.h"
 class Stage;
 class Plug;
+class Sound;
 
 class Enemy
 {
@@ -104,5 +105,9 @@ private:
 	//プラグ
 	std::vector<Plug*> plug_;
 	int plugNum_ = 0;
+
+	// 死亡時のSE
+	Sound* deathSE = nullptr;
+	bool isSE = false;
 };
 

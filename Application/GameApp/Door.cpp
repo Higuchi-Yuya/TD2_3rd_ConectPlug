@@ -1,6 +1,6 @@
 #include "Door.h"
 #include "Plug.h"
-
+#include "Sound.h"
 
 Door::Door()
 {
@@ -17,6 +17,8 @@ Door::~Door()
 	delete gameObject_;
 	delete collider_;
 	delete clearCollider_;
+
+	delete openSE;
 }
 
 void Door::Initialize()
@@ -36,6 +38,9 @@ void Door::Initialize()
 	clearCollider_->SetRadius(0.01f);
 
 	isOpen_ = false;
+
+	openSE = new Sound;
+	openSE->SoundLoadWave("Resources/Sound/DoorOpenSE1.wav");
 }
 
 void Door::Update()
@@ -82,6 +87,11 @@ void Door::Update()
 	if (connectOpen == true)
 	{
 		isOpen_ = true;
+		if (isOpenSE == true) {
+
+			openSE->SoundPlayWave(false, 1.0f);
+			isOpenSE = false;
+		}
 
 		gameObject_->worldTransform_.position_.y += 0.25f;
 		if (gameObject_->worldTransform_.position_.y >= 4)
@@ -92,6 +102,7 @@ void Door::Update()
 	else
 	{
 		isOpen_ = false;
+		isOpenSE = true;
 		gameObject_->worldTransform_.position_.y -= 0.25f;
 		if (gameObject_->worldTransform_.position_.y <= 0.8)
 		{
