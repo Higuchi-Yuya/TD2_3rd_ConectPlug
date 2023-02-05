@@ -406,6 +406,22 @@ int Stage::GetMapNum(int x, int y, int z)
 	}
 }
 
+int Stage::GetMap3Num(int x, int y, int z)
+{
+	if (4 <= y)
+	{
+		return	thirdStage3[z][x];
+	}
+	else if (2 <= y)
+	{
+		return	secondStage3[z][x];
+	}
+	else
+	{
+		return	firstStage3[z][x];
+	}
+}
+
 WorldTransform Stage::GetWorldTransform(int num)
 {
 	return stageBlock[num]->worldTransform_;
