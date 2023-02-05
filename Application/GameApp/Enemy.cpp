@@ -1,7 +1,7 @@
 ﻿#include "Enemy.h"
 #include "Stage.h"
 #include "Plug.h"
-
+#include "Sound.h"
 Enemy::Enemy()
 {
 	gameObject_ = Object3d::Create();
@@ -20,6 +20,7 @@ Enemy::~Enemy()
 	delete gameObject_;
 	delete collider_;
 	delete enemySocket;
+	delete deathSE;
 }
 
 //初期化
@@ -38,6 +39,9 @@ void Enemy::Initialize(Vector3 pos,int face, int plusFace)
 
 	collider_->Initialize(&gameObject_->worldTransform_);
 	collider_->SetRadius(0.5f);
+
+	deathSE = new Sound;
+	deathSE->SoundLoadWave("Resources/Sound/DeathSE.wav");
 }
 
 //更新
@@ -216,6 +220,14 @@ void Enemy::Dead()
 		gameObject_->worldTransform_.position_.y += 0.5f;
 		gameObject_->worldTransform_.rotation_.y++;
 		gameObject_->worldTransform_.rotation_.x++;
+
+		if (isSE == true) {
+			deathSE->SoundPlayWave(false, 1.0f);
+			isSE = false;
+		}
+	}
+	else {
+		isSE = true;
 	}
 }
 

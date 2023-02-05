@@ -9,6 +9,7 @@ class Stage;
 class Plug;
 class Door;
 class Enemy;
+class Sound;
 
 class Player
 {
@@ -164,4 +165,8 @@ private:
 	bool waitFlag = true;
 	bool waitUp = true;
 	bool waitDown = false;
+
+	// 死亡時のSE
+	Sound* deathSE = nullptr;
+	bool isSE = false;
 };

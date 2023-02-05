@@ -3,6 +3,7 @@
 #include "Plug.h"
 #include "Door.h"
 #include "Enemy.h"
+#include "Sound.h"
 
 Player::Player() {
 	// プレイヤーの本体の初期化
@@ -34,6 +35,7 @@ Player::~Player() {
 	delete gameObject_;
 	delete collider_;
 	delete input;
+	delete deathSE;
 }
 
 void Player::Initialize() {
@@ -71,6 +73,8 @@ void Player::Initialize() {
 	amountRise_ = 0.0f;
 	kCharacterSpeed_ = 0.0f;
 
+	deathSE = new Sound;
+	deathSE->SoundLoadWave("Resources/Sound/DeathSE.wav");
 };
 
 void Player::Update() {
@@ -549,6 +553,15 @@ void Player::Move() {
 			gameObject_->worldTransform_.position_.y += 0.5f;
 			gameObject_->worldTransform_.rotation_.y++;
 			gameObject_->worldTransform_.rotation_.x++;
+
+
+			if (isSE == true) {
+				deathSE->SoundPlayWave(false, 1.0f);
+				isSE = false;
+			}
+		}
+		else {
+			isSE = true;
 		}
 	}
 

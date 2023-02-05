@@ -29,6 +29,10 @@ GameScene::~GameScene()
 	delete viewProjection_;
 	// ライトの解放
 	delete light;
+
+	// サウンドの解放
+	delete titleBGM;
+	delete gameBGM;
 }
 
 void GameScene::Initialize()
@@ -124,9 +128,15 @@ void GameScene::Initialize()
 	}
 	player_->SetDoor(door_);
 	
-
-
-
+	// サウンドの初期化
+	titleBGM = new Sound;
+	gameBGM = new Sound;
+	selectSE = new Sound;
+	titleBGM->SoundLoadWave("Resources/Sound/TitleBGMConnectPlug.wav");
+	gameBGM->SoundLoadWave("Resources/Sound/GameBGMConnectPlug.wav");
+	selectSE->SoundLoadWave("Resources/Sound/ConnectSE2.wav");
+	isTitleBGM = true;
+	isGameBGM = true;
 	
 
 	SpriteInitialize();
@@ -384,6 +394,7 @@ void GameScene::SpriteDraw()
 			if (plug_[i]->GetIsGrabbed() == true)
 			{
 				onGlabFont->Draw();
+				break;
 			}
 			else
 			{
@@ -444,13 +455,17 @@ void GameScene::Update()
 	switch (scene)
 	{
 	case GameScene::Title:
-
+		if (isTitleBGM == true) {
+			titleBGM->SoundPlayWave(true, 0.8f);
+			isTitleBGM = false;
+		}
 		Spacekey->SetPosition(Vector2{ displayCenter.x, displayCenter.y + 220 });
 
 		if (notSousaTimer >= notTimerMax) {
 			if (input->TriggerKey(DIK_SPACE)) {
 				// 次のシーンをセット
 				oldScene = Scene::Title;
+				selectSE->SoundPlayWave(false, 1.0f);
 				sceneChangeFlag = true;
 
 			}
@@ -462,9 +477,11 @@ void GameScene::Update()
 
 			if (input->TriggerKey(DIK_UP)) {
 				slectButton->SetPosition({ tutorialFont->GetPosition().x, tutorialFont->GetPosition().y + plusSelectPos + 20 });
+				selectSE->SoundPlayWave(false, 1.0f);
 			}
 			if (input->TriggerKey(DIK_DOWN)) {
 				slectButton->SetPosition({ stage2Font->GetPosition().x,stage2Font->GetPosition().y + plusSelectPos + 20 });
+				selectSE->SoundPlayWave(false, 1.0f);
 			}
 			if (input->TriggerKey(DIK_RIGHT) && slectButton->GetPosition().y != tutorialFont->GetPosition().y + plusSelectPos + 20) {
 				slectButton->SetPosition({ slectButton->GetPosition().x + 300,slectButton->GetPosition().y });
@@ -472,7 +489,7 @@ void GameScene::Update()
 				{
 					slectButton->SetPosition({ stage3Font->GetPosition().x ,stage3Font->GetPosition().y + plusSelectPos + 20 });
 				}
-
+				selectSE->SoundPlayWave(false, 1.0f);
 			}
 			if (input->TriggerKey(DIK_LEFT) && slectButton->GetPosition().y != tutorialFont->GetPosition().y + plusSelectPos + 20) {
 				slectButton->SetPosition({ slectButton->GetPosition().x - 300,slectButton->GetPosition().y });
@@ -480,6 +497,7 @@ void GameScene::Update()
 					slectButton->SetPosition({ stage1Font->GetPosition().x ,stage1Font->GetPosition().y + plusSelectPos + 20 });
 
 				}
+				selectSE->SoundPlayWave(false, 1.0f);
 			}
 
 
@@ -513,12 +531,17 @@ void GameScene::Update()
 					sceneChangeFlag = true;
 
 				}
+				titleBGM->StopWave();
+				selectSE->SoundPlayWave(false, 1.0f);
 			}
 		}
 		break;
 	case GameScene::Game:
-		//PointLightUpdate();
-
+		// ゲームのBGMを鳴らす
+		if (isGameBGM == true) {
+			gameBGM->SoundPlayWave(true, 0.8f);
+			isGameBGM = false;
+		}
 		Spacekey->SetPosition(Vector2{ displayCenter.x - 500, displayCenter.y - 200 });
 
 		light->SetSpotLightDir(0, spotLightDir);
@@ -567,7 +590,9 @@ void GameScene::Update()
 
 			// とりあえずループの確認用のZキーでタイトルに戻る
 			if (input->TriggerKey(DIK_Z)) {
-				scene = Scene::StageSelect;
+				oldScene = Scene::Game;
+				isGameReset = true;
+				sceneChangeFlag = true;
 			}
 		}
 
@@ -587,10 +612,12 @@ void GameScene::Update()
 			if (input->TriggerKey(DIK_SPACE)) {
 				if (resultChange == false) {
 					oldScene = Scene::StageClear;
+					gameBGM->StopWave();
 					sceneChangeFlag = true;
 				}
 				else if (resultChange == true) {
 					oldScene = Scene::StageClear;
+					gameBGM->StopWave();
 					sceneChangeFlag = true;
 				}
 			}
@@ -611,10 +638,12 @@ void GameScene::Update()
 			if (input->TriggerKey(DIK_SPACE)) {
 				if (resultChange == false) {
 					oldScene = Scene::GameOver;
+					gameBGM->StopWave();
 					sceneChangeFlag = true;
 				}
 				else if (resultChange == true) {
 					oldScene = Scene::GameOver;
+					gameBGM->StopWave();
 					sceneChangeFlag = true;
 				}
 			}
@@ -631,6 +660,7 @@ void GameScene::Update()
 
 
 }
+
 void GameScene::StageUpdate()
 {
 	switch (stageNum)
@@ -932,7 +962,9 @@ void GameScene::BlackOut()
 		switch (scene)
 		{
 		case GameScene::Scene::Title:
-			if (oldScene == Scene::StageClear || oldScene == Scene::GameOver) {
+			if (oldScene == Scene::StageClear || 
+				oldScene == Scene::GameOver) {
+
 				blackAlpha -= 0.025f;
 				blackOut->SetColor({ 1,1,1,blackAlpha });
 				if (blackAlpha <= 0) {
@@ -952,7 +984,9 @@ void GameScene::BlackOut()
 
 			break;
 		case GameScene::Scene::StageSelect:
-			if (oldScene == Scene::Title || oldScene == Scene::Game) {
+			if (oldScene == Scene::Title || 
+				oldScene == Scene::Game) {
+
 				blackAlpha -= 0.025f;
 				blackOut->SetColor({ 1,1,1,blackAlpha });
 				if (blackAlpha <= 0) {
@@ -971,7 +1005,11 @@ void GameScene::BlackOut()
 			}
 			break;
 		case GameScene::Scene::Game:
-			if (oldScene == Scene::StageSelect || oldScene == Scene::GameOver || oldScene == Scene::StageClear) {
+			if (oldScene == Scene::StageSelect || 
+				oldScene == Scene::GameOver || 
+				oldScene == Scene::StageClear||
+				oldScene==Scene::GameReset) {
+
 				blackAlpha -= 0.025f;
 				blackOut->SetColor({ 1,1,1,blackAlpha });
 				if (blackAlpha <= 0) {
@@ -985,7 +1023,13 @@ void GameScene::BlackOut()
 				blackOut->SetColor({ 1,1,1,blackAlpha });
 				if (blackAlpha >= 1) {
 					blackAlpha = 1;
-					if (isClear == false) {
+					if (isGameReset == true) {
+						oldScene = Scene::GameReset;
+						gameBGM->StopWave();
+						scene = Scene::Game;
+						Reset();
+					}
+					else if (isClear == false) {
 						scene = Scene::GameOver;
 						Reset();
 					}
@@ -993,6 +1037,7 @@ void GameScene::BlackOut()
 						scene = Scene::StageClear;
 						Reset();
 					}
+
 
 				}
 			}
@@ -1061,6 +1106,7 @@ void GameScene::Reset()
 	switch (scene)
 	{
 	case GameScene::Title:
+		isTitleBGM = true;
 		notSousaTimer = 0;
 		break;
 	case GameScene::StageSelect:
@@ -1072,7 +1118,7 @@ void GameScene::Reset()
 
 		break;
 	case GameScene::Game:
-
+		
 		
 
 		switch (stageNum)
@@ -1188,7 +1234,7 @@ void GameScene::Reset()
 			isCameraStart_ = true;
 			isClear = false;
 			player_->Reset({ 6, 0, -10 });
-			door_->Reset(3);
+			door_->Reset(2);
 
 			// エネミーのリセット
 			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2,0);
@@ -1248,7 +1294,11 @@ void GameScene::Reset()
 		
 		//ドア更新
 		door_->Update();
-
+		
+		// gameBGMを鳴らす
+		isGameBGM = true;
+		// リセットボタンのフラグ
+		isGameReset = false;
 		
 
 		break;

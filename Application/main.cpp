@@ -84,6 +84,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR,  _In_ int) {
 	// ライトの静的初期化
 	LightGroup::StaticInititalize(dxCommon->GetDevice());
 
+	// サウンドの静的初期化
+	Sound::StaticInitialize();
+
 	/////////////////////////////////////////////////////////
 	//--------------DirectX12初期化処理　ここまで-------------//
 	///////////////////////////////////////////////////////
