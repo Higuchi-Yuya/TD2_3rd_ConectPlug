@@ -88,7 +88,8 @@ public:
 private:
 	int direction = 0;
 
-
+	Vector3 originPos = { 0,0,0 };
+	bool isOrigin = false;
 
 	// ƒ‚ƒfƒ‹
 	Model* cordModel = nullptr;

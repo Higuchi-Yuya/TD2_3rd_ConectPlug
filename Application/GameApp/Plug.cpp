@@ -285,6 +285,8 @@ void Plug::Reset(Vector3 pos, int face)
 	isReel_ = false;
 	isLimit_ = false;
 
+	isOrigin = true;
+	originPos = plug_->worldTransform_.position_;
 }
 
 void Plug::CordUpdate() {
@@ -572,6 +574,11 @@ void Plug::PlugUpdate() {
 
 	if (plug_->worldTransform_.position_ != cord_[0].start.position_) {
 		plug_->worldTransform_.position_ = cord_[0].start.position_;
+		if (isOrigin == true) {
+			originPos = plug_->worldTransform_.position_;
+			isOrigin = false;
+		}
+		
 		isLimit_ = true;
 	}
 	if (direction != 0) {
@@ -679,7 +686,7 @@ void Plug::PlugUpdate() {
 	}
 
 	for (int i = 0; i < enemySocketNum; i++) {
-		if (isGrabbed_ == false) {
+		if (isGrabbed_ == false && plug_->worldTransform_.position_ != originPos) {
 			//“G
 			if (plugCollider_->CheckCollision(enemySocket_[i]->GetCollider())) {
 				float angleY = 0;

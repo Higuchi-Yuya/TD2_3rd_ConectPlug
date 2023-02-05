@@ -67,7 +67,7 @@ public:
 	void Dead();
 
 	// リセット
-	void Reset(Vector3 pos);
+	void Reset(Vector3 pos,int mapNum);
 
 private:
 	//上昇
@@ -154,6 +154,9 @@ private:
 	float upHandPosX = 0.5f, upHandPosZ = 0.8f;
 	float upHandPosY = 0.3f;
 	float handSpeed = 0.08f;
+
+	// 当たり判定をとるマップの番号
+	int mapNum = 0;
 
 	bool isUpHand = false;
 	bool upFlag = false;
