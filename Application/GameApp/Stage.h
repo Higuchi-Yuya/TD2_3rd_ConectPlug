@@ -40,6 +40,7 @@ public:// メンバ関数
 	Collider GetCollider(int num);
 	int GetObjectcount();
 	int GetMapNum(int x, int y, int z);
+	int GetMap2Num(int x, int y, int z);
 	int GetMap3Num(int x, int y, int z);
 	WorldTransform GetWorldTransform(int num);
 	Vector3 GetRadius();
@@ -203,7 +204,7 @@ private:// �����o�ϐ�
 		{1,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,1,1,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,1},

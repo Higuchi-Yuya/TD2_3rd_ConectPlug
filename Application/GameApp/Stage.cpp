@@ -406,6 +406,22 @@ int Stage::GetMapNum(int x, int y, int z)
 	}
 }
 
+int Stage::GetMap2Num(int x, int y, int z)
+{
+	if (4 <= y)
+	{
+		return	thirdStage2[z][x];
+	}
+	else if (2 <= y)
+	{
+		return	secondStage2[z][x];
+	}
+	else
+	{
+		return	firstStage2[z][x];
+	}
+}
+
 int Stage::GetMap3Num(int x, int y, int z)
 {
 	if (4 <= y)

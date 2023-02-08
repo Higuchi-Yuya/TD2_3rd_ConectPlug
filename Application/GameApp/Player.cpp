@@ -217,6 +217,31 @@ void Player::Move() {
 						OnHorizonCollision();
 					}
 				}
+				else if (mapNum == 2) {
+					if (stage_->GetMap2Num
+					(
+						stage_->GetCollider(i).GetWorldPos().x / 2.0f + 2.0,
+						stage_->GetCollider(i).GetWorldPos().y + 2.0,
+						-stage_->GetCollider(i).GetWorldPos().z / 2.0f + 2.0
+					) == 1)
+					{
+
+						isHitH_ = false;
+						operate_ = true;
+						gameObject_->worldTransform_.position_ -= move_;
+						break;
+					}
+
+					if (stage_->GetMap2Num
+					(
+						stage_->GetCollider(i).GetWorldPos().x / 2.0f + 2.0,
+						stage_->GetCollider(i).GetWorldPos().y + 2.0,
+						-stage_->GetCollider(i).GetWorldPos().z / 2.0f + 2.0
+					) == 0)
+					{
+						OnHorizonCollision();
+					}
+				}
 				else if (mapNum == 3) {
 					if (stage_->GetMap3Num
 					(
