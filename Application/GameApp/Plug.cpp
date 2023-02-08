@@ -48,7 +48,15 @@ Plug::~Plug() {
 	delete cordModel;
 	delete plugModel;
 	delete blockModel;
+	//for (auto soket : socket_) {
+	//	delete soket;
+	//}
+	//socket_.clear();
 
+	//for (auto enemySoket : enemySocket_) {
+	//	delete enemySoket;
+	//}
+	//enemySocket_.clear();
 	delete connectSE;
 }
 

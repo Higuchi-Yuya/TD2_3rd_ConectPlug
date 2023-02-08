@@ -33,6 +33,7 @@ GameScene::~GameScene()
 	// サウンドの解放
 	delete titleBGM;
 	delete gameBGM;
+	delete selectSE;
 
 	//パーティクル
 	delete particleMan;
@@ -359,6 +360,9 @@ void GameScene::DeleteSprite()
 	delete onRightKey;
 	delete offGlabFont;
 	delete onGlabFont;
+	delete ruleFont;
+	delete RKey;
+	delete resetFont;
 
 	// ステージクリア時のスプライト
 	delete clearFont;
@@ -1295,7 +1299,7 @@ void GameScene::Reset()
 			notSousaTimer = 0;
 			isCameraStart_ = true;
 			isClear = false;
-			player_->Reset({ 6, 0, -10 }, 0);
+			player_->Reset({ 6, 0, -10 }, 2);
 			door_->Reset(1);
 
 			// エネミーのリセット
@@ -1421,11 +1425,11 @@ void GameScene::StartCameraWork(ViewProjection* viewProjection_)
 	if (isCameraStart_ == true)
 	{
 		viewProjection_->eye.y -= 0.25f;
-		viewProjection_->eye.z -= 0.21f;
-		if (viewProjection_->eye.y <= 30 && viewProjection_->eye.z <= -22)
+		viewProjection_->eye.z -= 0.25f;
+		if (viewProjection_->eye.y <= 30 && viewProjection_->eye.z <= -25)
 		{
 			viewProjection_->eye.y = 30;
-			viewProjection_->eye.z = -22;
+			viewProjection_->eye.z = -25;
 			isCameraStart_ = false;
 		}
 	}
