@@ -12,7 +12,7 @@ GameScene::~GameScene()
 		delete plug_[i];
 		delete socket1_[i];
 		delete lamp_[i];
-		
+
 	}
 	for (int i = 0; i < 6; i++) {
 		delete enemy_[i];
@@ -33,6 +33,9 @@ GameScene::~GameScene()
 	// サウンドの解放
 	delete titleBGM;
 	delete gameBGM;
+
+	//パーティクル
+	delete particleMan;
 }
 
 void GameScene::Initialize()
@@ -63,7 +66,7 @@ void GameScene::Initialize()
 	//カメラの初期化と位置設定
 	viewProjection_ = new ViewProjection;
 	viewProjection_->Initialize();
-	viewProjection_->eye = {5,50,-5};
+	viewProjection_->eye = { 5,50,-5 };
 	viewProjection_->target = { 5,0,0 };
 
 	// オブジェクトの初期化
@@ -103,14 +106,9 @@ void GameScene::Initialize()
 		}
 	}
 
-	
-	
-
-
-
 	door_ = new Door;
 	door_->Initialize();
-	
+
 
 	player_ = new Player();
 	player_->Initialize();
@@ -123,11 +121,11 @@ void GameScene::Initialize()
 		lamp_[i]->SetisShining(false);
 	}
 	for (int i = 0; i < enemyCount; i++) {
-		
+
 		player_->SetEnemy(enemy_[i]);
 	}
 	player_->SetDoor(door_);
-	
+
 	// サウンドの初期化
 	titleBGM = new Sound;
 	gameBGM = new Sound;
@@ -137,9 +135,37 @@ void GameScene::Initialize()
 	selectSE->SoundLoadWave("Resources/Sound/ConnectSE2.wav");
 	isTitleBGM = true;
 	isGameBGM = true;
-	
 
+	//スプライト
 	SpriteInitialize();
+
+	//パーティクル
+	particleMan = ParticleManager::Create();
+
+	for (int i = 0; i < 5; i++) {
+		// X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
+		const float md_pos = 10.0f;
+		XMFLOAT3 pos{};
+		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+
+		// X,Y,Z全て{-0.05f,+0.05f}でランダムに分布
+		const float md_vel = 0.1f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+
+		// 重力に見立ててYのみ{-0.001f,0}でランダムに分布
+		XMFLOAT3 acc{};
+		const float md_acc = 0.001f;
+		acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+		// 追加
+		particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f);
+
+	}
 
 
 	// とりあえず一回だけ更新を行う
@@ -171,7 +197,7 @@ void GameScene::Initialize()
 	stage_->Update();
 	//天球更新
 	skyBox_->Update();
-	
+
 	//ドア更新
 	door_->Update();
 
@@ -205,6 +231,11 @@ void GameScene::SpriteInitialize()
 	onDown_ = Texture::LoadTexture("onDown.png");
 	onRight_ = Texture::LoadTexture("onRight.png");
 	onLeft_ = Texture::LoadTexture("onLeft.png");
+	//リセット
+	R_ = Texture::LoadTexture("R.png");
+	reset_ = Texture::LoadTexture("reset.png");
+	//ルール
+	rule_ = Texture::LoadTexture("rule.png");
 	//ゲームクリア
 	gameClear_ = Texture::LoadTexture("gameClear.png");
 	backTitle_ = Texture::LoadTexture("backTitle.png");
@@ -258,22 +289,29 @@ void GameScene::SpriteInitialize()
 	//状態
 	offGlabFont = new Sprite;
 	onGlabFont = new Sprite;
+	//リセット
+	RKey = new Sprite;
+	resetFont = new Sprite;
+	ruleFont = new Sprite;
 
 	//各キーの初期化
 	//押されていない
-	offUpKey->Initialize(offUp_, { displayCenter.x - 500, displayCenter.y + 40 }, { 50,50 });
-	offDownKey->Initialize(offDown_, { displayCenter.x - 500, displayCenter.y + 160 }, { 50,50 });
-	offLeftKey->Initialize(offLeft_, { displayCenter.x - 560, displayCenter.y + 100 }, { 50,50 });
-	offRightKey->Initialize(offRight_, { displayCenter.x - 440, displayCenter.y + 100 }, { 50,50 });
+	offUpKey->Initialize(offUp_, { displayCenter.x - 500, displayCenter.y + 120 }, { 50,50 });
+	offDownKey->Initialize(offDown_, { displayCenter.x - 500, displayCenter.y + 240 }, { 50,50 });
+	offLeftKey->Initialize(offLeft_, { displayCenter.x - 560, displayCenter.y + 180 }, { 50,50 });
+	offRightKey->Initialize(offRight_, { displayCenter.x - 440, displayCenter.y + 180 }, { 50,50 });
 	//押されている
-	onUpKey->Initialize(onUp_, { displayCenter.x - 500, displayCenter.y + 40 }, { 50,50 });
-	onDownKey->Initialize(onDown_, { displayCenter.x - 500, displayCenter.y + 160 }, { 50,50 });
-	onLeftKey->Initialize(onLeft_, { displayCenter.x - 560, displayCenter.y + 100 }, { 50,50 });
-	onRightKey->Initialize(onRight_, { displayCenter.x - 440, displayCenter.y + 100 }, { 50,50 });
+	onUpKey->Initialize(onUp_, { displayCenter.x - 500, displayCenter.y + 120 }, { 50,50 });
+	onDownKey->Initialize(onDown_, { displayCenter.x - 500, displayCenter.y + 240 }, { 50,50 });
+	onLeftKey->Initialize(onLeft_, { displayCenter.x - 560, displayCenter.y + 180 }, { 50,50 });
+	onRightKey->Initialize(onRight_, { displayCenter.x - 440, displayCenter.y + 180 }, { 50,50 });
 	//状態の初期化
-	offGlabFont->Initialize(offGlabPlug_, { displayCenter.x - 500, displayCenter.y - 100 }, { 300,75 });
-	onGlabFont->Initialize(onGlabPlug_, { displayCenter.x - 500, displayCenter.y - 100 }, { 300,75 });
-
+	offGlabFont->Initialize(offGlabPlug_, { displayCenter.x - 500, displayCenter.y - 130 }, { 300,75 });
+	onGlabFont->Initialize(onGlabPlug_, { displayCenter.x - 500, displayCenter.y - 130 }, { 300,75 });
+	//リセット
+	RKey->Initialize(R_, { displayCenter.x - 500, displayCenter.y - 50 }, { 200,50 });
+	resetFont->Initialize(reset_, { displayCenter.x - 500, displayCenter.y + 20 }, { 300,75 });
+	ruleFont->Initialize(rule_, { displayCenter.x + 480, displayCenter.y + 20 }, { 300,400 });
 
 	// ステージクリアのスプライトの初期化
 	clearFont = new Sprite;
@@ -381,9 +419,7 @@ void GameScene::SpriteDraw()
 		}
 		if (player_->GetIsLeft() == true)
 		{
-			onLeftKey
-
-				->Draw();
+			onLeftKey->Draw();
 		}
 		else
 		{
@@ -401,7 +437,13 @@ void GameScene::SpriteDraw()
 				offGlabFont->Draw();
 			}
 		}
-		
+		RKey->Draw();
+		resetFont->Draw();
+		if (isTutorial == true)
+		{
+			ruleFont->Draw();
+		}
+
 		Spacekey->Draw();
 		break;
 	case GameScene::StageClear:
@@ -589,11 +631,42 @@ void GameScene::Update()
 			}
 
 			// とりあえずループの確認用のZキーでタイトルに戻る
-			if (input->TriggerKey(DIK_Z)) {
+			if (input->TriggerKey(DIK_R)) {
 				oldScene = Scene::Game;
 				isGameReset = true;
 				sceneChangeFlag = true;
 			}
+
+
+			//パーティクル
+			if (input->TriggerKey(DIK_SPACE))
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					// X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
+					const float md_pos = 3.0f;
+					XMFLOAT3 pos{};
+					pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+					pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+					pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+
+					// X,Y,Z全て{-0.05f,+0.05f}でランダムに分布
+					const float md_vel = 0.1f;
+					XMFLOAT3 vel{};
+					vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+					vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+					vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+
+					// 重力に見立ててYのみ{-0.001f,0}でランダムに分布
+					XMFLOAT3 acc{};
+					const float md_acc = 0.001f;
+					acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+					// 追加
+					particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f);
+				}
+			}
+			particleMan->Update();
 		}
 
 		break;
@@ -672,6 +745,7 @@ void GameScene::StageUpdate()
 	switch (stageNum)
 	{
 	case GameScene::Tutorial:
+		isTutorial = true;
 		//敵更新
 		for (int i = 0; i < 1; i++) {
 			enemy_[i]->Update();
@@ -683,7 +757,7 @@ void GameScene::StageUpdate()
 			plug_[i]->Update();
 			//ソケット更新
 			socket1_[i]->Update();
-			
+
 
 			// ランプ
 			lamp_[i]->SetisShining(plug_[i]->GetIsConnect());
@@ -691,6 +765,10 @@ void GameScene::StageUpdate()
 		}
 		break;
 	case GameScene::Stage1:
+		if (isTutorial == true)
+		{
+			isTutorial = false;
+		}
 		//敵更新
 		for (int i = 0; i < 2; i++) {
 			enemy_[i]->Update();
@@ -710,6 +788,10 @@ void GameScene::StageUpdate()
 		}
 		break;
 	case GameScene::Stage2:
+		if (isTutorial == true)
+		{
+			isTutorial = false;
+		}
 		//敵更新
 		for (int i = 0; i < 6; i++) {
 			enemy_[i]->Update();
@@ -729,6 +811,10 @@ void GameScene::StageUpdate()
 		}
 		break;
 	case GameScene::Stage3:
+		if (isTutorial == true)
+		{
+			isTutorial = false;
+		}
 		//敵更新
 		for (int i = 0; i < 4; i++) {
 			enemy_[i]->Update();
@@ -939,12 +1025,15 @@ void GameScene::Draw3D()
 		skyBox_->Draw(viewProjection_);
 		//ステージ
 		stage_->Draw(viewProjection_);
-		
+
 		//プレイヤー
 		player_->Draw(viewProjection_);
+		//パーティクル
+		//particleMan->Draw();
+
 		//ドア
 		door_->Draw(viewProjection_);
-		
+
 		break;
 	case GameScene::StageClear:
 		break;
@@ -968,7 +1057,7 @@ void GameScene::BlackOut()
 		switch (scene)
 		{
 		case GameScene::Scene::Title:
-			if (oldScene == Scene::StageClear || 
+			if (oldScene == Scene::StageClear ||
 				oldScene == Scene::GameOver) {
 
 				blackAlpha -= 0.025f;
@@ -990,7 +1079,7 @@ void GameScene::BlackOut()
 
 			break;
 		case GameScene::Scene::StageSelect:
-			if (oldScene == Scene::Title || 
+			if (oldScene == Scene::Title ||
 				oldScene == Scene::Game) {
 
 				blackAlpha -= 0.025f;
@@ -1011,10 +1100,10 @@ void GameScene::BlackOut()
 			}
 			break;
 		case GameScene::Scene::Game:
-			if (oldScene == Scene::StageSelect || 
-				oldScene == Scene::GameOver || 
-				oldScene == Scene::StageClear||
-				oldScene==Scene::GameReset) {
+			if (oldScene == Scene::StageSelect ||
+				oldScene == Scene::GameOver ||
+				oldScene == Scene::StageClear ||
+				oldScene == Scene::GameReset) {
 
 				blackAlpha -= 0.025f;
 				blackOut->SetColor({ 1,1,1,blackAlpha });
@@ -1124,8 +1213,8 @@ void GameScene::Reset()
 
 		break;
 	case GameScene::Game:
-		
-		
+
+
 
 		switch (stageNum)
 		{
@@ -1137,14 +1226,15 @@ void GameScene::Reset()
 			notSousaTimer = 0;
 			isCameraStart_ = true;
 			isClear = false;
-			player_->Reset({ 7, 0, -5 },0);
+			isTutorial = true;
+			player_->Reset({ 7, 0, -5 }, 0);
 			// エネミーのリセット
-			enemy_[0]->Reset({0,0,-2}, enemy_[0]->EAST, 2,0);
-			enemy_[1]->Reset({ 0,100,-2 }, enemy_[1]->EAST, 2,1);
-			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,2);
-			enemy_[3]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,3);
-			enemy_[4]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,4);
-			enemy_[5]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,5);
+			enemy_[0]->Reset({ 0,0,-2 }, enemy_[0]->EAST, 2, 0);
+			enemy_[1]->Reset({ 0,100,-2 }, enemy_[1]->EAST, 2, 1);
+			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 2);
+			enemy_[3]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 3);
+			enemy_[4]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 4);
+			enemy_[5]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 5);
 
 			// プラグのリセット
 			plug_[0]->Reset(Vector3(12.0, 0, -10.0), plug_[0]->WEST);
@@ -1158,30 +1248,30 @@ void GameScene::Reset()
 			door_->Reset(1);
 
 			// ランプのリセット
-			lamp_[0]->Reset({4,2,2});
+			lamp_[0]->Reset({ 4,2,2 });
 			lamp_[1]->Reset({ 6,100,2 });
 			lamp_[2]->Reset({ 8,100,2 });
 			break;
 		case GameScene::Stage1:
 			stage_->Stage1Reset();
-
+			isTutorial = false;
 			viewProjection_->eye = { 5,50,-5 };
 			viewProjection_->target = { 5,0,0 };
 			notSousaTimer = 0;
 			isCameraStart_ = true;
 			isClear = false;
-			player_->Reset({ 7, 0, -5 },0);
+			player_->Reset({ 7, 0, -5 }, 0);
 			door_->Reset(2);
 
 			// エネミーのリセット
-			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2,0);
-			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2,1);
-			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,2);
-			enemy_[3]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,3);
-			enemy_[4]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,4);
-			enemy_[5]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2,5);
+			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2, 0);
+			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2, 1);
+			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 2);
+			enemy_[3]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 3);
+			enemy_[4]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 4);
+			enemy_[5]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 5);
 
-			
+
 			// プラグのリセット
 			plug_[0]->Reset(Vector3(4.0, 2, -12.0), plug_[0]->NORTH);
 			plug_[1]->Reset(Vector3(12.0, 0, -8.0), plug_[1]->WEST);
@@ -1199,22 +1289,22 @@ void GameScene::Reset()
 			break;
 		case GameScene::Stage2:
 			stage_->Stage2Reset();
-
+			isTutorial = false;
 			viewProjection_->eye = { 5,50,-5 };
 			viewProjection_->target = { 5,0,0 };
 			notSousaTimer = 0;
 			isCameraStart_ = true;
 			isClear = false;
-			player_->Reset({ 6, 0, -10 },0);
+			player_->Reset({ 6, 0, -10 }, 0);
 			door_->Reset(1);
 
 			// エネミーのリセット
-			enemy_[0]->Reset({ -2,0,0 }, enemy_[0]->EAST, 2,0);
-			enemy_[1]->Reset({ -2,100,-8 }, enemy_[1]->EAST, 2,1);
-			enemy_[2]->Reset({ -2,0,-12 }, enemy_[2]->NORTH, 2,2);
-			enemy_[3]->Reset({ 8,0,+2 }, enemy_[3]->SOUTH, 2,3);
-			enemy_[4]->Reset({ 10,0,-2 }, enemy_[4]->WEST, 2,4);
-			enemy_[5]->Reset({ 12,0,-10 }, enemy_[5]->NORTH, 2,5);
+			enemy_[0]->Reset({ -2,0,0 }, enemy_[0]->EAST, 2, 0);
+			enemy_[1]->Reset({ -2,100,-8 }, enemy_[1]->EAST, 2, 1);
+			enemy_[2]->Reset({ -2,0,-12 }, enemy_[2]->NORTH, 2, 2);
+			enemy_[3]->Reset({ 8,0,+2 }, enemy_[3]->SOUTH, 2, 3);
+			enemy_[4]->Reset({ 10,0,-2 }, enemy_[4]->WEST, 2, 4);
+			enemy_[5]->Reset({ 12,0,-10 }, enemy_[5]->NORTH, 2, 5);
 
 			// プラグのリセット
 			plug_[0]->Reset(Vector3(4.0, 0, -12.0), plug_[0]->NORTH);
@@ -1233,22 +1323,22 @@ void GameScene::Reset()
 			break;
 		case GameScene::Stage3:
 			stage_->Stage3Reset();
-
+			isTutorial = false;
 			viewProjection_->eye = { 5,50,-5 };
 			viewProjection_->target = { 5,0,0 };
 			notSousaTimer = 0;
 			isCameraStart_ = true;
 			isClear = false;
-			player_->Reset({ 6, 0, -10 },3);
+			player_->Reset({ 6, 0, -10 }, 3);
 			door_->Reset(2);
 
 			// エネミーのリセット
-			enemy_[0]->Reset({ 12,0,0 }, enemy_[0]->WEST, 2,0);
-			enemy_[1]->Reset({ 12,0,-4 }, enemy_[1]->WEST, 1,1);
-			enemy_[2]->Reset({ 2,0,-12 }, enemy_[2]->WEST, 2,2);
-			enemy_[3]->Reset({ -2,0,-12 }, enemy_[3]->NORTH, 1,3);
-			enemy_[4]->Reset({ 0,100,0 }, enemy_[4]->NORTH, 1,4);
-			enemy_[5]->Reset({ 0,100,-2 }, enemy_[5]->EAST, 2,5);
+			enemy_[0]->Reset({ 12,0,0 }, enemy_[0]->WEST, 2, 0);
+			enemy_[1]->Reset({ 12,0,-4 }, enemy_[1]->WEST, 1, 1);
+			enemy_[2]->Reset({ 2,0,-12 }, enemy_[2]->WEST, 2, 2);
+			enemy_[3]->Reset({ -2,0,-12 }, enemy_[3]->NORTH, 1, 3);
+			enemy_[4]->Reset({ 0,100,0 }, enemy_[4]->NORTH, 1, 4);
+			enemy_[5]->Reset({ 0,100,-2 }, enemy_[5]->EAST, 2, 5);
 
 			// プラグのリセット
 			plug_[0]->Reset(Vector3(-2, 2, -6), plug_[0]->NORTH);
@@ -1297,15 +1387,15 @@ void GameScene::Reset()
 		stage_->Update();
 		//天球更新
 		skyBox_->Update();
-		
+
 		//ドア更新
 		door_->Update();
-		
+
 		// gameBGMを鳴らす
 		isGameBGM = true;
 		// リセットボタンのフラグ
 		isGameReset = false;
-		
+
 
 		break;
 	case GameScene::StageClear:
@@ -1327,12 +1417,12 @@ void GameScene::Reset()
 
 void GameScene::StartCameraWork(ViewProjection* viewProjection_)
 {
-		
+
 	if (isCameraStart_ == true)
 	{
 		viewProjection_->eye.y -= 0.25f;
 		viewProjection_->eye.z -= 0.21f;
-	if (viewProjection_->eye.y <= 30 && viewProjection_->eye.z <= -22)
+		if (viewProjection_->eye.y <= 30 && viewProjection_->eye.z <= -22)
 		{
 			viewProjection_->eye.y = 30;
 			viewProjection_->eye.z = -22;
