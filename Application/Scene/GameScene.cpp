@@ -1268,8 +1268,8 @@ void GameScene::Reset()
 			door_->Reset(2);
 
 			// エネミーのリセット
-			enemy_[0]->Reset({ 12,0,-2 }, enemy_[0]->WEST, 2, 0);
-			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 2, 1);
+			enemy_[0]->Reset({ 12,0,-4 }, enemy_[0]->WEST, 2, 0);
+			enemy_[1]->Reset({ -2,0,-10 }, enemy_[1]->EAST, 1, 1);
 			enemy_[2]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 2);
 			enemy_[3]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 3);
 			enemy_[4]->Reset({ 0,100,-2 }, enemy_[2]->EAST, 2, 4);
@@ -1283,7 +1283,7 @@ void GameScene::Reset()
 
 			// ソケットのリセット
 			socket1_[0]->Reset(Vector3(-2, 2, 2), socket1_[0]->SOUTH);
-			socket1_[1]->Reset(Vector3(6, 0, 4), socket1_[1]->SOUTH);
+			socket1_[1]->Reset(Vector3(8, 0, 4), socket1_[1]->SOUTH);
 			socket1_[2]->Reset(Vector3(-2, 100, 2), socket1_[2]->SOUTH);
 
 			// ランプのリセット
