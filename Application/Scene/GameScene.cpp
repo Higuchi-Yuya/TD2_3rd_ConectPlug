@@ -1335,14 +1335,14 @@ void GameScene::Reset()
 			// エネミーのリセット
 			enemy_[0]->Reset({ 12,0,0 }, enemy_[0]->WEST, 2, 0);
 			enemy_[1]->Reset({ 12,0,-4 }, enemy_[1]->WEST, 1, 1);
-			enemy_[2]->Reset({ 2,0,-12 }, enemy_[2]->WEST, 2, 2);
+			enemy_[2]->Reset({ 2,0,-12 }, enemy_[2]->WEST, 1, 2);
 			enemy_[3]->Reset({ -2,0,-12 }, enemy_[3]->NORTH, 1, 3);
 			enemy_[4]->Reset({ 0,100,0 }, enemy_[4]->NORTH, 1, 4);
 			enemy_[5]->Reset({ 0,100,-2 }, enemy_[5]->EAST, 2, 5);
 
 			// プラグのリセット
 			plug_[0]->Reset(Vector3(-2, 2, -6), plug_[0]->NORTH);
-			plug_[1]->Reset(Vector3(12, 0, -8.0), plug_[1]->WEST);
+			plug_[1]->Reset(Vector3(12, 0, -10.0), plug_[1]->WEST);
 			plug_[2]->Reset(Vector3(-2, 100, -6.0), plug_[2]->EAST);
 
 			// ソケットのリセット
@@ -1420,12 +1420,12 @@ void GameScene::StartCameraWork(ViewProjection* viewProjection_)
 
 	if (isCameraStart_ == true)
 	{
-		viewProjection_->eye.y -= 0.25f;
-		viewProjection_->eye.z -= 0.21f;
-		if (viewProjection_->eye.y <= 30 && viewProjection_->eye.z <= -22)
+		viewProjection_->eye.y -= 0.15f;
+		viewProjection_->eye.z -= 0.20f;
+		if (viewProjection_->eye.y <= 35 && viewProjection_->eye.z <= -25)
 		{
-			viewProjection_->eye.y = 30;
-			viewProjection_->eye.z = -22;
+			viewProjection_->eye.y = 35;
+			viewProjection_->eye.z = -25;
 			isCameraStart_ = false;
 		}
 	}
