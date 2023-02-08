@@ -18,6 +18,7 @@
 #include "LightGroup.h"
 #include "Door.h"
 #include "Lamp.h"
+#include "ParticleManager.h"
 
 class GameScene
 {
@@ -150,6 +151,9 @@ private:// メンバ変数
 	// ステージ
 	StageNum stageNum = StageNum::Tutorial;
 
+	//パーティクル
+	ParticleManager* particleMan = nullptr;
+
 #pragma region スプライト
 	// テクスチャハンドル
 	//ダミー
@@ -180,6 +184,10 @@ private:// メンバ変数
 	int onDown_ = 0;
 	int onRight_ = 0;
 	int onLeft_ = 0;
+	//リセット
+	int R_ = 0;
+	int reset_ = 0;
+	int rule_ = 0;
 
 	////ゲームクリア////
 	int gameClear_ = 0;
@@ -214,6 +222,9 @@ private:// メンバ変数
 	Sprite* onRightKey = nullptr;
 	Sprite* offGlabFont = nullptr;
 	Sprite* onGlabFont = nullptr;
+	Sprite* RKey = nullptr;
+	Sprite* resetFont = nullptr;
+	Sprite* ruleFont = nullptr;
 
 	// ステージクリア時のスプライト
 	Sprite* clearFont     = nullptr;
@@ -255,6 +266,8 @@ private:// メンバ変数
 	// BGMを一回だけ鳴らすフラグ
 	bool isTitleBGM = false;
 	bool isGameBGM = false;
+
+	bool isTutorial = false;
 #pragma endregion
 
 };

@@ -82,7 +82,6 @@ void Enemy::Update()
 void Enemy::Draw(ViewProjection* viewProjection)
 {
 	gameObject_->Draw(viewProjection);
-	enemySocket->Draw(viewProjection);
 }
 
 //移動

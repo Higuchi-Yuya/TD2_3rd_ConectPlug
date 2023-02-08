@@ -77,6 +77,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR,  _In_ int) {
 	
 	// オブジェクトの初期化
 	Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
+	ParticleManager::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
 	// ビュープロジェクションの初期化
 	ViewProjection::StaticInitialize(dxCommon->GetDevice());
@@ -152,6 +153,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR,  _In_ int) {
 #pragma endregion
 
 #pragma region ３Ｄモデル描画
+		ParticleManager::PreDraw(dxCommon->GetCommandList());
 		Object3d::PreDraw(dxCommon->GetCommandList());
 		//-----ここから 3Dモデルの描画 -----//
 		gameScene->Draw3D();
@@ -159,6 +161,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR,  _In_ int) {
 		
 		//-----ここまで 3Dモデルの描画 -----//
 		Object3d::PostDraw();
+		ParticleManager::PostDraw();
 #pragma endregion
 		
 #pragma region 前景スプライト描画
