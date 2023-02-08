@@ -24,6 +24,9 @@ public:// メンバ関数
 	// チュートリアルステージのポジションを作る
 	void TutorialPosCreate();
 
+	// 地面のポジションセット
+	void GroundSet();
+
 	// チュートリアルステージのポジションのセット
 	void TutorialPosSet();
 
@@ -50,12 +53,15 @@ private:// �����o�ϐ�
 	static const int mapNumX = 10;
 	static const int mapNumZ = 10;
 
+	Model* groundModel = nullptr;
 	Model* blockModel = nullptr;
+	WorldTransform* groundW[10][10];
 	WorldTransform* stage0W[10][10];
 	WorldTransform* stage1W[10][10];
 	WorldTransform* stage2W[10][10];
 	WorldTransform* stage3W[10][10];
 	Object3d* stageBlock[500];
+	Object3d* groundBlock[100];
 	Collider* collider_[500];
 
 	//半径

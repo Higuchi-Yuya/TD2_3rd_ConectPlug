@@ -24,6 +24,7 @@ private:// メンバ変数
 
 	// オブジェクト
 	Object3d* skyBox_ = nullptr;
+	Object3d* skyBox2_ = nullptr;
 	
 };
 

@@ -4,6 +4,8 @@ Stage::Stage()
 {
 	blockModel = new Model;
 	blockModel = Model::LoadFromOBJ("block");
+	groundModel = new Model;
+	groundModel = Model::LoadFromOBJ("groundBlock");
 }
 
 Stage::~Stage()
@@ -12,12 +14,17 @@ Stage::~Stage()
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++)
 		{
+			delete groundW[j][i];
 			delete stage0W[j][i];
 			delete stage1W[j][i];
 			delete stage2W[j][i];
 			delete stage3W[j][i];
 		}
 	}
+	for (int i = 0; i < 100; i++) {
+		delete groundBlock[i];
+	}
+	delete groundModel;
 	for (int i = 0; i < 500; i++) {
 		delete stageBlock[i];
 		delete collider_[i];
@@ -38,6 +45,13 @@ void Stage::Initialize()
 
 		collider_[i] = new Collider;
 	}
+	for (int i = 0; i < 100; i++) {
+		groundBlock[i] = Object3d::Create();
+		groundBlock[i]->SetModel(groundModel);
+	}
+	GroundSet();
+	
+
 	TutorialPosSet();
 }
 
@@ -54,6 +68,9 @@ void Stage::Draw(ViewProjection* viewProjection)
 {
 	for (int i = 0; i < objectCount; i++) {
 		stageBlock[i]->Draw(viewProjection);
+	}
+	for (int i = 0; i < 66; i++) {
+		groundBlock[i]->Draw(viewProjection);
 	}
 }
 
@@ -114,7 +131,7 @@ void Stage::TutorialPosCreate()
 			// 零段目
 			stage0W[z][x] = new WorldTransform;
 			stage0W[z][x]->Initialize();
-			stage0W[z][x]->position_ = { 0.0f + ((x - 2.0f) * 2.0f),-2.0f,0.0f - ((z - 2.0f) * 2.0f) };
+			stage0W[z][x]->position_ = { 0.0f + ((x - 2.0f) * 2.0f),-20.01f,0.0f - ((z - 2.0f) * 2.0f) };
 			// 一段目
 			stage1W[z][x] = new WorldTransform;
 			stage1W[z][x]->Initialize();
@@ -141,6 +158,35 @@ void Stage::TutorialPosCreate()
 				objectCount++;
 			}
 		}
+	}
+}
+
+void Stage::GroundSet()
+{
+	int num = 0;
+	// 必要なブロック分だけ初期化
+	for (int z = 0; z < 10; z++) {
+		for (int x = 0; x < 10; x++)
+		{
+			// 零段目
+			groundW[z][x] = new WorldTransform;
+			groundW[z][x]->Initialize();
+			groundW[z][x]->position_ = { 0.0f + ((x - 2.0f) * 2.0f),-2.0f,0.0f - ((z - 2.0f) * 2.0f) };
+
+
+		}
+	}
+	for (int z = 0; z < 10; z++) {
+		for (int x = 0; x < 10; x++)
+		{
+			if (zeroStage[z][x] == 1) {
+				groundBlock[num]->worldTransform_.position_ = groundW[z][x]->position_;
+				num++;
+			}
+		}
+	}
+	for (int i = 0; i < 100; i++) {
+		groundBlock[i]->Update();
 	}
 }
 
